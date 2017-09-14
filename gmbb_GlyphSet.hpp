@@ -14,7 +14,7 @@ namespace gmbb{
 class
 GlyphSet
 {
-  uint32_t*  link_table[0x10000]={0};
+  uint32_t*  link_table[0x10000-256]={0};
 
   int   width=0;
   int  height=0;
@@ -37,7 +37,7 @@ public:
   int  get_height() const noexcept{return this->height;}
   int  get_bits_per_pixel() const noexcept{return this->bits_per_pixel;}
 
-  uint32_t const*  get_glyph_data(char16_t  c) const noexcept{return this->link_table[c];}
+  uint32_t const*  get_glyph_data(char16_t  c) const noexcept;
 
   void  load_from_file(char const*  path) noexcept;
   void  load_from_file(FILE*  f) noexcept;

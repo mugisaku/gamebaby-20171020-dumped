@@ -47,7 +47,6 @@ set(SOURCES
   gmbb_Image__transfer.cpp
   gmbb_Image__print.cpp
   gmbb_Image__frame.cpp
-  gmbb_Controller.cpp
   gmbb_GlyphSet.cpp
   gmbb_unicode.cpp
   gmbb_environment.cpp

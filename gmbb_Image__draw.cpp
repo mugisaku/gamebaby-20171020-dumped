@@ -26,7 +26,7 @@ draw_dot(Point  pt, Pixel  pix) noexcept
 
 void
 Image::
-draw_dot_safety(Point  pt, Pixel  pix) noexcept
+draw_dot_safely(Point  pt, Pixel  pix) noexcept
 {
     if((pt.x >=            0) &&
        (pt.x <   this->width) &&

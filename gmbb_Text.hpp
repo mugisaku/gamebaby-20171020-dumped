@@ -41,7 +41,7 @@ public:
 
   bool  is_full() const;
 
-  void  render(Image&  dst, GlyphSet const&  glset, int  x, int  y) const;
+  void  render(Image&  dst, Point  point, GlyphSet const&  glset, Pixel const*  pixels) const;
 
 };
 

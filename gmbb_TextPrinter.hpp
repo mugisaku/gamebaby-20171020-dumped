@@ -39,8 +39,10 @@ TextPrinter
 
   uint32_t  last_update_time;
 
+  Pixel  pixels[2];
+
 public:
-  TextPrinter(int  column_number, int  row_number);
+  TextPrinter(GlyphSet&  glset, Point  point, int  column_number, int  row_number);
 
   void  clear();
 
@@ -50,8 +52,6 @@ public:
   void  push(std::initializer_list<const char16_t*>  ls);
 
   void  controll(const Controller&  ctrl);
-
-  void  update();
 
   void  render(Image&  dst);
 

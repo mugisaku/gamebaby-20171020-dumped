@@ -2,45 +2,68 @@
 #define GMBB_CONTROLLER_HPP
 
 
+#include"gmbb_Figures.hpp"
 #include<cstdint>
+#include<cstdio>
+#include<string>
 
 
 namespace gmbb{
 
 
-constexpr int  up_flag    = 0x01;
-constexpr int  left_flag  = 0x02;
-constexpr int  right_flag = 0x04;
-constexpr int  down_flag  = 0x08;
-constexpr int  p_flag     = 0x10;
-constexpr int  n_flag     = 0x20;
-constexpr int  start_flag = 0x40;
-constexpr int  shift_flag = 0x80;
-
-
 class
 Controller
 {
-  uint8_t   pressing_key_state=0;
-  uint8_t    pressed_key_state=0;
-  uint8_t  unpressed_key_state=0;
+  uint32_t  state=0;
+  uint32_t   time=0;
 
-  uint8_t  quit_flag=0;
+  Point  point;
 
 public:
-  void    press(int  flag);
-  void  unpress(int  flag);
+  struct Flag{
+    int  data;
 
-  void  clean();
+    constexpr Flag(int  v) noexcept: data(v){}
+  };
 
-  bool  test_pressing(int  flag) const;
-  bool  test_pressed(int  flag) const;
-  bool  test_unpressed(int  flag) const;
 
-  void   set_quit_flag()      ;
-  bool  test_quit_flag() const;
+  void  change_point(int  x, int  y){point = Point(x,y);}
+
+  Point  get_point() const noexcept{return point;}
+
+  void  change_time(uint32_t  v) noexcept{time = v;}
+
+  uint32_t  get_time() const noexcept{return time;}
+
+  void  clear_state() noexcept{state = 0;}
+
+  void   set(Flag  flag)       noexcept{state |= flag.data;}
+  bool  test(Flag  flag) const noexcept{return(state&flag.data);}
 
 };
+
+
+constexpr Controller::Flag       up_button_pressed( 0x0001);
+constexpr Controller::Flag       up_button_released(0x0002);
+constexpr Controller::Flag     left_button_pressed( 0x0004);
+constexpr Controller::Flag     left_button_released(0x0008);
+constexpr Controller::Flag    right_button_pressed( 0x0010);
+constexpr Controller::Flag    right_button_released(0x0020);
+constexpr Controller::Flag     down_button_pressed( 0x0040);
+constexpr Controller::Flag     down_button_released(0x0080);
+constexpr Controller::Flag        p_button_pressed( 0x0100);
+constexpr Controller::Flag        p_button_released(0x0200);
+constexpr Controller::Flag        n_button_pressed( 0x0400);
+constexpr Controller::Flag        n_button_released(0x0800);
+constexpr Controller::Flag    start_button_pressed( 0x1000);
+constexpr Controller::Flag    start_button_released(0x2000);
+constexpr Controller::Flag    shift_button_pressed( 0x4000);
+constexpr Controller::Flag    shift_button_released(0x8000);
+
+constexpr Controller::Flag  mouse_lbutton_button_pressed( 0x10000);
+constexpr Controller::Flag  mouse_lbutton_button_released(0x20000);
+constexpr Controller::Flag  mouse_rbutton_button_pressed( 0x40000);
+constexpr Controller::Flag  mouse_rbutton_button_released(0x80000);
 
 
 }

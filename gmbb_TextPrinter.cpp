@@ -9,7 +9,8 @@ namespace gmbb{
 
 
 TextPrinter::
-TextPrinter(int  column_number, int  row_number):
+TextPrinter(GlyphSet&  glset, Point  point, int  column_number, int  row_number):
+glyphset(&glset),
 text(column_number,row_number),
 fast_flag(0),
 scroll_count(0),
@@ -19,8 +20,11 @@ character_iterator(character_buffer),
 character_end(character_buffer),
 last_update_time(0)
 {
-  rectangle = Rectangle(0,0,16*column_number,
-                            16*row_number);
+  rectangle = Rectangle(point.x,point.y,glset.get_width( )*column_number,
+                                        glset.get_height()*row_number);
+
+  pixels[0].index = predefined_color_index::null;
+  pixels[1].index = predefined_color_index::white;
 }
 
 
@@ -217,7 +221,7 @@ void
 TextPrinter::
 controll(const Controller&  ctrl)
 {
-    if(ctrl.test_pressed(p_flag))
+    if(ctrl.test(p_button_pressed))
     {
         if((character_iterator == character_end) && !scroll_count)
         {
@@ -228,7 +232,7 @@ controll(const Controller&  ctrl)
     }
 
 
-    if(ctrl.test_pressing(p_flag))
+    if(ctrl.test(p_button_pressed))
     {
       fast_flag = 1;
 
@@ -244,16 +248,12 @@ controll(const Controller&  ctrl)
     }
 
   else
+    if(ctrl.test(p_button_released))
     {
       fast_flag = 0;
     }
-}
 
 
-void
-TextPrinter::
-update()
-{
     if(character_iterator == character_end)
     {
       return;
@@ -262,7 +262,7 @@ update()
 
   constexpr uint32_t  interval_time_base = 80;
 
-  auto  now = env::get_time();
+  auto  now = ctrl.get_time();
 
   auto  interval_time = interval_time_base;
 
@@ -301,7 +301,9 @@ void
 TextPrinter::
 render(Image&  dst)
 {
-  text.render(dst,*glyphset,rectangle.x,rectangle.y);
+  dst.fill();
+
+  text.render(dst,rectangle,*glyphset,pixels);
 }
 
 

@@ -21,20 +21,10 @@ std::unordered_map<std::u16string,std::u16string>
 variables;
 
 
-uint32_t
-time;
-
-
 }
 
 
 uint8_t  fn_keystate;
-
-
-void  change_time(uint32_t  v){time = v;}
-uint32_t  get_time(){return time;}
-
-
 
 
 void

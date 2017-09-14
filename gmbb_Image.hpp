@@ -59,7 +59,7 @@ public:
 
 
   void  draw_dot(       Point  pt, Pixel  pix) noexcept;
-  void  draw_dot_safety(Point  pt, Pixel  pix) noexcept;
+  void  draw_dot_safely(Point  pt, Pixel  pix) noexcept;
 
   void  draw_vline(Point  pt, int  l, Pixel  pix) noexcept;
   void  draw_hline(Point  pt, int  l, Pixel  pix) noexcept;

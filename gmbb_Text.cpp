@@ -122,15 +122,15 @@ is_full() const
 
 void
 Text::
-render(Image&  dst, GlyphSet const&  glset, int  x, int  y) const
+render(Image&  dst, Point  point, GlyphSet const&  glset, Pixel const*  pixels) const
 {
   auto  next = first;
 
     while(next)
     {
-      dst.print(next->string.data(),Point(x,y),glset,nullptr);
+      dst.print(next->string.data(),point,glset,pixels);
 
-      y += glset.get_height();
+      point.y += glset.get_height();
 
       next = next->next;
     }

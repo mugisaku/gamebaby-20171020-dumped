@@ -24,6 +24,14 @@ clear() noexcept
 
 
 
+uint32_t const*
+GlyphSet::
+get_glyph_data(char16_t  c) const noexcept
+{
+  return this->link_table[(c < 0xFF00)? c:(c-0xFF00+' ')];
+}
+
+
 void
 GlyphSet::
 load_from_file(char const*  path) noexcept
@@ -78,6 +86,40 @@ fgetc_u32be(FILE*  f) noexcept
 
   return c;
 }
+
+
+void
+load(uint32_t*  ln, int  h, int  line_size, FILE*  f)
+{
+    for(int  i = 0;  i < h;  ++i)
+    {
+      uint32_t   v;
+
+        if(line_size <= 8)
+        {
+          v = fgetc(f)<<24;
+        }
+
+      else
+        if(line_size <= 16)
+        {
+          v = fgetc_u16be(f)<<16;
+        }
+
+      else
+        {
+          v = fgetc_u32be(f);
+        }
+
+
+        if(ln)
+        {
+          ln[i] = v;
+        }
+    }
+}
+
+
 }
 
 
@@ -99,6 +141,12 @@ load_from_file(FILE*  f) noexcept
     {
       auto  unicode = fgetc_u16be(f);
 
+        if(unicode >= 0xFF00)
+        {
+          unicode -= 0xFF00-' ';
+        }
+
+
       auto&  ln = this->link_table[unicode];
 
         if(!ln)
@@ -107,24 +155,7 @@ load_from_file(FILE*  f) noexcept
         }
 
 
-        for(int  i = 0;  i < this->height;  ++i)
-        {
-            if(line_size <= 8)
-            {
-              ln[i] = fgetc(f)<<24;
-            }
-
-          else
-            if(line_size <= 16)
-            {
-              ln[i] = fgetc_u16be(f)<<16;
-            }
-
-          else
-            {
-              ln[i] = fgetc_u32be(f);
-            }
-        }
+      load(ln,this->height,line_size,f);
     }
 }
 

@@ -2,6 +2,11 @@
 #define GMBB_Figures_HPP
 
 
+#ifndef report
+#define report printf("[report] %s, %s, %d\n",__FILE__,__func__,__LINE__);
+#endif
+
+
 namespace gmbb{
 
 
