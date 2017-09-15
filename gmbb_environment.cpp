@@ -28,14 +28,14 @@ uint8_t  fn_keystate;
 
 
 void
-set_value(const char16_t*  name, const char16_t*  value)
+set_value(const char16_t*  name, const char16_t*  value) noexcept
 {
   variables[name] = value;
 }
 
 
 const std::u16string&
-get_value(const char16_t*  name)
+get_value(const char16_t*  name) noexcept
 {
   return variables[name];
 }

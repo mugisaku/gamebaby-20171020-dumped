@@ -34,26 +34,26 @@ TextPrinter
 
   char16_t  character_buffer[1024];
 
-  const char16_t*  character_iterator;
-        char16_t*  character_end;
+  char16_t const*  character_iterator;
+  char16_t*        character_end;
 
   uint32_t  last_update_time;
 
   Pixel  pixels[2];
 
 public:
-  TextPrinter(GlyphSet&  glset, Point  point, int  column_number, int  row_number);
+  TextPrinter(GlyphSet&  glset, Point  point, int  column_number, int  row_number) noexcept;
 
-  void  clear();
+  void  clear() noexcept;
 
-  bool  is_finished() const;
+  bool  is_finished() const noexcept;
 
-  void  push(const char16_t*   src);
-  void  push(std::initializer_list<const char16_t*>  ls);
+  void  push(char16_t const*  src);
+  void  push(std::initializer_list<char16_t const*>  ls);
 
-  void  controll(const Controller&  ctrl);
+  void  controll(Controller const&  ctrl) noexcept;
 
-  void  render(Image&  dst);
+  void  render(Image&  dst) noexcept;
 
 };
 

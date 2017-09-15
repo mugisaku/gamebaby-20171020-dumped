@@ -64,6 +64,8 @@ public:
   void  draw_vline(Point  pt, int  l, Pixel  pix) noexcept;
   void  draw_hline(Point  pt, int  l, Pixel  pix) noexcept;
 
+  void  draw_line(Line  line, Pixel  pix) noexcept;
+
   void  draw_rectangle(Rectangle const&  rect, Pixel  pix) noexcept;
   void  fill_rectangle(Rectangle         rect, Pixel  pix) noexcept;
 

@@ -57,6 +57,9 @@ set(SOURCES
   gmbb_Text.cpp
   gmbb_TextPrinter.cpp
   gmbb_RandomNumber.cpp
+  gmbb_LineMaker.cpp
+  gmbb_Widget.cpp
+  gmbb_Window.cpp
 )
 
 

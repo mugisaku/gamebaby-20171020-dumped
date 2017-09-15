@@ -25,12 +25,12 @@ utf8_byte_number(unsigned char  c)
 
 namespace{
 int
-decode(int  c, int  shift_amount=0)
+decode(int  c, int  shift_amount=0) noexcept
 {
   return((c&0b111111)<<shift_amount);
 }
 int
-encode(int  c, int  shift_amount=0)
+encode(int  c, int  shift_amount=0) noexcept
 {
   return((c>>shift_amount)&0b111111);
 }

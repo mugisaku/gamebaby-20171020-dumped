@@ -14,14 +14,14 @@ FileWriter: public File
   size_t  offset;
 
 public:
-  FileWriter();
+  FileWriter() noexcept;
 
 
-  void  put(int  c);
-  void  put_be16(int  c);
-  void  put_be32(int  c);
+  void  put(int  c) noexcept;
+  void  put_be16(int  c) noexcept;
+  void  put_be32(int  c) noexcept;
 
-  void  put_file(const File&  f);
+  void  put_file(const File&  f) noexcept;
 
 };
 

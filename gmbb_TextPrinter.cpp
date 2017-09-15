@@ -9,7 +9,7 @@ namespace gmbb{
 
 
 TextPrinter::
-TextPrinter(GlyphSet&  glset, Point  point, int  column_number, int  row_number):
+TextPrinter(GlyphSet&  glset, Point  point, int  column_number, int  row_number) noexcept:
 glyphset(&glset),
 text(column_number,row_number),
 fast_flag(0),
@@ -32,7 +32,7 @@ last_update_time(0)
 
 namespace{
 char16_t*
-copy(const char16_t*  src, char16_t*  dst, const char16_t*  const dst_end)
+copy(const char16_t*  src, char16_t*  dst, const char16_t*  const dst_end) noexcept
 {
     if(dst == dst_end)
     {
@@ -61,7 +61,7 @@ copy(const char16_t*  src, char16_t*  dst, const char16_t*  const dst_end)
 
 
 int
-sscan_id(const char16_t*  s, char16_t*  buf, size_t  n)
+sscan_id(const char16_t*  s, char16_t*  buf, size_t  n) noexcept
 {
   int  r = 0;
 
@@ -125,7 +125,7 @@ sscan_id(const char16_t*  s, char16_t*  buf, size_t  n)
 
 void
 TextPrinter::
-clear()
+clear() noexcept
 {
   text.clear();
 
@@ -141,7 +141,7 @@ clear()
 
 bool
 TextPrinter::
-is_finished() const
+is_finished() const noexcept
 {
   return finished_flag;
 }
@@ -149,7 +149,7 @@ is_finished() const
 
 void
 TextPrinter::
-push(const char16_t*  src)
+push(char16_t const*  src)
 {
     if(finished_flag)
     {
@@ -201,7 +201,7 @@ push(const char16_t*  src)
 
 void
 TextPrinter::
-push(std::initializer_list<const char16_t*>  ls)
+push(std::initializer_list<char16_t const*>  ls)
 {
     for(auto  s: ls)
     {
@@ -219,7 +219,7 @@ push(std::initializer_list<const char16_t*>  ls)
 
 void
 TextPrinter::
-controll(const Controller&  ctrl)
+controll(Controller const&  ctrl) noexcept
 {
     if(ctrl.test(p_button_pressed))
     {
@@ -299,7 +299,7 @@ controll(const Controller&  ctrl)
 
 void
 TextPrinter::
-render(Image&  dst)
+render(Image&  dst) noexcept
 {
   dst.fill();
 

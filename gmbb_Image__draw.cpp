@@ -1,4 +1,5 @@
 #include"gmbb_Image.hpp"
+#include"gmbb_LineMaker.hpp"
 #include<cstring>
 
 
@@ -60,6 +61,23 @@ draw_hline(Point  pt, int  l, Pixel  pix) noexcept
       draw_dot(pt,pix);
 
       pt.x += 1;
+    }
+}
+
+
+void
+Image::
+draw_line(Line  line, Pixel  pix) noexcept
+{
+  LineMaker  lnmk(line);
+
+  draw_dot(lnmk.get_point(),pix);
+
+    while(lnmk.get_distance())
+    {
+      lnmk.step();
+
+      draw_dot(lnmk.get_point(),pix);
     }
 }
 

@@ -18,7 +18,7 @@ Line
 
 
 Text::
-Text(int  col_n, int  row_n):
+Text(int  col_n, int  row_n) noexcept:
 column_number(col_n),
 row_number(row_n)
 {
@@ -50,7 +50,7 @@ row_number(row_n)
 
 void
 Text::
-clear()
+clear() noexcept
 {
   auto  next = first;
 
@@ -68,7 +68,7 @@ clear()
 
 void
 Text::
-rotate()
+rotate() noexcept
 {
   auto  old_first = first;
 
@@ -89,7 +89,7 @@ rotate()
 
 void
 Text::
-push(char16_t  c)
+push(char16_t  c) noexcept
 {
     if(!is_full())
     {
@@ -114,7 +114,7 @@ push(char16_t  c)
 
 bool
 Text::
-is_full() const
+is_full() const noexcept
 {
   return !current;
 }
@@ -122,7 +122,7 @@ is_full() const
 
 void
 Text::
-render(Image&  dst, Point  point, GlyphSet const&  glset, Pixel const*  pixels) const
+render(Image&  dst, Point  point, GlyphSet const&  glset, Pixel const*  pixels) const noexcept
 {
   auto  next = first;
 

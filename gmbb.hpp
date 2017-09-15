@@ -12,6 +12,7 @@
 #include"gmbb_FileReader.hpp"
 #include"gmbb_FileWriter.hpp"
 #include"gmbb_Storage.hpp"
+#include"gmbb_Window.hpp"
 
 
 

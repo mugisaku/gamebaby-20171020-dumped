@@ -31,17 +31,17 @@ Text
   char16_t  last_char;
 
 public:
-  Text(int  col_n, int  row_n);
+  Text(int  col_n, int  row_n) noexcept;
 
-  void  clear();
+  void  clear() noexcept;
 
-  void  rotate();
+  void  rotate() noexcept;
 
-  void  push(char16_t  c);
+  void  push(char16_t  c) noexcept;
 
-  bool  is_full() const;
+  bool  is_full() const noexcept;
 
-  void  render(Image&  dst, Point  point, GlyphSet const&  glset, Pixel const*  pixels) const;
+  void  render(Image&  dst, Point  point, GlyphSet const&  glset, Pixel const*  pixels) const noexcept;
 
 };
 

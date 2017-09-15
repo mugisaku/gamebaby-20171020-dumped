@@ -10,7 +10,7 @@ namespace gmbb{
 
 
 FileWriter::
-FileWriter()
+FileWriter() noexcept
 {
 }
 
@@ -19,7 +19,7 @@ FileWriter()
 
 void
 FileWriter::
-put(int  c)
+put(int  c) noexcept
 {
     if(offset < content.size())
     {
@@ -38,7 +38,7 @@ put(int  c)
 
 void
 FileWriter::
-put_be16(int  c)
+put_be16(int  c) noexcept
 {
   put(c>>8);
   put(c   );
@@ -47,7 +47,7 @@ put_be16(int  c)
 
 void
 FileWriter::
-put_be32(int  c)
+put_be32(int  c) noexcept
 {
   put(c>>24);
   put(c>>16);
@@ -58,7 +58,7 @@ put_be32(int  c)
 
 void
 FileWriter::
-put_file(const File&  f)
+put_file(const File&  f) noexcept
 {
   put_be32(f.get_name().size());
 
