@@ -1,14 +1,9 @@
-#ifndef GMBB_TextPrinter_HPP_INCLUDED
-#define GMBB_TextPrinter_HPP_INCLUDED
+#ifndef GMBB_MessageWindow_HPP_INCLUDED
+#define GMBB_MessageWindow_HPP_INCLUDED
 
 
-#include<cstdint>
-#include<cstdio>
-#include<string>
-#include<queue>
 #include"gmbb_Figures.hpp"
-#include"gmbb_Controller.hpp"
-#include"gmbb_Image.hpp"
+#include"gmbb_Window.hpp"
 #include"gmbb_Text.hpp"
 
 
@@ -18,10 +13,8 @@ namespace gmbb{
 
 
 class
-TextPrinter
+MessageWindow: public Window
 {
-  Rectangle  rectangle;
-
   Text  text;
 
   GlyphSet const*  glyphset;
@@ -42,7 +35,7 @@ TextPrinter
   Pixel  pixels[2];
 
 public:
-  TextPrinter(GlyphSet&  glset, Point  point, int  column_number, int  row_number) noexcept;
+  MessageWindow(GlyphSet&  glset, int  column_number, int  row_number) noexcept;
 
   void  clear() noexcept;
 
@@ -51,9 +44,9 @@ public:
   void  push(char16_t const*  src);
   void  push(std::initializer_list<char16_t const*>  ls);
 
-  void  controll(Controller const&  ctrl) noexcept;
+  void  controll(Controller const&  ctrl) noexcept override;
 
-  void  render(Image&  dst) noexcept;
+  void  render(Image&  dst) noexcept override;
 
 };
 

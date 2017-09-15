@@ -17,28 +17,19 @@ state(WindowState::hidden)
 
 
 Window::
-Window(Rectangle  rect):
-Widget(rect),
-width_max(rect.w),
-height_max(rect.h),
-state(WindowState::full_opened)
+Window(int  w, int  h):
+width_max(w),
+height_max(h)
 {
+  set_state(WindowState::full_opened);
 }
 
 
-
-
-WindowState
-Window::
-get_state() const
-{
-  return state;
-}
 
 
 void
 Window::
-set_state(WindowState  st)
+set_state(WindowState  st) noexcept
 {
   state = st;
 
@@ -48,7 +39,7 @@ set_state(WindowState  st)
       break;
   case(WindowState::open_to_down):
       rectangle.w = width_max;
-      rectangle.h =         1;
+      rectangle.h =        16;
       break;
   case(WindowState::close_to_left):
   case(WindowState::close_to_up):
@@ -57,28 +48,46 @@ set_state(WindowState  st)
       rectangle.h = height_max;
       break;
   case(WindowState::open_to_right):
-      rectangle.w =          1;
+      rectangle.w =         16;
       rectangle.h = height_max;
       break;
     }
 }
 
 
+
+
+void
+Window::
+change_border0_color(ColorIndex  ci) noexcept
+{
+  pixels[2] = ci;
+}
+
+
+void
+Window::
+change_border1_color(ColorIndex  ci) noexcept
+{
+  pixels[2] = ci;
+}
+
+
+void
+Window::
+change_surface_color(ColorIndex  ci) noexcept
+{
+  pixels[1] = ci;
+}
+
+
+
+
 void
 Window::
 controll(Controller const&  ctrl) noexcept
 {
-    if(ctrl.test(down_button_pressed))
-    {
-      state = WindowState::open_to_down;
-    }
-
-  else
-    if(ctrl.test(up_button_pressed))
-    {
-      state = WindowState::close_to_up;
-    }
-
+  constexpr int  step = 8;
 
     switch(state)
     {
@@ -88,7 +97,7 @@ controll(Controller const&  ctrl) noexcept
   case(WindowState::open_to_right):
         if(rectangle.w < width_max)
         {
-          ++rectangle.w;
+          rectangle.w += step;
 
             if(rectangle.w == width_max)
             {
@@ -97,11 +106,11 @@ controll(Controller const&  ctrl) noexcept
         }
       break;
   case(WindowState::close_to_left):
-        if(rectangle.w > 1)
+        if(rectangle.w > 16)
         {
-          --rectangle.w;
+          rectangle.w -= step;
 
-            if(rectangle.w == 1)
+            if(rectangle.w == 16)
             {
               state = WindowState::hidden;
             }
@@ -110,7 +119,7 @@ controll(Controller const&  ctrl) noexcept
   case(WindowState::open_to_down):
         if(rectangle.h < height_max)
         {
-          ++rectangle.h;
+          rectangle.h += step;
 
             if(rectangle.h == height_max)
             {
@@ -119,11 +128,11 @@ controll(Controller const&  ctrl) noexcept
         }
       break;
   case(WindowState::close_to_up):
-        if(rectangle.h > 1)
+        if(rectangle.h > 16)
         {
-          --rectangle.h;
+          rectangle.h -= step;
 
-            if(rectangle.h == 1)
+            if(rectangle.h == 16)
             {
               state = WindowState::hidden;
             }
@@ -143,18 +152,7 @@ render(Image&  dst) noexcept
 
     if(state != WindowState::hidden)
     {
-      dst.draw_frame(rectangle.x,rectangle.y,rectangle.w,rectangle.h);
-
-      dst.draw_line(Line(Point(rectangle.x,rectangle.y),
-                         Point(rectangle.x+rectangle.w,rectangle.y+rectangle.h)),Pixel(0700,1));
-
-        if(state == WindowState::full_opened)
-        {
-//            if(callback)
-            {
-//              callback(*this,dst);
-            }
-        }
+      draw_frame(dst);
     }
 }
 

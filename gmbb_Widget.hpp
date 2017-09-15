@@ -26,7 +26,7 @@ protected:
 
 public:
           Widget() noexcept{}
-          Widget(Rectangle  rect) noexcept: rectangle(rect){}
+          Widget(int  w, int  h) noexcept: rectangle(0,0,w,h){}
  virtual ~Widget(){clear();}
 
   void  clear() noexcept;

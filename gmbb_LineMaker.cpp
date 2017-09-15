@@ -24,8 +24,8 @@ LineMaker(Line  ln) noexcept
 
     if(!x_distance)
     {
-      x_add_amount = (1<<shift_amount);
-      y_add_amount = (0              );
+      x_add_amount = (0              );
+      y_add_amount = (1<<shift_amount);
 
       distance = y_distance;
     }
@@ -33,8 +33,8 @@ LineMaker(Line  ln) noexcept
   else
     if(!y_distance)
     {
-      x_add_amount = (0              );
-      y_add_amount = (1<<shift_amount);
+      x_add_amount = (1<<shift_amount);
+      y_add_amount = (0              );
 
       distance = x_distance;
     }

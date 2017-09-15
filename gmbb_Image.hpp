@@ -69,11 +69,6 @@ public:
   void  draw_rectangle(Rectangle const&  rect, Pixel  pix) noexcept;
   void  fill_rectangle(Rectangle         rect, Pixel  pix) noexcept;
 
-  void  draw_frame_top(   int  x, int  y, int  w        ) noexcept;
-  void  draw_frame_body(  int  x, int  y, int  w, int  h) noexcept;
-  void  draw_frame_bottom(int  x, int  y, int  w        ) noexcept;
-  void  draw_frame(       int  x, int  y, int  w, int  h) noexcept;
-
   void  print(      char16_t   c, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept;
   void  print(const char*      s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept;
   void  print(const char16_t*  s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept;

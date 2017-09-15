@@ -1,4 +1,4 @@
-#include"gmbb_TextPrinter.hpp"
+#include"gmbb_MessageWindow.hpp"
 #include"gmbb_environment.hpp"
 #include<cctype>
 
@@ -8,8 +8,9 @@
 namespace gmbb{
 
 
-TextPrinter::
-TextPrinter(GlyphSet&  glset, Point  point, int  column_number, int  row_number) noexcept:
+MessageWindow::
+MessageWindow(GlyphSet&  glset, int  column_number, int  row_number) noexcept:
+Window(glset.get_width( )*column_number+16,glset.get_height()*row_number+16),
 glyphset(&glset),
 text(column_number,row_number),
 fast_flag(0),
@@ -20,8 +21,7 @@ character_iterator(character_buffer),
 character_end(character_buffer),
 last_update_time(0)
 {
-  rectangle = Rectangle(point.x,point.y,glset.get_width( )*column_number,
-                                        glset.get_height()*row_number);
+  Window::set_state(WindowState::open_to_down);
 
   pixels[0].index = predefined_color_index::null;
   pixels[1].index = predefined_color_index::white;
@@ -124,7 +124,7 @@ sscan_id(const char16_t*  s, char16_t*  buf, size_t  n) noexcept
 
 
 void
-TextPrinter::
+MessageWindow::
 clear() noexcept
 {
   text.clear();
@@ -140,7 +140,7 @@ clear() noexcept
 
 
 bool
-TextPrinter::
+MessageWindow::
 is_finished() const noexcept
 {
   return finished_flag;
@@ -148,7 +148,7 @@ is_finished() const noexcept
 
 
 void
-TextPrinter::
+MessageWindow::
 push(char16_t const*  src)
 {
     if(finished_flag)
@@ -200,7 +200,7 @@ push(char16_t const*  src)
 
 
 void
-TextPrinter::
+MessageWindow::
 push(std::initializer_list<char16_t const*>  ls)
 {
     for(auto  s: ls)
@@ -218,9 +218,17 @@ push(std::initializer_list<char16_t const*>  ls)
 
 
 void
-TextPrinter::
+MessageWindow::
 controll(Controller const&  ctrl) noexcept
 {
+  Window::controll(ctrl);
+
+    if(Window::get_state() != WindowState::full_opened)
+    {
+      return;
+    }
+
+
     if(ctrl.test(p_button_pressed))
     {
         if((character_iterator == character_end) && !scroll_count)
@@ -298,12 +306,15 @@ controll(Controller const&  ctrl) noexcept
 
 
 void
-TextPrinter::
+MessageWindow::
 render(Image&  dst) noexcept
 {
-  dst.fill();
+  Window::render(dst);
 
-  text.render(dst,rectangle,*glyphset,pixels);
+    if(Window::get_state() == WindowState::full_opened)
+    {
+      text.render(dst,Point(rectangle.x+8,rectangle.y+8),*glyphset,pixels);
+    }
 }
 
 

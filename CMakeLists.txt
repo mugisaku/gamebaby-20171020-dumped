@@ -46,7 +46,6 @@ set(SOURCES
   gmbb_Image__draw.cpp
   gmbb_Image__transfer.cpp
   gmbb_Image__print.cpp
-  gmbb_Image__frame.cpp
   gmbb_GlyphSet.cpp
   gmbb_unicode.cpp
   gmbb_environment.cpp
@@ -55,11 +54,14 @@ set(SOURCES
   gmbb_FileWriter.cpp
   gmbb_Storage.cpp
   gmbb_Text.cpp
-  gmbb_TextPrinter.cpp
+  gmbb_MessageWindow.cpp
+  gmbb_Menu.cpp
+  gmbb_MenuWindow.cpp
   gmbb_RandomNumber.cpp
   gmbb_LineMaker.cpp
   gmbb_Widget.cpp
   gmbb_Window.cpp
+  gmbb_Window__draw_frame.cpp
 )
 
 

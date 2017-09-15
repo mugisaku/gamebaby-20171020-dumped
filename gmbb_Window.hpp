@@ -26,17 +26,29 @@ WindowState
 class
 Window: public Widget
 {
+protected:
   WindowState  state;
 
-  int   width_max;
-  int  height_max;
+  Pixel  pixels[4] = {Pixel(predefined_color_index::null),
+                      Pixel(predefined_color_index::blue),
+                      Pixel(predefined_color_index::white),
+                      Pixel(predefined_color_index::light_gray)};
+
+  int   width_max=0;
+  int  height_max=0;
+
+  void  draw_frame(Image&  dst) const noexcept;
 
 public:
   Window();
-  Window(Rectangle  rect);
+  Window(int  w, int  h);
 
-  WindowState  get_state() const;
-  void  set_state(WindowState  st);
+  WindowState  get_state() const noexcept{return state;}
+  void  set_state(WindowState  st) noexcept;
+
+  void  change_border0_color(ColorIndex  ci) noexcept;
+  void  change_border1_color(ColorIndex  ci) noexcept;
+  void  change_surface_color(ColorIndex  ci) noexcept;
 
   void  controll(Controller const&  ctrl) noexcept override;
 
