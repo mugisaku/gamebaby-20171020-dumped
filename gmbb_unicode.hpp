@@ -20,6 +20,8 @@ size_t  utf8_byte_number(unsigned char  c);
 
 char32_t  to_char32(const char*  utf8, size_t  byte_number);
 
+std::u16string  to_u16string(char const*  s);
+
 
 struct
 UTF8Chunk

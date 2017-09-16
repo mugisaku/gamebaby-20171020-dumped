@@ -14,6 +14,7 @@
 #include"gmbb_Storage.hpp"
 #include"gmbb_Window.hpp"
 #include"gmbb_MenuWindow.hpp"
+#include"gmbb_unicode.hpp"
 
 
 

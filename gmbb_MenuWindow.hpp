@@ -14,7 +14,7 @@ namespace gmbb{
 
 
 
-using MenuItemRenderer = void  (*)(Image&  dst, Point  point, MenuItem const&  item);
+using   MenuItemRenderer = void  (*)(Image&  dst, Point  point, ItemID  id);
 
 
 class
@@ -25,16 +25,19 @@ MenuWindow: public Window
   int  visible_column_number;
   int  visible_row_number;
 
-  Point  offset_point;
-  Point  cursor_point;
+  Point  base_max;
+  Point  base;
+  Point  offset;
+
+  int  id_max;
 
   MenuItemRenderer  renderer;
 
 public:
   MenuWindow(Menu&  menu_, int  col_n, int  row_n, MenuItemRenderer  rend) noexcept;
 
-  Point  get_offset_point() const noexcept{return offset_point;}
-  Point  get_cursor_point() const noexcept{return cursor_point;}
+  Point  get_base_point() const noexcept{return base;}
+  Point  get_cursor_point() const noexcept{return base+offset;}
 
   void  controll(Controller const&  ctrl) noexcept override;
 

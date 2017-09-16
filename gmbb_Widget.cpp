@@ -19,20 +19,16 @@ clear() noexcept
 
 void
 Widget::
-reposition() noexcept
+notify_flag(int  flag) noexcept
 {
-  static_cast<Point&>(rectangle) = relative_point;
-
-    if(parent)
+    if(!test_flag(flag))
     {
-      rectangle.x += parent->rectangle.x;
-      rectangle.y += parent->rectangle.y;
-    }
+      set_flag(flag);
 
-
-    for(auto&  child: children)
-    {
-      child->reposition();
+        if(parent)
+        {
+          parent->notify_flag(flag);
+        }
     }
 }
 
@@ -47,7 +43,66 @@ join(Widget*  child, Point  point) noexcept
 
       child->relative_point = point;
 
+      child->notify_flag(needing_to_update);
+
       children.emplace_back(child);
+    }
+}
+
+
+
+
+void
+Widget::
+show() noexcept
+{
+  unset_flag(hiding);
+
+  notify_flag(needing_redraw);
+}
+
+
+void
+Widget::
+hide() noexcept
+{
+  set_flag(hiding);
+
+  notify_flag(needing_redraw);
+}
+
+
+
+
+void
+Widget::
+update() noexcept
+{
+    if(test_flag(sleeping))
+    {
+      return;
+    }
+
+
+    if(test_flag(needing_to_update))
+    {
+      unset_flag(needing_to_update);
+        set_flag(needing_to_redraw);
+
+      rectangle.x = relative_point.x;
+      rectangle.y = relative_point.y;
+
+        if(parent)
+        {
+          rectangle.x += parent->rectangle.x;
+          rectangle.y += parent->rectangle.y;
+        }
+
+
+        for(auto&  child: children)
+        {
+          child->update();
+        }
     }
 }
 
@@ -56,9 +111,12 @@ void
 Widget::
 controll(Controller const&  ctrl) noexcept
 {
-    for(auto&  child: children)
+    if(!test_flag(sleeping))
     {
-      child->controll(ctrl);
+        for(auto&  child: children)
+        {
+          child->controll(ctrl);
+        }
     }
 }
 
@@ -67,9 +125,14 @@ void
 Widget::
 render(Image&  dst) noexcept
 {
-    for(auto&  child: children)
+    if(is_needing_to_redraw())
     {
-      child->render(dst);
+      unset_flag(needing_to_redraw);
+
+        for(auto&  child: children)
+        {
+          child->render(dst);
+        }
     }
 }
 

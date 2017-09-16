@@ -19,6 +19,20 @@ Point
   constexpr Point(int  x=0, int  y=0) noexcept:
   x(x), y(y){}
 
+
+  constexpr Point  operator+(Point const&  rhs) const noexcept
+  {
+    return Point(x+rhs.x,y+rhs.y);
+  }
+
+  constexpr Point&  operator+=(Point const&  rhs) noexcept
+  {
+    x += rhs.x;
+    y += rhs.y;
+
+    return *this;
+  }
+
 };
 
 

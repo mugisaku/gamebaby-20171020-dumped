@@ -43,6 +43,9 @@ constexpr ColorIndex      yellow(0770);
 }
 
 
+using namespace predefined_color_index;
+
+
 class
 Palette
 {

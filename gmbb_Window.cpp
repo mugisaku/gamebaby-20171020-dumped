@@ -139,6 +139,9 @@ controll(Controller const&  ctrl) noexcept
         }
       break;
     }
+
+
+  Widget::controll(ctrl);
 }
 
 
@@ -153,6 +156,8 @@ render(Image&  dst) noexcept
     if(state != WindowState::hidden)
     {
       draw_frame(dst);
+
+      Widget::render(dst);
     }
 }
 
