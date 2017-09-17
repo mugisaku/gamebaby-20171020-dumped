@@ -32,16 +32,11 @@ print(char16_t  c, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noex
 
             for(int  xx = 0;  xx < w;  xx += 1)
             {
-              auto  i = (code>>shift_amount);
+              auto&  src = pixels[code>>shift_amount];
 
-                if(i)
+                if(src.index && (dst->z <= src.z))
                 {
-                  auto&  src = pixels[i&1];
-
-                    if(src.index && (dst->z <= src.z))
-                    {
-                      *dst = src;
-                    }
+                  *dst = src;
                 }
 
 

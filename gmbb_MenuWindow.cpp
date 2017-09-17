@@ -8,15 +8,18 @@ namespace gmbb{
 
 
 MenuWindow::
-MenuWindow(Menu&  menu_, int  col_n, int  row_n, MenuItemRenderer  rend) noexcept:
-Window(menu_.get_item_width()*col_n+16,menu_.get_item_height()*row_n+16),
-menu(&menu_),
-visible_column_number(col_n),
-visible_row_number(row_n),
-base_max(menu_.get_column_number()-col_n+1,menu_.get_row_number()-row_n+1),
+MenuWindow(Menu const&  menu_, MenuItemRenderer  rend, int  col_n, int  row_n) noexcept:
+menu(menu_),
+visible_column_number(col_n? col_n:menu.get_column_number()),
+visible_row_number(   row_n? row_n:menu.get_row_number()   ),
 id_max(menu_.get_item_width()*menu_.get_item_height()),
 renderer(rend)
 {
+  Window::resize(menu.get_item_width() *visible_column_number+16,
+                 menu.get_item_height()*visible_row_number   +16);
+
+  base_max = Point(menu.get_column_number()-visible_column_number+1,
+                   menu.get_row_number()   -visible_row_number   +1);
 }
 
 
@@ -24,51 +27,59 @@ renderer(rend)
 
 void
 MenuWindow::
-controll(Controller const&  ctrl) noexcept
+reset_cursor() noexcept
 {
-  Window::controll(ctrl);
-
-    if(Window::get_state() != WindowState::full_opened)
-    {
-      return;
-    }
-
-
-    if(ctrl.test(up_button_pressed))
-    {
-           if(offset.y){offset.y -= 1;}
-      else if(base.y  ){base.y   -= 1;}
-
-      notify_flag(needing_to_redraw);
-    }
-
-  else
-    if(ctrl.test(down_button_pressed))
-    {
-           if(offset.y < (visible_row_number-1)){offset.y += 1;}
-      else if(base.y   < (base_max.y        -1)){base.y   += 1;}
-
-      notify_flag(needing_to_redraw);
-    }
-
-  else
-    if(ctrl.test(left_button_pressed))
-    {
-           if(offset.x){offset.x -= 1;}
-      else if(base.x  ){base.x   -= 1;}
-
-      notify_flag(needing_to_redraw);
-    }
-
-  else
-    if(ctrl.test(right_button_pressed))
-    {
-           if(offset.x < (visible_column_number-1)){offset.x += 1;}
-      else if(base.x   < (base_max.x           -1)){base.x   += 1;}
-
-      notify_flag(needing_to_redraw);
-    }
+  base   = Point();
+  offset = Point();
 }
+
+
+
+
+void
+MenuWindow::
+move_cursor_to_left()  noexcept
+{
+       if(offset.x){offset.x -= 1;}
+  else if(base.x  ){base.x   -= 1;}
+
+  notify_flag(needing_to_redraw);
+}
+
+
+void
+MenuWindow::
+move_cursor_to_right() noexcept
+{
+       if(offset.x < (visible_column_number-1)){offset.x += 1;}
+  else if(base.x   < (base_max.x           -1)){base.x   += 1;}
+
+  notify_flag(needing_to_redraw);
+}
+
+
+void
+MenuWindow::
+move_cursor_to_up()    noexcept
+{
+       if(offset.y){offset.y -= 1;}
+  else if(base.y  ){base.y   -= 1;}
+
+  notify_flag(needing_to_redraw);
+}
+
+
+void
+MenuWindow::
+move_cursor_to_down()  noexcept
+{
+       if(offset.y < (visible_row_number-1)){offset.y += 1;}
+  else if(base.y   < (base_max.y        -1)){base.y   += 1;}
+
+  notify_flag(needing_to_redraw);
+}
+
+
 
 
 void
@@ -81,13 +92,13 @@ render(Image&  dst) noexcept
     {
       Point  const base_offset(rectangle.x+8,rectangle.y+8);
 
-      int  w = menu->get_item_width();
-      int  h = menu->get_item_height();
+      int  w = menu.get_item_width();
+      int  h = menu.get_item_height();
 
         for(int  y = 0;  y < visible_row_number;     ++y){
         for(int  x = 0;  x < visible_column_number;  ++x){
-          auto  id = menu->get_item_id(base.x+x,
-                                       base.y+y);
+          auto  id = menu.get_item_id(base.x+x,
+                                      base.y+y);
 
             if(id.code < id_max)
             {

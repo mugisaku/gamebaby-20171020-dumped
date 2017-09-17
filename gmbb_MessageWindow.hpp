@@ -19,18 +19,10 @@ MessageWindow: public Window
 
   GlyphSet const*  glyphset;
 
-  int  fast_flag;
+  char16_t  buffer[1024];
 
-  int  scroll_count;
-  int  scroll_key;
-  int  finished_flag;
-
-  char16_t  character_buffer[1024];
-
-  char16_t const*  character_iterator;
-  char16_t*        character_end;
-
-  uint32_t  last_update_time;
+  char16_t const*  output_pointer;
+  char16_t*         input_pointer;
 
   Pixel  pixels[2];
 
@@ -38,13 +30,17 @@ public:
   MessageWindow(GlyphSet&  glset, int  column_number, int  row_number) noexcept;
 
   void  clear() noexcept;
+  void  reset() noexcept;
 
-  bool  is_finished() const noexcept;
+  bool  is_stopped()   const noexcept{return text.is_full();}
+  bool  is_remaining() const noexcept{return(output_pointer < input_pointer);}
+  bool  is_clean() const noexcept{return(input_pointer == buffer);}
+
+  void  step();
+  void  scroll();
 
   void  push(char16_t const*  src);
   void  push(std::initializer_list<char16_t const*>  ls);
-
-  void  controll(Controller const&  ctrl) noexcept override;
 
   void  render(Image&  dst) noexcept override;
 

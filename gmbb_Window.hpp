@@ -27,7 +27,7 @@ class
 Window: public Widget
 {
 protected:
-  WindowState  state;
+  WindowState  state=WindowState::hidden;
 
   Pixel  pixels[4] = {Pixel(predefined_color_index::null),
                       Pixel(predefined_color_index::blue),
@@ -40,8 +40,13 @@ protected:
   void  draw_frame(Image&  dst) const noexcept;
 
 public:
-  Window();
-  Window(int  w, int  h);
+  Window() noexcept{}
+  Window(int  w, int  h) noexcept{resize(w,h);}
+
+  void  resize(int  w, int  h) noexcept;
+
+  bool  operator==(WindowState  st) const noexcept{return state == st;}
+  bool  operator!=(WindowState  st) const noexcept{return state != st;}
 
   WindowState  get_state() const noexcept{return state;}
   void  set_state(WindowState  st) noexcept;
@@ -50,7 +55,7 @@ public:
   void  change_border1_color(ColorIndex  ci) noexcept;
   void  change_surface_color(ColorIndex  ci) noexcept;
 
-  void  controll(Controller const&  ctrl) noexcept override;
+  void  animate() noexcept;
 
   void  render(Image&  dst) noexcept override;
 

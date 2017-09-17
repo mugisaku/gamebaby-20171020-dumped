@@ -9,22 +9,15 @@ namespace gmbb{
 
 
 
+void
 Window::
-Window():
-state(WindowState::hidden)
+resize(int  w, int  h) noexcept
 {
-}
+  width_max  = w;
+  height_max = h;
 
-
-Window::
-Window(int  w, int  h):
-width_max(w),
-height_max(h)
-{
   set_state(WindowState::full_opened);
 }
-
-
 
 
 void
@@ -52,6 +45,9 @@ set_state(WindowState  st) noexcept
       rectangle.h = height_max;
       break;
     }
+
+
+  notify_flag(needing_to_redraw);
 }
 
 
@@ -62,6 +58,8 @@ Window::
 change_border0_color(ColorIndex  ci) noexcept
 {
   pixels[2] = ci;
+
+  notify_flag(needing_to_redraw);
 }
 
 
@@ -70,6 +68,8 @@ Window::
 change_border1_color(ColorIndex  ci) noexcept
 {
   pixels[2] = ci;
+
+  notify_flag(needing_to_redraw);
 }
 
 
@@ -78,6 +78,8 @@ Window::
 change_surface_color(ColorIndex  ci) noexcept
 {
   pixels[1] = ci;
+
+  notify_flag(needing_to_redraw);
 }
 
 
@@ -85,7 +87,7 @@ change_surface_color(ColorIndex  ci) noexcept
 
 void
 Window::
-controll(Controller const&  ctrl) noexcept
+animate() noexcept
 {
   constexpr int  step = 8;
 
@@ -99,10 +101,15 @@ controll(Controller const&  ctrl) noexcept
         {
           rectangle.w += step;
 
-            if(rectangle.w == width_max)
+            if(rectangle.w >= width_max)
             {
+              rectangle.w = width_max;
+
               state = WindowState::full_opened;
             }
+
+
+          notify_flag(needing_to_redraw);
         }
       break;
   case(WindowState::close_to_left):
@@ -110,10 +117,15 @@ controll(Controller const&  ctrl) noexcept
         {
           rectangle.w -= step;
 
-            if(rectangle.w == 16)
+            if(rectangle.w <= 16)
             {
+              rectangle.w = 16;
+
               state = WindowState::hidden;
             }
+
+
+          notify_flag(needing_to_redraw);
         }
       break;
   case(WindowState::open_to_down):
@@ -121,10 +133,15 @@ controll(Controller const&  ctrl) noexcept
         {
           rectangle.h += step;
 
-            if(rectangle.h == height_max)
+            if(rectangle.h >= height_max)
             {
+              rectangle.h = height_max;
+
               state = WindowState::full_opened;
             }
+
+
+          notify_flag(needing_to_redraw);
         }
       break;
   case(WindowState::close_to_up):
@@ -132,16 +149,18 @@ controll(Controller const&  ctrl) noexcept
         {
           rectangle.h -= step;
 
-            if(rectangle.h == 16)
+            if(rectangle.h <= 16)
             {
+              rectangle.h = 16;
+
               state = WindowState::hidden;
             }
+
+
+          notify_flag(needing_to_redraw);
         }
       break;
     }
-
-
-  Widget::controll(ctrl);
 }
 
 
@@ -149,10 +168,6 @@ void
 Window::
 render(Image&  dst) noexcept
 {
-    if(rectangle.w < 16){rectangle.w = 16;}
-    if(rectangle.h < 16){rectangle.h = 16;}
-
-
     if(state != WindowState::hidden)
     {
       draw_frame(dst);

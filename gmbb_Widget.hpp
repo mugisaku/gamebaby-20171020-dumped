@@ -6,14 +6,12 @@
 #include"gmbb_Image.hpp"
 #include"gmbb_Controller.hpp"
 #include<list>
-#include<memory>
 
 
 namespace gmbb{
 
 
 namespace flags_of_widget{
-constexpr int           sleeping = 0x01;
 constexpr int             hiding = 0x02;
 constexpr int  needing_to_update = 0x04;
 constexpr int  needing_to_redraw = 0x08;
@@ -33,7 +31,7 @@ protected:
 
   Rectangle  rectangle;
 
-  std::list<std::unique_ptr<Widget>>  children;
+  std::list<Widget*>  children;
 
   Widget*  parent=nullptr;
 
@@ -57,12 +55,7 @@ public:
   void  show() noexcept;
   void  hide() noexcept;
 
-  void  sleep() noexcept{  set_flag(sleeping);}
-  void   rise() noexcept{unset_flag(sleeping);}
-
   void  update() noexcept;
-
-  virtual void  controll(Controller const&  ctrl) noexcept;
 
   virtual void  render(Image&  dst) noexcept;
 

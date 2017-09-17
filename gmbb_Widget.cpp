@@ -13,7 +13,15 @@ void
 Widget::
 clear() noexcept
 {
-  children.clear();
+    while(children.size())
+    {
+      children.front()->parent = nullptr;
+
+      children.pop_front();
+    }
+
+
+  notify_flag(needing_to_redraw);
 }
 
 
@@ -58,7 +66,7 @@ show() noexcept
 {
   unset_flag(hiding);
 
-  notify_flag(needing_redraw);
+  notify_flag(needing_to_redraw);
 }
 
 
@@ -68,7 +76,7 @@ hide() noexcept
 {
   set_flag(hiding);
 
-  notify_flag(needing_redraw);
+  notify_flag(needing_to_redraw);
 }
 
 
@@ -78,12 +86,6 @@ void
 Widget::
 update() noexcept
 {
-    if(test_flag(sleeping))
-    {
-      return;
-    }
-
-
     if(test_flag(needing_to_update))
     {
       unset_flag(needing_to_update);
@@ -107,20 +109,6 @@ update() noexcept
 }
 
  
-void
-Widget::
-controll(Controller const&  ctrl) noexcept
-{
-    if(!test_flag(sleeping))
-    {
-        for(auto&  child: children)
-        {
-          child->controll(ctrl);
-        }
-    }
-}
-
-
 void
 Widget::
 render(Image&  dst) noexcept

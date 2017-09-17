@@ -13,13 +13,8 @@ MessageWindow(GlyphSet&  glset, int  column_number, int  row_number) noexcept:
 Window(glset.get_width( )*column_number+16,glset.get_height()*row_number+16),
 glyphset(&glset),
 text(column_number,row_number),
-fast_flag(0),
-scroll_count(0),
-scroll_key(0),
-finished_flag(1),
-character_iterator(character_buffer),
-character_end(character_buffer),
-last_update_time(0)
+input_pointer( buffer),
+output_pointer(buffer)
 {
   Window::set_state(WindowState::open_to_down);
 
@@ -129,21 +124,16 @@ clear() noexcept
 {
   text.clear();
 
-  scroll_count  = 0;
-  scroll_key    = 0;
-  fast_flag     = 0;
-  finished_flag = 1;
-
-  character_iterator = character_buffer;
-  character_end      = character_buffer;
+  reset();
 }
 
 
-bool
+void
 MessageWindow::
-is_finished() const noexcept
+reset() noexcept
 {
-  return finished_flag;
+   input_pointer = buffer;
+  output_pointer = buffer;
 }
 
 
@@ -151,51 +141,10 @@ void
 MessageWindow::
 push(char16_t const*  src)
 {
-    if(finished_flag)
+    while((input_pointer < std::end(buffer)) && *src)
     {
-      clear();
-
-      finished_flag = 0;
+      *input_pointer++ = *src++;
     }
-
-
-    while(character_end < std::end(character_buffer))
-    {
-      auto  c = *src++;
-
-        if(c == '$')
-        {
-          char16_t  tmpbuf[256];
-
-          auto  n = sscan_id(src,tmpbuf,256);
-
-            if(!n)
-            {
-              printf("環境変数をを指す識別子が不正です\n");
-
-              throw;
-            }
-
-
-          src += n;
-
-          character_end = copy(env::get_value(tmpbuf).data(),character_end,std::end(character_buffer));
-        }
-
-      else
-        if(!c)
-        {
-          break;
-        }
-
-      else
-        {
-          *character_end++ = c;
-        }
-    }
-
-
-  *character_end = 0;
 }
 
 
@@ -205,103 +154,36 @@ push(std::initializer_list<char16_t const*>  ls)
 {
     for(auto  s: ls)
     {
-        if((character_end > std::begin(character_buffer)) &&
-           (character_end < std::end(  character_buffer)))
-        {
-          *character_end++ = '\n';
-        }
-
-
       push(s);
+
+      push(u"\n");
     }
 }
 
 
 void
 MessageWindow::
-controll(Controller const&  ctrl) noexcept
+step()
 {
-  Window::controll(ctrl);
-
-    if(Window::get_state() != WindowState::full_opened)
+    if(output_pointer != input_pointer)
     {
-      return;
-    }
-
-
-    if(ctrl.test(p_button_pressed))
-    {
-        if((character_iterator == character_end) && !scroll_count)
-        {
-          finished_flag = 1;
-
-          return;
-        }
-    }
-
-
-    if(ctrl.test(p_button_pressed))
-    {
-      fast_flag = 1;
-
-        if((character_iterator != character_end))
-        {
-            if(scroll_key)
-            {
-              scroll_count = rectangle.h/2;
-
-              scroll_key = 0;
-            }
-        }
-    }
-
-  else
-    if(ctrl.test(p_button_released))
-    {
-      fast_flag = 0;
-    }
-
-
-    if(character_iterator == character_end)
-    {
-      return;
-    }
-
-
-  constexpr uint32_t  interval_time_base = 80;
-
-  auto  now = ctrl.get_time();
-
-  auto  interval_time = interval_time_base;
-
-    if(fast_flag)
-    {
-      interval_time /= 3;
-    }
-
-
-    if(now > (last_update_time+interval_time))
-    {
-      last_update_time = now;
-
         if(!text.is_full())
         {
-          text.push(*character_iterator++);
-        }
+          text.push(*output_pointer++);
 
-      else
-        if(scroll_count)
-        {
-          text.rotate();
-
-          scroll_count -= 1;
-        }
-
-      else
-        {
-          scroll_key = 1;
+          notify_flag(needing_to_redraw);
         }
     }
+}
+
+
+void
+MessageWindow::
+scroll()
+{
+  text.rotate();
+
+  notify_flag(needing_to_redraw);
 }
 
 

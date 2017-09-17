@@ -62,6 +62,7 @@ set(SOURCES
   gmbb_Widget.cpp
   gmbb_Window.cpp
   gmbb_Window__draw_frame.cpp
+  gmbb_Game.cpp
 )
 
 
