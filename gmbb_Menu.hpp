@@ -4,21 +4,12 @@
 
 #include<cstdint>
 #include<algorithm>
+#include"gmbb_Figures.hpp"
 
 
 
 
 namespace gmbb{
-
-
-struct
-ItemID
-{
-  uint16_t  code;
-
-  constexpr ItemID(uint16_t  v=0) noexcept: code(v){}
-
-};
 
 
 class
@@ -40,7 +31,7 @@ public:
   int  get_column_number() const noexcept{return column_number;}
   int  get_row_number()    const noexcept{return    row_number;}
 
-  ItemID  get_item_id(int  x, int  y) const noexcept{return ItemID(column_number*y+x);}
+  int  get_item_index(Point  point) const noexcept{return (column_number*point.y+point.x);}
 
 };
 

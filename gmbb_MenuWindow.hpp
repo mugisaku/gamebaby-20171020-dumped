@@ -14,7 +14,7 @@ namespace gmbb{
 
 
 
-using MenuItemRenderer = void  (*)(Image&  dst, Point  point, ItemID  id);
+using MenuItemRenderer = void  (*)(Image&  dst, Point  point, int  index);
 
 
 enum class
@@ -55,6 +55,8 @@ public:
 
   Point  get_base_point() const noexcept{return base;}
   Point  get_cursor_point() const noexcept{return base+offset;}
+
+  int  get_item_index() const noexcept{return menu.get_item_index(base+offset);}
 
   void  move_cursor_to_left()  noexcept;
   void  move_cursor_to_right() noexcept;

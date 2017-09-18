@@ -97,15 +97,15 @@ render(Image&  dst) noexcept
 
         for(int  y = 0;  y < visible_row_number;     ++y){
         for(int  x = 0;  x < visible_column_number;  ++x){
-          auto  id = menu.get_item_id(base.x+x,
-                                      base.y+y);
+          auto  i = menu.get_item_index(Point(base.x+x,
+                                              base.y+y));
 
-            if(id.code < id_max)
+            if(i < id_max)
             {
               Point  pt(base_offset.x+(w*x),
                         base_offset.y+(h*y));
 
-              renderer(dst,pt,id);
+              renderer(dst,pt,i);
             }
         }}
 

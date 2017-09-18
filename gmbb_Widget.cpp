@@ -13,13 +13,19 @@ void
 Widget::
 clear() noexcept
 {
-    while(children.size())
+    while(last_child)
     {
-      children.front()->parent = nullptr;
+      auto  child = last_child                          ;
+                    last_child = child->previous_sibling;
 
-      children.pop_front();
+      child->previous_sibling = nullptr;
+      child->next_sibling     = nullptr;
+      child->parent           = nullptr;
     }
 
+
+  first_child = nullptr;
+   last_child = nullptr;
 
   notify_flag(needing_to_redraw);
 }
@@ -43,17 +49,62 @@ notify_flag(int  flag) noexcept
 
 void
 Widget::
-join(Widget*  child, Point  point) noexcept
+enter_into(Widget&  parent, Point  point) noexcept
 {
-    if(child)
+    if(!this->parent)
     {
-      child->parent = this;
+      this->parent = &parent;
 
-      child->relative_point = point;
+      this->relative_point = point;
 
-      child->notify_flag(needing_to_update);
+      notify_flag(needing_to_update);
 
-      children.emplace_back(child);
+      this->previous_sibling = parent.last_child       ;
+                               parent.last_child = this;
+
+        if(!parent.first_child)
+        {
+          parent.first_child = this;
+        }
+
+
+        if(this->previous_sibling)
+        {
+          this->previous_sibling->next_sibling = this;
+        }
+    }
+}
+
+
+void
+Widget::
+leave_from_parent() noexcept
+{
+    if(this->parent)
+    {
+      auto  prev = this->previous_sibling          ;
+                   this->previous_sibling = nullptr;
+
+      auto  next = this->next_sibling          ;
+                   this->next_sibling = nullptr;
+
+        if(prev){prev->next_sibling     = next;}
+        if(next){next->previous_sibling = prev;}
+
+
+        if(this->parent->first_child == this)
+        {
+          this->parent->first_child = next;
+        }
+
+
+        if(this->parent->last_child == this)
+        {
+          this->parent->last_child = prev;
+        }
+
+
+      this->parent = nullptr;
     }
 }
 
@@ -101,9 +152,13 @@ update() noexcept
         }
 
 
-        for(auto&  child: children)
+      auto  child = first_child;
+
+        while(child)
         {
           child->update();
+
+          child = child->next_sibling;
         }
     }
 }
@@ -117,9 +172,13 @@ render(Image&  dst) noexcept
     {
       unset_flag(needing_to_redraw);
 
-        for(auto&  child: children)
+      auto  child = first_child;
+
+        while(child)
         {
           child->render(dst);
+
+          child = child->next_sibling;
         }
     }
 }

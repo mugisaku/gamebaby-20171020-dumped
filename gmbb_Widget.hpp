@@ -12,9 +12,9 @@ namespace gmbb{
 
 
 namespace flags_of_widget{
-constexpr int             hiding = 0x02;
-constexpr int  needing_to_update = 0x04;
-constexpr int  needing_to_redraw = 0x08;
+constexpr int             hiding = 0x01;
+constexpr int  needing_to_update = 0x02;
+constexpr int  needing_to_redraw = 0x04;
 }
 
 
@@ -31,9 +31,13 @@ protected:
 
   Rectangle  rectangle;
 
-  std::list<Widget*>  children;
-
   Widget*  parent=nullptr;
+
+  Widget*  first_child=nullptr;
+  Widget*   last_child=nullptr;
+
+  Widget*  previous_sibling=nullptr;
+  Widget*      next_sibling=nullptr;
 
 public:
           Widget() noexcept{}
@@ -42,7 +46,10 @@ public:
 
   void  clear() noexcept;
 
-  void  join(Widget*  child, Point  point) noexcept;
+  void  enter_into(Widget&  parent, Point  point) noexcept;
+  void  leave_from_parent(                      ) noexcept;
+
+  Widget const*  get_parent() const noexcept{return parent;}
 
   void  notify_flag(int  flag) noexcept;
 
