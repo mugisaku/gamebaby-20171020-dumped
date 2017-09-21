@@ -63,6 +63,16 @@ set(SOURCES
   gmbb_Window.cpp
   gmbb_Window__draw_frame.cpp
   gmbb_Game.cpp
+  gmbb_Game__process_message.cpp
+  gmbb_Game__process_main_menu.cpp
+  gmbb_Game__process_sack_menu.cpp
+  gmbb_Game__process_choosing.cpp
+  gmbb_Game__StatusMonitor.cpp
+  game_GameItem.cpp
+  game_Hero.cpp
+  game_Square.cpp
+  game_Board.cpp
+  game_Piece.cpp
 )
 
 

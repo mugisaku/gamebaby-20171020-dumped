@@ -1,0 +1,48 @@
+#ifndef COVERED_PTR_TEMPLATE
+#define COVERED_PTR_TEMPLATE
+
+
+template<typename  T>
+class
+covered_ptr
+{
+  T*  raw_pointer;
+
+public:
+  constexpr covered_ptr(T*  p=nullptr) noexcept: raw_pointer(p){}
+
+  covered_ptr&  operator=(T*  p) noexcept
+  {
+    raw_pointer = p;
+
+    return *this;
+  }
+
+  constexpr operator bool() const noexcept{return raw_pointer;}
+
+  constexpr bool  operator==(covered_ptr const&  rhs) const noexcept{return raw_pointer == rhs.raw_pointer;}
+  constexpr bool  operator!=(covered_ptr const&  rhs) const noexcept{return raw_pointer != rhs.raw_pointer;}
+  constexpr bool  operator< (covered_ptr const&  rhs) const noexcept{return raw_pointer <  rhs.raw_pointer;}
+  constexpr bool  operator<=(covered_ptr const&  rhs) const noexcept{return raw_pointer <= rhs.raw_pointer;}
+  constexpr bool  operator> (covered_ptr const&  rhs) const noexcept{return raw_pointer >  rhs.raw_pointer;}
+  constexpr bool  operator>=(covered_ptr const&  rhs) const noexcept{return raw_pointer >= rhs.raw_pointer;}
+
+  constexpr bool  operator==(T const*  p) const noexcept{return raw_pointer == p;}
+  constexpr bool  operator!=(T const*  p) const noexcept{return raw_pointer != p;}
+  constexpr bool  operator< (T const*  p) const noexcept{return raw_pointer <  p;}
+  constexpr bool  operator<=(T const*  p) const noexcept{return raw_pointer <= p;}
+  constexpr bool  operator> (T const*  p) const noexcept{return raw_pointer >  p;}
+  constexpr bool  operator>=(T const*  p) const noexcept{return raw_pointer >= p;}
+
+  constexpr T& operator *() const noexcept{return *raw_pointer;}
+  constexpr T* operator->() const noexcept{return  raw_pointer;}
+
+};
+
+
+
+#endif
+
+
+
+

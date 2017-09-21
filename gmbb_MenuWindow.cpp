@@ -40,8 +40,8 @@ void
 MenuWindow::
 move_cursor_to_left()  noexcept
 {
-       if(offset.x){offset.x -= 1;}
-  else if(base.x  ){base.x   -= 1;}
+       if(               offset.x){offset.x -= 1;}
+  else if(!base_locking && base.x){base.x   -= 1;}
 
   notify_flag(needing_to_redraw);
 }
@@ -51,8 +51,8 @@ void
 MenuWindow::
 move_cursor_to_right() noexcept
 {
-       if(offset.x < (visible_column_number-1)){offset.x += 1;}
-  else if(base.x   < (base_max.x           -1)){base.x   += 1;}
+       if(                 (offset.x < (visible_column_number-1))){offset.x += 1;}
+  else if(!base_locking && (base.x   < (base_max.x           -1))){base.x   += 1;}
 
   notify_flag(needing_to_redraw);
 }
@@ -62,8 +62,8 @@ void
 MenuWindow::
 move_cursor_to_up()    noexcept
 {
-       if(offset.y){offset.y -= 1;}
-  else if(base.y  ){base.y   -= 1;}
+       if(               offset.y){offset.y -= 1;}
+  else if(!base_locking && base.y){base.y   -= 1;}
 
   notify_flag(needing_to_redraw);
 }
@@ -73,10 +73,26 @@ void
 MenuWindow::
 move_cursor_to_down()  noexcept
 {
-       if(offset.y < (visible_row_number-1)){offset.y += 1;}
-  else if(base.y   < (base_max.y        -1)){base.y   += 1;}
+       if(                 (offset.y < (visible_row_number-1))){offset.y += 1;}
+  else if(!base_locking && (base.y   < (base_max.y        -1))){base.y   += 1;}
 
   notify_flag(needing_to_redraw);
+}
+
+
+
+
+void
+MenuWindow::
+change_visible_row_number(int  v) noexcept
+{
+  visible_row_number = v;
+
+  Window::resize(menu.get_item_width() *visible_column_number+16,
+                 menu.get_item_height()*visible_row_number   +16);
+
+  base_max = Point(menu.get_column_number()-visible_column_number+1,
+                   menu.get_row_number()   -visible_row_number   +1);
 }
 
 
@@ -111,7 +127,7 @@ render(Image&  dst) noexcept
 
 
       Rectangle  rect(base_offset.x+(w*offset.x),
-                      base_offset.x+(h*offset.y),w,h);
+                      base_offset.y+(h*offset.y),w,h);
 
       dst.draw_rectangle(rect,yellow);
     }

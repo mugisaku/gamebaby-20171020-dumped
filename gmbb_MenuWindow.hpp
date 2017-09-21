@@ -17,23 +17,10 @@ namespace gmbb{
 using MenuItemRenderer = void  (*)(Image&  dst, Point  point, int  index);
 
 
-enum class
-MenuOperation
-{
-  none,
-  show,
-  choose_one,
-  choose_two,
-
-};
-
-
 class
 MenuWindow: public Window
 {
   Menu  menu;
-
-  MenuOperation  operation=MenuOperation::none;
 
   int  visible_column_number;
   int  visible_row_number;
@@ -42,11 +29,9 @@ MenuWindow: public Window
   Point  base;
   Point  offset;
 
-  Point  first_choice;
-
-  bool first_item_was_chosen=false;
-
   int  id_max;
+
+  bool  base_locking=false;
 
   MenuItemRenderer  renderer;
 
@@ -63,7 +48,10 @@ public:
   void  move_cursor_to_up()    noexcept;
   void  move_cursor_to_down()  noexcept;
 
-  void  change_operation(MenuOperation  o) noexcept{operation = o;}
+  void  change_visible_row_number(int  v) noexcept;
+
+  void    lock_base() noexcept{base_locking =  true;}
+  void  unlock_base() noexcept{base_locking = false;}
 
   void  reset_cursor() noexcept;
 
