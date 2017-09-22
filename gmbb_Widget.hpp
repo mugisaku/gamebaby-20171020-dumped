@@ -66,6 +66,8 @@ public:
 
   virtual void  render(Image&  dst) noexcept;
 
+  void  print() const noexcept;
+
 };
 
 

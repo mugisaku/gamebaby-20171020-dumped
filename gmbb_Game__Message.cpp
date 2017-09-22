@@ -66,13 +66,10 @@ operate_message(Controller const&  ctrl) noexcept
 }
 
 
-}
-
-
 
 
 void
-process_message(Controller const&  ctrl) noexcept
+process(Controller const&  ctrl) noexcept
 {
     if((*window == WindowState::open_to_down) ||
        (*window == WindowState::close_to_up ))
@@ -113,14 +110,12 @@ process_message(Controller const&  ctrl) noexcept
     if(*window == WindowState::hidden)
     {
       window->leave_from_parent();
+
+      pop_routine(process);
     }
 }
 
 
-bool
-is_message_active() noexcept
-{
-  return window && window->get_parent();
 }
 
 
@@ -138,6 +133,9 @@ start_message(char16_t const*  text) noexcept
   window->set_state(WindowState::open_to_down);
 
   window->push(text);
+
+
+  push_routine(process);
 }
 
 

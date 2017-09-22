@@ -13,8 +13,11 @@ MenuWindow*
 menu_window;
 
 
+void  process(Controller const&  ctrl) noexcept;
+
+
 void
-operate_main_menu(Controller const&  ctrl) noexcept
+operate(Controller const&  ctrl) noexcept
 {
   constexpr int        talk = 0;
   constexpr int  belongings = 1;
@@ -31,6 +34,14 @@ operate_main_menu(Controller const&  ctrl) noexcept
         switch(current)
         {
       case(talk):
+          menu_window->reset_cursor();
+
+          menu_window->leave_from_parent();
+
+          pop_routine(process);
+
+          hide_status_reportor();
+
           start_message(u"その　ほうこうには　だれもいない");
           break;
       case(belongings):
@@ -62,11 +73,8 @@ operate_main_menu(Controller const&  ctrl) noexcept
 }
 
 
-}
-
-
 void
-process_main_menu(Controller const&  ctrl) noexcept
+process(Controller const&  ctrl) noexcept
 {
     if((*menu_window == WindowState::open_to_down) ||
        (*menu_window == WindowState::close_to_up))
@@ -77,21 +85,25 @@ process_main_menu(Controller const&  ctrl) noexcept
   else
     if(*menu_window == WindowState::full_opened)
     {
-      operate_main_menu(ctrl);
+      operate(ctrl);
     }
+
 
   else
     if(*menu_window == WindowState::hidden)
     {
       menu_window->leave_from_parent();
+
+      pop_routine(process);
+
+
+      hide_status_reportor();
+
     }
+
 }
 
 
-bool
-is_main_menu_active() noexcept
-{
-  return menu_window && menu_window->get_parent();
 }
 
 
@@ -120,6 +132,10 @@ start_main_menu() noexcept
   menu_window->enter_into(root_widget,Point(8,24));
 
   menu_window->set_state(WindowState::open_to_down);
+
+  show_status_reportor();
+
+  push_routine(process);
 }
 
 

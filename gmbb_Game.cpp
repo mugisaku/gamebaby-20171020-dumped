@@ -42,41 +42,47 @@ void
 (*current_callback)(Controller const&  ctrl);
 
 
+
+
+std::vector<Routine>
+routine_stack;
+
+
+void
+push_routine(Routine  r) noexcept
+{
+  routine_stack.emplace_back(r);
+}
+
+
+void
+pop_routine(Routine  r) noexcept
+{
+    while(routine_stack.size())
+    {
+      auto  bk = routine_stack.back();
+
+      routine_stack.pop_back();
+
+        if(bk == r)
+        {
+          break;
+        }
+    }
+}
+
+
+
+
 void
 waiting(Controller const&  ctrl)
 {
-    if(is_choosing_active())
+    if(routine_stack.size())
     {
-      process_choosing(ctrl);
-
-      return;
+      routine_stack.back()(ctrl);
     }
 
-
-    if(is_message_active())
-    {
-      process_message(ctrl);
-
-      return;
-    }
-
-
-    if(is_sack_menu_active())
-    {
-      process_sack_menu(ctrl);
-
-      return;
-    }
-
-
-    if(is_main_menu_active())
-    {
-      process_main_menu(ctrl);
-
-      return;
-    }
-
-
+  else
     if(ctrl.test(p_button_pressed))
     {
       start_main_menu();
@@ -115,6 +121,8 @@ initialize() noexcept
 
   auto  p = board.new_piece();
 
+  p->reset(hero);
+
   board.set_hero_piece(p);
 
   current_callback = waiting;
@@ -138,6 +146,11 @@ step(Controller const&  ctrl)
 
       screen_is_needing_to_redraw = true;
     }
+
+
+//  root_widget.print();
+
+//  printf("\n");
 }
 
 

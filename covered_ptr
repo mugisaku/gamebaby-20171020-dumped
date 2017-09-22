@@ -2,6 +2,9 @@
 #define COVERED_PTR_TEMPLATE
 
 
+#include<memory>
+
+
 template<typename  T>
 class
 covered_ptr
@@ -10,10 +13,18 @@ covered_ptr
 
 public:
   constexpr covered_ptr(T*  p=nullptr) noexcept: raw_pointer(p){}
+  constexpr covered_ptr(std::unique_ptr<T>&  p) noexcept: raw_pointer(p.get()){}
 
   covered_ptr&  operator=(T*  p) noexcept
   {
     raw_pointer = p;
+
+    return *this;
+  }
+
+  covered_ptr&  operator=(std::unique_ptr<T>&  p) noexcept
+  {
+    raw_pointer = p.get();
 
     return *this;
   }
@@ -36,6 +47,7 @@ public:
 
   constexpr T& operator *() const noexcept{return *raw_pointer;}
   constexpr T* operator->() const noexcept{return  raw_pointer;}
+  constexpr T& operator[](int  i) const noexcept{return raw_pointer[i];}
 
 };
 

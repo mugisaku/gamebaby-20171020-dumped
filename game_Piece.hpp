@@ -25,8 +25,8 @@ PieceKind
 union
 PieceData
 {
-  Hero    hero;
-  Enemy  enemy;
+  covered_ptr<Hero>    hero;
+  covered_ptr<Enemy>  enemy;
 
    PieceData(){}
   ~PieceData(){}
@@ -89,8 +89,8 @@ public:
   Piece&  operator=(Piece const&  rhs) noexcept=delete;
   Piece&  operator=(Piece&&       rhs) noexcept=delete;
 
-  void  reset(Hero const&  hero) noexcept;
-  void  reset(Hero const&  hero) noexcept;
+  void  reset(Hero&   hero) noexcept;
+  void  reset(Enemy&  enem) noexcept;
 
   int  get_hp()     const noexcept{return hp    ;}
   int  get_hp_max() const noexcept{return hp_max;}

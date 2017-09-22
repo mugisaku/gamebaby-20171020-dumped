@@ -17,21 +17,22 @@ int
 phase;
 
 
+void  process(Controller const&  ctrl) noexcept;
+
+
 void
 operate(Controller const&  ctrl) noexcept
 {
-    if(phase == 1)
-    {
-    }
-
-  else
     if(ctrl.test(p_button_pressed))
     {
       phase = 1;
 
-      menu_window->get_item_index();
+      auto&  sack_item = hero.get_sack().item_table[menu_window->get_item_index()];
 
-      start_choosing({u"そうび",u"なげる",u"おく"},Point(40,80));
+      char16_t const*  fon = sack_item->get_first_operation_name();
+
+
+      start_choosing({fon,u"なげる",u"おく"},Point(40,80));
     }
 
   else
@@ -39,7 +40,9 @@ operate(Controller const&  ctrl) noexcept
     {
       menu_window->reset_cursor();
 
-      menu_window->set_state(WindowState::close_to_up);
+      menu_window->leave_from_parent();
+
+      pop_routine(process);
     }
 
   else if(ctrl.test(up_button_pressed)   ){menu_window->move_cursor_to_up();}
@@ -60,11 +63,8 @@ callback(Image&  dst, Point  point, int  i)
 }
 
 
-}
-
-
 void
-process_sack_menu(Controller const&  ctrl) noexcept
+process(Controller const&  ctrl) noexcept
 {
     if((*menu_window == WindowState::open_to_down) ||
        (*menu_window == WindowState::close_to_up))
@@ -82,14 +82,12 @@ process_sack_menu(Controller const&  ctrl) noexcept
     if(*menu_window == WindowState::hidden)
     {
       menu_window->leave_from_parent();
+
+      pop_routine(process);
     }
 }
 
 
-bool
-is_sack_menu_active() noexcept
-{
-  return menu_window && menu_window->get_parent();
 }
 
 
@@ -107,6 +105,8 @@ start_sack_menu() noexcept
   menu_window->enter_into(root_widget,Point(96,24));
 
   menu_window->set_state(WindowState::open_to_down);
+
+  push_routine(process);
 
   phase = 0;
 }

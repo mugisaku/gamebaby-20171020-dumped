@@ -53,6 +53,34 @@ kind(GameItemKind::card)
 
 
 
+char16_t const*
+GameItem::
+get_first_operation_name() const noexcept
+{
+    if((kind == GameItemKind::sword ) ||
+       (kind == GameItemKind::shield) ||
+       (kind == GameItemKind::belt  ))
+    {
+      return u"そうび";
+    }
+
+  else
+    if(kind == GameItemKind::wand)
+    {
+      return u"ふる";
+    }
+
+  else
+    if(kind == GameItemKind::card)
+    {
+      return u"となえる";
+    }
+
+
+  return nullptr;
+}
+
+
 GameItem const
 GameItem::
 empty;

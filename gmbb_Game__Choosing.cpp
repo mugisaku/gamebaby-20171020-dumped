@@ -17,6 +17,13 @@ char16_t const*
 table[8];
 
 
+bool
+is_cancelable;
+
+
+void  process(Controller const&  ctrl) noexcept;
+
+
 void
 operate(Controller const&  ctrl) noexcept
 {
@@ -24,7 +31,19 @@ operate(Controller const&  ctrl) noexcept
     {
       set_response(menu_window->get_item_index());
 
-      menu_window->set_state(WindowState::close_to_up);
+      menu_window->leave_from_parent();
+
+      pop_routine(process);
+    }
+
+  else
+    if(is_cancelable && ctrl.test(n_button_pressed))
+    {
+      set_response(-1);
+
+      menu_window->leave_from_parent();
+
+      pop_routine(process);
     }
 
   else if(ctrl.test(up_button_pressed)   ){menu_window->move_cursor_to_up();}
@@ -41,11 +60,8 @@ callback(Image&  dst, Point  point, int  i) noexcept
 }
 
 
-}
-
-
 void
-process_choosing(Controller const&  ctrl) noexcept
+process(Controller const&  ctrl) noexcept
 {
     if((*menu_window == WindowState::open_to_down) ||
        (*menu_window == WindowState::close_to_up))
@@ -63,19 +79,17 @@ process_choosing(Controller const&  ctrl) noexcept
     if(*menu_window == WindowState::hidden)
     {
       menu_window->leave_from_parent();
+
+      pop_routine(process);
     }
 }
 
 
-bool
-is_choosing_active() noexcept
-{
-  return menu_window && menu_window->get_parent();
 }
 
 
 void
-start_choosing(std::initializer_list<char16_t const*>  ls, Point  point) noexcept
+start_choosing(std::initializer_list<char16_t const*>  ls, Point  point, bool  cancelable) noexcept
 {
     if(!menu_window)
     {
@@ -100,6 +114,10 @@ start_choosing(std::initializer_list<char16_t const*>  ls, Point  point) noexcep
   menu_window->enter_into(root_widget,point);
 
   menu_window->set_state(WindowState::open_to_down);
+
+  is_cancelable = cancelable;
+
+  push_routine(process);
 }
 
 

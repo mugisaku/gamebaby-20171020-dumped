@@ -15,6 +15,9 @@ SackItem
 
   uint8_t  number;
 
+  GameItem const*  operator->() const noexcept{return  pointer;}
+  GameItem const&  operator *() const noexcept{return *pointer;}
+
 };
 
 

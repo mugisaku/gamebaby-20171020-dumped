@@ -104,6 +104,8 @@ leave_from_parent() noexcept
         }
 
 
+      this->parent->notify_flag(needing_to_redraw);
+
       this->parent = nullptr;
     }
 }
@@ -181,6 +183,28 @@ render(Image&  dst) noexcept
           child = child->next_sibling;
         }
     }
+}
+
+
+void
+Widget::
+print() const noexcept
+{
+  printf("%p{",this);
+
+  auto  child = first_child;
+
+    while(child)
+    {
+      child->print();
+
+      printf(",");
+
+      child = child->next_sibling;
+    }
+
+
+  printf("}");
 }
 
 

@@ -130,6 +130,8 @@ public:
   char16_t const*  get_name() const noexcept{return name;}
   char16_t const*  get_description() const noexcept{return description;}
 
+  char16_t const*  get_first_operation_name() const noexcept;
+
   GameItemKind  get_kind() const noexcept{return kind;}
 
   Price  get_price() const noexcept{return price;}

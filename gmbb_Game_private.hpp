@@ -36,25 +36,24 @@ Widget
 root_widget;
 
 
+using Routine = void(*)(Controller const&  ctrl) noexcept;
+
+void  push_routine(Routine  r) noexcept;
+void   pop_routine(Routine  r) noexcept;
+
+
 
 
 void  show_status_monitor() noexcept;
 void  hide_status_monitor() noexcept;
 
+void  show_status_reportor() noexcept;
+void  hide_status_reportor() noexcept;
+
 void  start_main_menu() noexcept;
 void  start_sack_menu() noexcept;
 void    start_message(char16_t const*  text) noexcept;
-void    start_choosing(std::initializer_list<char16_t const*>  ls, Point  point) noexcept;
-
-bool  is_main_menu_active() noexcept;
-bool  is_sack_menu_active() noexcept;
-bool  is_message_active()   noexcept;
-bool  is_choosing_active()   noexcept;
-
-void    process_message(Controller const&  ctrl) noexcept;
-void  process_main_menu(Controller const&  ctrl) noexcept;
-void  process_sack_menu(Controller const&  ctrl) noexcept;
-void  process_choosing(Controller const&  ctrl) noexcept;
+void    start_choosing(std::initializer_list<char16_t const*>  ls, Point  point, bool  cancelable=true) noexcept;
 
 
 void  set_response(int  v) noexcept;
