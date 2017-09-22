@@ -27,7 +27,7 @@ clear() noexcept
   first_child = nullptr;
    last_child = nullptr;
 
-  notify_flag(needing_to_redraw);
+  redraw();
 }
 
 
@@ -35,14 +35,11 @@ void
 Widget::
 notify_flag(int  flag) noexcept
 {
-    if(!test_flag(flag))
-    {
-      set_flag(flag);
+  set_flag(flag);
 
-        if(parent)
-        {
-          parent->notify_flag(flag);
-        }
+    if(parent && !parent->test_flag(flag))
+    {
+      parent->notify_flag(flag);
     }
 }
 
@@ -104,7 +101,7 @@ leave_from_parent() noexcept
         }
 
 
-      this->parent->notify_flag(needing_to_redraw);
+      this->parent->redraw();
 
       this->parent = nullptr;
     }
@@ -115,11 +112,19 @@ leave_from_parent() noexcept
 
 void
 Widget::
+redraw() noexcept
+{
+  notify_flag(needing_to_redraw);
+}
+
+
+void
+Widget::
 show() noexcept
 {
   unset_flag(hiding);
 
-  notify_flag(needing_to_redraw);
+  redraw();
 }
 
 
@@ -129,7 +134,7 @@ hide() noexcept
 {
   set_flag(hiding);
 
-  notify_flag(needing_to_redraw);
+  redraw();
 }
 
 

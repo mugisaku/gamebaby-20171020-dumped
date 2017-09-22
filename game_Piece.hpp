@@ -77,9 +77,9 @@ Piece
   int     blind_count=0;
   int  illusion_count=0;
 
-  SackItem   sword_item;
-  SackItem  shield_item;
-  SackItem    belt_item;
+  covered_ptr<SackItem>   sword_item;
+  covered_ptr<SackItem>  shield_item;
+  covered_ptr<SackItem>    belt_item;
 
 public:
   Piece(Board&  brd) noexcept: board(&brd){}
@@ -92,8 +92,19 @@ public:
   void  reset(Hero&   hero) noexcept;
   void  reset(Enemy&  enem) noexcept;
 
+  void  change_square(covered_ptr<Square>  sq) noexcept{square = sq;}
+
+  covered_ptr<Square>  get_square() const noexcept{return square;}
+
+
   int  get_hp()     const noexcept{return hp    ;}
   int  get_hp_max() const noexcept{return hp_max;}
+
+  void  change_equipment(covered_ptr<SackItem>  p) noexcept;
+
+  covered_ptr<SackItem>  get_sword_item()  const noexcept{return  sword_item;}
+  covered_ptr<SackItem>  get_shield_item() const noexcept{return shield_item;}
+  covered_ptr<SackItem>  get_belt_item()   const noexcept{return   belt_item;}
 
   Board&  get_board() const noexcept{return *board;}
 

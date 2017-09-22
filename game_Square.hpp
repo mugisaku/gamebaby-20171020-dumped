@@ -24,6 +24,25 @@ Direction
 };
 
 
+enum class
+TrapKind
+{
+  null,
+  
+};
+
+
+enum class
+SquareKind
+{
+  null,
+  floor,
+  wall,
+  breakable_wall,
+  
+};
+
+
 class Square;
 class Piece;
 
@@ -48,8 +67,14 @@ Square
 
   SquareLinkSet  linkset;
 
+  SquareKind  kind=SquareKind::null;
+
   GameItem const*      item_ptr=nullptr;
   covered_ptr<Piece>  piece_ptr;
+
+  TrapKind  trap_kind=TrapKind::null;
+
+  int  trap_value=0;
 
 public:
   void  reset(int  x_, int  y_, SquareLinkSet const&  linkset_) noexcept;
@@ -59,7 +84,18 @@ public:
 
   SquareLinkSet&  get_linkset() noexcept{return linkset;}
 
+  SquareKind  get_kind() const noexcept{return kind;}
+
+  TrapKind  get_trap_kind() const noexcept{return trap_kind;}
+
+  int  get_trap_value() const noexcept{return trap_value;}
+
   covered_ptr<Square>  operator[](Direction  d) const noexcept{return linkset.get(d);}
+
+  void  change_piece(covered_ptr<Piece>  p) noexcept{piece_ptr = p;}
+
+  covered_ptr<Piece>  get_piece() const noexcept{return piece_ptr;}
+  GameItem const*      get_item() const noexcept{return  item_ptr;}
 
   void  remove_piece() noexcept;
 

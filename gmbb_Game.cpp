@@ -23,7 +23,7 @@ int    get_response(      ) noexcept{return response_value;}
 
 
 Image
-screen_image(320,240);
+screen_image(screen_width,screen_height);
 
 
 GlyphSet
@@ -56,18 +56,11 @@ push_routine(Routine  r) noexcept
 
 
 void
-pop_routine(Routine  r) noexcept
+pop_routine() noexcept
 {
-    while(routine_stack.size())
+    if(routine_stack.size())
     {
-      auto  bk = routine_stack.back();
-
       routine_stack.pop_back();
-
-        if(bk == r)
-        {
-          break;
-        }
     }
 }
 
@@ -87,6 +80,11 @@ waiting(Controller const&  ctrl)
     {
       start_main_menu();
     }
+
+  else if(ctrl.test(up_button_pressed)   ){move_board_view_to_up();}
+  else if(ctrl.test(left_button_pressed) ){move_board_view_to_left();}
+  else if(ctrl.test(right_button_pressed)){move_board_view_to_right();}
+  else if(ctrl.test(down_button_pressed) ){move_board_view_to_down();}
 }
 
 
@@ -119,7 +117,7 @@ initialize() noexcept
 {
   glset.load_from_file("/usr/local/share/gmbb/small_font.bin");
 
-  auto  p = board.new_piece();
+  auto  p = board.new_piece(0,0);
 
   p->reset(hero);
 
@@ -127,6 +125,7 @@ initialize() noexcept
 
   current_callback = waiting;
 
+  show_board_view();
   show_status_monitor();
 }
 

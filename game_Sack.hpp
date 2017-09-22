@@ -3,6 +3,7 @@
 
 
 #include"game_GameItem.hpp"
+#include"covered_ptr"
 
 
 namespace game{
@@ -24,10 +25,15 @@ SackItem
 constexpr int  sack_capacity = 16;
 
 
-struct
+class
 Sack
 {
   SackItem  item_table[sack_capacity];
+
+public:
+  SackItem&  get_item(int  i) noexcept{return item_table[i];}
+
+  void  randomize() noexcept;
 
 };
 

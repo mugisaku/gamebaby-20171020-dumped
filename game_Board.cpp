@@ -47,8 +47,16 @@ Board::
 
 covered_ptr<Piece>
 Board::
-new_piece() noexcept
+new_piece(int  x, int  y) noexcept
 {
+  auto&  sq = get_square(x,y);
+
+    if(sq.get_piece())
+    {
+      return nullptr;
+    }
+
+
   covered_ptr<Piece>  p;
 
     if(piece_stock.size())
@@ -83,6 +91,11 @@ new_piece() noexcept
 
 
   ++number_of_pieces;
+
+
+  sq.change_piece(p);
+
+  p->change_square(&sq);
 
   return p;
 }

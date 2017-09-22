@@ -24,34 +24,59 @@ render(gmbb::Image&  dst) noexcept
 
   char  buf[256];
 
-  auto  hero_p = board.get_hero_piece();
+  auto&  hero_p = *board.get_hero_piece();
 
   static Pixel  const  pixels[] = {Pixel(null),Pixel(white),Pixel(null),Pixel(null)};
 
   Point  pt = rectangle;
 
+  auto  w = glset.get_width();
+  auto  h = glset.get_height();
+
   pt.x += 8;
   pt.y += 8;
+
+  auto   sword = hero_p.get_sword_item();
+  auto  shield = hero_p.get_shield_item();
+  auto    belt = hero_p.get_belt_item();
 
   snprintf(buf,sizeof(buf),"けん");
 
   dst.print(buf,pt,glset,pixels);
 
-  pt.y += glset.get_height();
+    if(sword)
+    {
+      dst.print((*sword)->get_name(),pt+Point(w*3),glset,pixels);
+    }
+
+
+  pt.y += h;
 
 
   snprintf(buf,sizeof(buf),"たて");
 
   dst.print(buf,pt,glset,pixels);
 
-  pt.y += glset.get_height();
+    if(shield)
+    {
+      dst.print((*shield)->get_name(),pt+Point(w*3),glset,pixels);
+    }
+
+
+  pt.y += h;
 
 
   snprintf(buf,sizeof(buf),"おび");
 
   dst.print(buf,pt,glset,pixels);
 
-  pt.y += glset.get_height();
+    if(belt)
+    {
+      dst.print((*belt)->get_name(),pt+Point(w*3),glset,pixels);
+    }
+
+
+  pt.y += h;
 
 
 }
@@ -84,6 +109,11 @@ hide_status_reportor() noexcept
 }
 
 
+void
+update_status_reportor() noexcept
+{
+  rep->notify_flag(needing_to_redraw);
+}
 
 
 }

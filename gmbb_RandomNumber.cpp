@@ -61,10 +61,26 @@ generate() noexcept
   y = z;
   z = w;
 
-  return w = (w ^ (w >> 19)) ^ (t ^ (t >> 8)); 
+  w = (w ^ (w >> 19)) ^ (t ^ (t >> 8)); 
+
+  return w;
 }
 
 
+uint32_t
+RandomNumber::
+generate(uint32_t  max) noexcept
+{
+  auto  n = generate();
+
+    if(!max)
+    {
+      return 0;
+    }
+
+
+  return n%max;
+}
 
 
 }

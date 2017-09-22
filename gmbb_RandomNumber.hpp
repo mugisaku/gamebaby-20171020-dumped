@@ -23,7 +23,8 @@ public:
   void  reset(                                                      ) noexcept;
   void  reset(uint32_t  x_, uint32_t  y_, uint32_t  z_, uint32_t  w_) noexcept;
 
-  uint32_t  generate() noexcept;
+  uint32_t  generate(             ) noexcept;
+  uint32_t  generate(uint32_t  max) noexcept;
 
 };
 

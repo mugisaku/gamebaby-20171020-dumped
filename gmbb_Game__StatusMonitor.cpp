@@ -55,6 +55,12 @@ hide_status_monitor() noexcept
 }
 
 
+void
+update_status_monitor() noexcept
+{
+  mon->notify_flag(needing_to_redraw);
+}
+
 
 
 }

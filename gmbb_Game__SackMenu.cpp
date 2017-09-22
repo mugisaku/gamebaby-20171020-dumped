@@ -13,26 +13,53 @@ MenuWindow*
 menu_window;
 
 
-int
-phase;
-
-
-void  process(Controller const&  ctrl) noexcept;
+covered_ptr<game::SackItem>
+item_ptr;
 
 
 void
 operate(Controller const&  ctrl) noexcept
 {
+  static bool  waiting;
+
+    if(waiting)
+    {
+      auto  r = get_response();
+
+      waiting = false;
+
+        if(r >= 0)
+        {
+          auto&  hero_p = *board.get_hero_piece();
+
+            switch(r)
+            {
+          case(0):
+              hero_p.change_equipment(item_ptr);
+              update_status_monitor();
+              update_status_reportor();
+              break;
+          case(1):
+              break;
+          case(2):
+              break;
+            }
+        }
+    }
+
+  else
     if(ctrl.test(p_button_pressed))
     {
-      phase = 1;
+      auto&  gi = hero.get_sack().get_item(menu_window->get_item_index());
 
-      auto&  sack_item = hero.get_sack().item_table[menu_window->get_item_index()];
+      item_ptr = &gi;
 
-      char16_t const*  fon = sack_item->get_first_operation_name();
+      char16_t const*  fon = gi->get_first_operation_name();
 
 
       start_choosing({fon,u"なげる",u"おく"},Point(40,80));
+
+      waiting = true;
     }
 
   else
@@ -42,7 +69,7 @@ operate(Controller const&  ctrl) noexcept
 
       menu_window->leave_from_parent();
 
-      pop_routine(process);
+      pop_routine();
     }
 
   else if(ctrl.test(up_button_pressed)   ){menu_window->move_cursor_to_up();}
@@ -57,9 +84,9 @@ callback(Image&  dst, Point  point, int  i)
 {
   Pixel  pixels[] = {Pixel(null),Pixel(white),Pixel(null),Pixel(null)};
 
-  auto&  gi = *hero.get_sack().item_table[i].pointer;
+  auto&  gi = hero.get_sack().get_item(i);
 
-  dst.print(gi.get_name(),point,glset,pixels);
+  dst.print(gi->get_name(),point,glset,pixels);
 }
 
 
@@ -76,14 +103,6 @@ process(Controller const&  ctrl) noexcept
     if(*menu_window == WindowState::full_opened)
     {
       operate(ctrl);
-    }
-
-  else
-    if(*menu_window == WindowState::hidden)
-    {
-      menu_window->leave_from_parent();
-
-      pop_routine(process);
     }
 }
 
@@ -107,8 +126,6 @@ start_sack_menu() noexcept
   menu_window->set_state(WindowState::open_to_down);
 
   push_routine(process);
-
-  phase = 0;
 }
 
 

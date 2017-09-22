@@ -29,6 +29,29 @@ reset(Enemy&  enem) noexcept
 }
 
 
+void
+Piece::
+change_equipment(covered_ptr<SackItem>  p) noexcept
+{
+    if(p)
+    {
+      auto&  item = *p;
+
+        switch(item->get_kind())
+        {
+      case(GameItemKind::sword):
+          sword_item = (sword_item == p)? nullptr:p;
+          break;
+      case(GameItemKind::shield):
+          shield_item = (shield_item == p)? nullptr:p;
+          break;
+      case(GameItemKind::belt):
+          belt_item = (belt_item == p)? nullptr:p;
+          break;
+      default:;
+        }
+    }
+}
 
 
 }

@@ -21,9 +21,6 @@ bool
 is_cancelable;
 
 
-void  process(Controller const&  ctrl) noexcept;
-
-
 void
 operate(Controller const&  ctrl) noexcept
 {
@@ -33,7 +30,7 @@ operate(Controller const&  ctrl) noexcept
 
       menu_window->leave_from_parent();
 
-      pop_routine(process);
+      pop_routine();
     }
 
   else
@@ -43,7 +40,7 @@ operate(Controller const&  ctrl) noexcept
 
       menu_window->leave_from_parent();
 
-      pop_routine(process);
+      pop_routine();
     }
 
   else if(ctrl.test(up_button_pressed)   ){menu_window->move_cursor_to_up();}
@@ -73,14 +70,6 @@ process(Controller const&  ctrl) noexcept
     if(*menu_window == WindowState::full_opened)
     {
       operate(ctrl);
-    }
-
-  else
-    if(*menu_window == WindowState::hidden)
-    {
-      menu_window->leave_from_parent();
-
-      pop_routine(process);
     }
 }
 

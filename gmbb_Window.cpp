@@ -47,7 +47,7 @@ set_state(WindowState  st) noexcept
     }
 
 
-  notify_flag(needing_to_redraw);
+  redraw();
 }
 
 
@@ -59,7 +59,7 @@ change_border0_color(ColorIndex  ci) noexcept
 {
   pixels[2] = ci;
 
-  notify_flag(needing_to_redraw);
+  redraw();
 }
 
 
@@ -69,7 +69,7 @@ change_border1_color(ColorIndex  ci) noexcept
 {
   pixels[2] = ci;
 
-  notify_flag(needing_to_redraw);
+  redraw();
 }
 
 
@@ -79,7 +79,7 @@ change_surface_color(ColorIndex  ci) noexcept
 {
   pixels[1] = ci;
 
-  notify_flag(needing_to_redraw);
+  redraw();
 }
 
 
@@ -109,7 +109,7 @@ animate() noexcept
             }
 
 
-          notify_flag(needing_to_redraw);
+          redraw();
         }
       break;
   case(WindowState::close_to_left):
@@ -125,7 +125,7 @@ animate() noexcept
             }
 
 
-          notify_flag(needing_to_redraw);
+          redraw();
         }
       break;
   case(WindowState::open_to_down):
@@ -141,7 +141,7 @@ animate() noexcept
             }
 
 
-          notify_flag(needing_to_redraw);
+          redraw();
         }
       break;
   case(WindowState::close_to_up):
@@ -157,7 +157,7 @@ animate() noexcept
             }
 
 
-          notify_flag(needing_to_redraw);
+          redraw();
         }
       break;
     }

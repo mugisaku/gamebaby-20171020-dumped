@@ -23,22 +23,17 @@ operate(Controller const&  ctrl) noexcept
   constexpr int  belongings = 1;
   constexpr int        foot = 2;
   constexpr int   interrupt = 3;
-  constexpr int   undecided = -1;
-
-  static int  current = undecided;
 
     if(ctrl.test(p_button_pressed))
     {
-      current = menu_window->get_item_index();
-
-        switch(current)
+        switch(menu_window->get_item_index())
         {
       case(talk):
           menu_window->reset_cursor();
 
           menu_window->leave_from_parent();
 
-          pop_routine(process);
+          pop_routine();
 
           hide_status_reportor();
 
@@ -61,9 +56,12 @@ operate(Controller const&  ctrl) noexcept
     {
       menu_window->reset_cursor();
 
-      menu_window->set_state(WindowState::close_to_up);
+      menu_window->leave_from_parent();
 
-      current = undecided;
+      pop_routine();
+
+
+      hide_status_reportor();
     }
 
   else if(ctrl.test(up_button_pressed)   ){menu_window->move_cursor_to_up();}
@@ -87,20 +85,6 @@ process(Controller const&  ctrl) noexcept
     {
       operate(ctrl);
     }
-
-
-  else
-    if(*menu_window == WindowState::hidden)
-    {
-      menu_window->leave_from_parent();
-
-      pop_routine(process);
-
-
-      hide_status_reportor();
-
-    }
-
 }
 
 

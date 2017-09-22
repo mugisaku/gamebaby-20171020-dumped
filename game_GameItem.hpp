@@ -33,6 +33,7 @@ GameItemKind
   belt,
   wand,
   card,
+  water,
 
   empty,
 
@@ -53,13 +54,18 @@ struct
 Shield
 {
   uint8_t  strength;
+
+  constexpr Shield(int  str): strength(str){}
+
 };
 
 
 struct
 Belt
 {
-  uint8_t  effect;
+  uint8_t  effect=0;
+
+  constexpr Belt(){}
 
 };
 
@@ -67,7 +73,9 @@ Belt
 struct
 Wand
 {
-  uint8_t  effect;
+  uint8_t  effect=0;
+
+  constexpr Wand(){}
 
 };
 
@@ -75,7 +83,19 @@ Wand
 struct
 Card
 {
-  uint8_t  effect;
+  uint8_t  effect=0;
+
+  constexpr Card(){}
+
+};
+
+
+struct
+Water
+{
+  uint8_t  effect=0;
+
+  constexpr Water(){}
 
 };
 
@@ -88,6 +108,7 @@ GameItemData
   Belt          belt;
   Wand          wand;
   Card          card;
+  Water        water;
 
    GameItemData() noexcept{}
   ~GameItemData()         {}
@@ -124,6 +145,7 @@ public:
   GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Belt const&  blt) noexcept;
   GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Wand const&  wnd) noexcept;
   GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Card const&  crd) noexcept;
+  GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Water const&  wat) noexcept;
 
   GameItemData const*  operator->() const noexcept{return &data;}
 

@@ -69,7 +69,9 @@ set(SOURCES
   gmbb_Game__Choosing.cpp
   gmbb_Game__StatusMonitor.cpp
   gmbb_Game__StatusReportor.cpp
+  gmbb_Game__BoardView.cpp
   game_GameItem.cpp
+  game_Sack.cpp
   game_Hero.cpp
   game_Square.cpp
   game_Board.cpp

@@ -59,6 +59,7 @@ public:
 
   bool  is_needing_to_redraw() const noexcept{return(!test_flag(hiding) && test_flag(needing_to_redraw));}
 
+  void  redraw() noexcept;
   void  show() noexcept;
   void  hide() noexcept;
 

@@ -111,7 +111,7 @@ process(Controller const&  ctrl) noexcept
     {
       window->leave_from_parent();
 
-      pop_routine(process);
+      pop_routine();
     }
 }
 

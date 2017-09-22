@@ -37,10 +37,11 @@ public:
   Board() noexcept;
  ~Board();
 
-  covered_ptr<Piece>  new_piece() noexcept;
+  covered_ptr<Piece>  new_piece(int  x, int  y) noexcept;
   void                delete_piece(covered_ptr<Piece>  p) noexcept;
 
-  Square&  get_suqare(int  x, int  y) noexcept{return square_table[y][x];}
+  Square&        get_square(      int  x, int  y)       noexcept{return square_table[y][x];}
+  Square const&  get_square_const(int  x, int  y) const noexcept{return square_table[y][x];}
 
   void                set_hero_piece(covered_ptr<Piece>  p) noexcept{hero_piece = p;}
   covered_ptr<Piece>  get_hero_piece() const noexcept{return hero_piece;}
