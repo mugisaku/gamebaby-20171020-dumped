@@ -70,6 +70,8 @@ pop_routine() noexcept
 void
 waiting(Controller const&  ctrl)
 {
+  static ButtonState  btnst;
+
     if(routine_stack.size())
     {
       routine_stack.back()(ctrl);
@@ -79,12 +81,21 @@ waiting(Controller const&  ctrl)
     if(ctrl.test(p_button_pressed))
     {
       start_main_menu();
+
+      return;
     }
 
-  else if(ctrl.test(up_button_pressed)   ){move_board_view_to_up();}
-  else if(ctrl.test(left_button_pressed) ){move_board_view_to_left();}
-  else if(ctrl.test(right_button_pressed)){move_board_view_to_right();}
-  else if(ctrl.test(down_button_pressed) ){move_board_view_to_down();}
+
+  if(btnst.test(   up_button_pressed) || ctrl.test(up_button_pressed   )){btnst.set(   up_button_pressed);  move_board_view_to_up(   );}
+  if(btnst.test( left_button_pressed) || ctrl.test(left_button_pressed )){btnst.set( left_button_pressed);  move_board_view_to_left( );}
+  if(btnst.test(right_button_pressed) || ctrl.test(right_button_pressed)){btnst.set(right_button_pressed);  move_board_view_to_right();}
+  if(btnst.test( down_button_pressed) || ctrl.test(down_button_pressed )){btnst.set( down_button_pressed);  move_board_view_to_down( );}
+
+  if(ctrl.test(   up_button_released)){btnst.unset(   up_button_pressed);}
+  if(ctrl.test( left_button_released)){btnst.unset( left_button_pressed);}
+  if(ctrl.test(right_button_released)){btnst.unset(right_button_pressed);}
+  if(ctrl.test( down_button_released)){btnst.unset( down_button_pressed);}
+
 }
 
 
@@ -127,6 +138,25 @@ initialize() noexcept
 
   show_board_view();
   show_status_monitor();
+
+    for(int  x = 0;  x < game::board_width;  ++x)
+    {
+      board.get_square(x,                   0).set_kind(game::SquareKind::wall);
+      board.get_square(x,game::board_height-1).set_kind(game::SquareKind::wall);
+    }
+
+
+    for(int  y = 1;  y < game::board_height-1;  ++y)
+    {
+      board.get_square(                  0,y).set_kind(game::SquareKind::wall);
+      board.get_square(game::board_width-1,y).set_kind(game::SquareKind::wall);
+    }
+
+
+    for(int  y = 1;  y < game::board_height-1;  ++y){
+    for(int  x = 1;  x < game::board_width -1;  ++x){
+      board.get_square(x,y).set_kind(game::SquareKind::room);
+    }}
 }
 
 

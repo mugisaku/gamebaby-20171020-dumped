@@ -61,7 +61,7 @@ draw_vline_safely(Point  pt, int  l, Pixel  pix) noexcept
     {
         if(pt.y < 0)
         {
-          l -= pt.y    ;
+          l += pt.y    ;
                pt.y = 0;
         }
 
@@ -107,7 +107,7 @@ draw_hline_safely(Point  pt, int  l, Pixel  pix) noexcept
     {
         if(pt.x < 0)
         {
-          l -= pt.x    ;
+          l += pt.x    ;
                pt.x = 0;
         }
 

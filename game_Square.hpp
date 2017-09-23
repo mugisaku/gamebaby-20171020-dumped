@@ -36,10 +36,10 @@ enum class
 SquareKind
 {
   null,
-  floor,
   wall,
-  breakable_wall,
-  
+  room,
+  corridor,
+
 };
 
 
@@ -77,6 +77,9 @@ Square
   int  trap_value=0;
 
 public:
+  bool  operator==(SquareKind  k) const noexcept{return kind == k;}
+  bool  operator!=(SquareKind  k) const noexcept{return kind != k;}
+
   void  reset(int  x_, int  y_, SquareLinkSet const&  linkset_) noexcept;
 
   int  get_x() const noexcept{return x;}
@@ -84,17 +87,24 @@ public:
 
   SquareLinkSet&  get_linkset() noexcept{return linkset;}
 
-  SquareKind  get_kind() const noexcept{return kind;}
+  SquareKind  get_kind(             ) const noexcept{return kind    ;}
+  void        set_kind(SquareKind  k)       noexcept{       kind = k;}
 
-  TrapKind  get_trap_kind() const noexcept{return trap_kind;}
+  void  set_trap(TrapKind  k, int  v=0) noexcept
+  {
+    trap_kind  = k;
+    trap_value = v;
+  }
 
-  int  get_trap_value() const noexcept{return trap_value;}
+  TrapKind  get_trap_kind()  const noexcept{return trap_kind ;}
+  int       get_trap_value() const noexcept{return trap_value;}
 
   covered_ptr<Square>  operator[](Direction  d) const noexcept{return linkset.get(d);}
 
-  void  change_piece(covered_ptr<Piece>  p) noexcept{piece_ptr = p;}
 
-  covered_ptr<Piece>  get_piece() const noexcept{return piece_ptr;}
+  covered_ptr<Piece>  get_piece(                     ) const noexcept{return piece_ptr    ;}
+  void                set_piece(covered_ptr<Piece>  p)       noexcept{       piece_ptr = p;}
+
   GameItem const*      get_item() const noexcept{return  item_ptr;}
 
   void  remove_piece() noexcept;

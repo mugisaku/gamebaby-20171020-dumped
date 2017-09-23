@@ -93,9 +93,9 @@ new_piece(int  x, int  y) noexcept
   ++number_of_pieces;
 
 
-  sq.change_piece(p);
+  sq.set_piece(p);
 
-  p->change_square(&sq);
+  p->set_square(&sq);
 
   return p;
 }

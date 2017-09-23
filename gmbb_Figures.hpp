@@ -25,10 +25,49 @@ Point
     return Point(x+rhs.x,y+rhs.y);
   }
 
+  constexpr Point  operator*(int  n) const noexcept
+  {
+    return Point(x*n,y*n);
+  }
+
+  constexpr Point  operator/(int  n) const noexcept
+  {
+    return Point(x/n,y/n);
+  }
+
+  constexpr Point  operator%(int  n) const noexcept
+  {
+    return Point(x%n,y%n);
+  }
+
   constexpr Point&  operator+=(Point const&  rhs) noexcept
   {
     x += rhs.x;
     y += rhs.y;
+
+    return *this;
+  }
+
+  constexpr Point&  operator*=(int  n) noexcept
+  {
+    x *= n;
+    y *= n;
+
+    return *this;
+  }
+
+  constexpr Point&  operator/=(int  n) noexcept
+  {
+    x /= n;
+    y /= n;
+
+    return *this;
+  }
+
+  constexpr Point&  operator%=(int  n) noexcept
+  {
+    x %= n;
+    y %= n;
 
     return *this;
   }

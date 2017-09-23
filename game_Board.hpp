@@ -10,8 +10,8 @@
 namespace game{
 
 
-constexpr int  board_width  = 256;
-constexpr int  board_height = 256;
+constexpr int  board_width  = 14;
+constexpr int  board_height = 14;
 
 
 class Piece;
@@ -39,6 +39,9 @@ public:
 
   covered_ptr<Piece>  new_piece(int  x, int  y) noexcept;
   void                delete_piece(covered_ptr<Piece>  p) noexcept;
+
+  Square const*  get_square_begin() const noexcept{return &square_table[             0][          0];}
+  Square const*    get_square_end() const noexcept{return &square_table[board_height-1][board_width];}
 
   Square&        get_square(      int  x, int  y)       noexcept{return square_table[y][x];}
   Square const&  get_square_const(int  x, int  y) const noexcept{return square_table[y][x];}

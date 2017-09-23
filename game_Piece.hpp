@@ -92,9 +92,8 @@ public:
   void  reset(Hero&   hero) noexcept;
   void  reset(Enemy&  enem) noexcept;
 
-  void  change_square(covered_ptr<Square>  sq) noexcept{square = sq;}
-
-  covered_ptr<Square>  get_square() const noexcept{return square;}
+  void                 set_square(covered_ptr<Square>  sq)       noexcept{       square = sq;}
+  covered_ptr<Square>  get_square(                       ) const noexcept{return square     ;}
 
 
   int  get_hp()     const noexcept{return hp    ;}
