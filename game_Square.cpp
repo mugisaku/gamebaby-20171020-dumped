@@ -18,8 +18,8 @@ reset(int  x_, int  y_, SquareLinkSet const&  linkset_) noexcept
 
   linkset = linkset_;
 
-   item_ptr = nullptr;
-  piece_ptr = nullptr;
+   item.pointer = nullptr;
+  piece_ptr     = nullptr;
 }
 
 

@@ -70,6 +70,7 @@ set(SOURCES
   gmbb_Game__StatusMonitor.cpp
   gmbb_Game__StatusReportor.cpp
   gmbb_Game__BoardView.cpp
+  gmbb_Game__move_hero_piece.cpp
   game_GameItem.cpp
   game_Sack.cpp
   game_Hero.cpp

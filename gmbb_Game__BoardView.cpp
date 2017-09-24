@@ -82,19 +82,47 @@ revise_point() noexcept
 
 namespace{
 void
-render_square(game::Square const&  sq, Image&  dst, Point  dst_point) noexcept
+render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
 {
-  tmp_image.fill( (sq == game::SquareKind::room         )? white
-                 :(sq == game::SquareKind::wall         )? gray
-                 :Pixel(0));
+  static Pixel const  pixels[] = {Pixel(),black,Pixel(),Pixel()};
+
+  tmp_image.fill();
+
+  tmp_image.print(u"主",Point(),large_glset,pixels);
 
   dst.transfer(tmp_image,Rectangle(),dst_point);
 }
 
 
 void
-render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
+render_square(game::Square const&  sq, Image&  dst, Point  dst_point) noexcept
 {
+  tmp_image.fill( (sq == game::SquareKind::room         )? light_gray
+                 :(sq == game::SquareKind::wall         )? gray
+                 :Pixel(0));
+
+  auto&  item = sq.get_item();
+
+    if(item)
+    {
+      char16_t const*  s;
+
+        switch(item->get_kind())
+        {
+      case(game::GameItemKind::sword ): s = u"けん";break;
+      case(game::GameItemKind::shield): s = u"たて";break;
+      case(game::GameItemKind::belt  ): s = u"おび";break;
+      case(game::GameItemKind::wand  ): s = u"つえ";break;
+      case(game::GameItemKind::card  ): s = u"ふだ";break;
+      case(game::GameItemKind::water ): s = u"みず";break;
+        }
+
+
+      dst.print(s,Point(),glset,default_pixels);
+    }
+
+
+  dst.transfer(tmp_image,Rectangle(),dst_point);
 }
 
 
@@ -111,7 +139,17 @@ render_row(Square const*  begin,
         }
 
 
-      render_square(*current++,dst,dst_point);
+      auto&  sq = *current++;
+
+      render_square(sq,dst,dst_point);
+
+      auto  p = sq.get_piece();
+
+        if(p)
+        {
+          render_piece(*p,dst,dst_point);
+        }
+
 
       dst_point.x += square_size;
     }

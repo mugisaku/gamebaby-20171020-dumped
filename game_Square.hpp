@@ -2,26 +2,12 @@
 #define game_Square_HPP
 
 
-#include"game_GameItem.hpp"
+#include"game_Sack.hpp"
+#include"game_Direction.hpp"
 #include"covered_ptr"
 
 
 namespace game{
-
-
-enum class
-Direction
-{
-        front,
-   front_left,
-         left,
-    back_left,
-         back,
-   back_right,
-        right,
-  front_right,
-
-};
 
 
 enum class
@@ -69,7 +55,8 @@ Square
 
   SquareKind  kind=SquareKind::null;
 
-  GameItem const*      item_ptr=nullptr;
+  SackItem  item;
+
   covered_ptr<Piece>  piece_ptr;
 
   TrapKind  trap_kind=TrapKind::null;
@@ -105,7 +92,8 @@ public:
   covered_ptr<Piece>  get_piece(                     ) const noexcept{return piece_ptr    ;}
   void                set_piece(covered_ptr<Piece>  p)       noexcept{       piece_ptr = p;}
 
-  GameItem const*      get_item() const noexcept{return  item_ptr;}
+  SackItem&        get_item()       noexcept{return item;}
+  SackItem const&  get_item() const noexcept{return item;}
 
   void  remove_piece() noexcept;
 

@@ -70,6 +70,8 @@ Piece
   int  hp    ;
   int  hp_max;
 
+  Direction  direction;
+
   int     sleep_count=0;
   int      seal_count=0;
   int    poison_count=0;
@@ -98,6 +100,9 @@ public:
 
   int  get_hp()     const noexcept{return hp    ;}
   int  get_hp_max() const noexcept{return hp_max;}
+
+  void       set_direction(Direction  d)       noexcept{direction = d;}
+  Direction  get_direction(            ) const noexcept{return direction;}
 
   void  change_equipment(covered_ptr<SackItem>  p) noexcept;
 

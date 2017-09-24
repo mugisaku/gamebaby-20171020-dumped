@@ -14,6 +14,10 @@ game::Board
 board;
 
 
+covered_ptr<game::Piece>
+hero_piece;
+
+
 int
 response_value;
 
@@ -28,6 +32,10 @@ screen_image(screen_width,screen_height);
 
 GlyphSet
 glset;
+
+
+GlyphSet
+large_glset;
 
 
 Widget
@@ -86,10 +94,18 @@ waiting(Controller const&  ctrl)
     }
 
 
+/*
   if(btnst.test(   up_button_pressed) || ctrl.test(up_button_pressed   )){btnst.set(   up_button_pressed);  move_board_view_to_up(   );}
   if(btnst.test( left_button_pressed) || ctrl.test(left_button_pressed )){btnst.set( left_button_pressed);  move_board_view_to_left( );}
   if(btnst.test(right_button_pressed) || ctrl.test(right_button_pressed)){btnst.set(right_button_pressed);  move_board_view_to_right();}
   if(btnst.test( down_button_pressed) || ctrl.test(down_button_pressed )){btnst.set( down_button_pressed);  move_board_view_to_down( );}
+*/
+
+
+  if(ctrl.test(up_button_pressed   )){  move_hero_piece_to_forward(   );}
+  if(ctrl.test(left_button_pressed )){  turn_hero_piece_to_left( );}
+  if(ctrl.test(right_button_pressed)){  turn_hero_piece_to_right();}
+  if(ctrl.test(down_button_pressed )){  move_hero_piece_to_backward( );}
 
   if(ctrl.test(   up_button_released)){btnst.unset(   up_button_pressed);}
   if(ctrl.test( left_button_released)){btnst.unset( left_button_pressed);}
@@ -126,13 +142,14 @@ is_screen_needing_to_redraw() noexcept
 void
 initialize() noexcept
 {
-  glset.load_from_file("/usr/local/share/gmbb/small_font.bin");
+        glset.load_from_file("/usr/local/share/gmbb/small_font.bin");
+  large_glset.load_from_file("/usr/local/share/gmbb/large_font.bin");
 
-  auto  p = board.new_piece(0,0);
+  hero_piece = board.new_piece(2,2);
 
-  p->reset(hero);
+  hero_piece->reset(hero);
 
-  board.set_hero_piece(p);
+  board.set_hero_piece(hero_piece);
 
   current_callback = waiting;
 

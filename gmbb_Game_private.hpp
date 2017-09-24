@@ -22,6 +22,11 @@ hero;
 
 
 extern
+covered_ptr<game::Piece>
+hero_piece;
+
+
+extern
 game::Board
 board;
 
@@ -37,6 +42,11 @@ glset;
 
 
 extern
+GlyphSet
+large_glset;
+
+
+extern
 Widget
 root_widget;
 
@@ -47,6 +57,12 @@ void  push_routine(Routine  r) noexcept;
 void   pop_routine(          ) noexcept;
 
 
+
+
+void  move_hero_piece_to_forward();
+void  turn_hero_piece_to_left();
+void  turn_hero_piece_to_right();
+void  move_hero_piece_to_backward();
 
 
 void  move_board_view_to_up();
