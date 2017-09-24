@@ -91,6 +91,8 @@ load_png(FileReader&  r) noexcept
 
   auto  dst = this->pixels.begin();
 
+  fill();
+
     for(int  y = 0;  y < h;  ++y)
     {
       png_read_row(png,buffer,nullptr);
@@ -108,15 +110,27 @@ load_png(FileReader&  r) noexcept
           uint8_t  b = *src++;
           uint8_t  a = 1;
 
+          uint8_t  first_r;
+          uint8_t  first_g;
+          uint8_t  first_b;
+
             if(a_valid)
             {
               a = *src++;
             }
 
 
-            if(a)
+            if(!x && !y)
             {
-              color = ColorIndex(r,g,b);
+              first_r = r;
+              first_g = g;
+              first_b = b;
+            }
+
+
+            if(a && ((r != first_r) || (g != first_g) || (b != first_b)))
+            {
+              color = ColorIndex(r>>5,g>>5,b>>5);
             }
         }
     }

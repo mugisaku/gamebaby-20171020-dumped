@@ -10,7 +10,7 @@ namespace gmbb{
 
 void
 Image::
-transfer(Image const&  src, Rectangle  src_rect, Point  dst_pt) noexcept
+transfer(Image const&  src, Rectangle  src_rect, Point  dst_pt, int  z) noexcept
 {
   bool  reverse_flag = false;
 
@@ -108,7 +108,9 @@ transfer(Image const&  src, Rectangle  src_rect, Point  dst_pt) noexcept
 
             for(int  xx = 0;  xx < src_rect.w;  xx += 1)
             {
-              auto&  pix = src.get_const_pixel(x--,src_rect.y+yy);
+              auto  pix = src.get_const_pixel(x--,src_rect.y+yy);
+
+              pix.z = z;
 
               draw_dot(Point(dst_pt.x+xx,dst_pt.y+yy),pix);
             }
@@ -118,7 +120,9 @@ transfer(Image const&  src, Rectangle  src_rect, Point  dst_pt) noexcept
         {
             for(int  xx = 0;  xx < src_rect.w;  xx += 1)
             {
-              auto&  pix = src.get_const_pixel(src_rect.x+xx,src_rect.y+yy);
+              auto  pix = src.get_const_pixel(src_rect.x+xx,src_rect.y+yy);
+
+              pix.z = z;
 
               draw_dot(Point(dst_pt.x+xx,dst_pt.y+yy),pix);
             }

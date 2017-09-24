@@ -19,6 +19,9 @@ Board() noexcept
       auto const   is_back_available = (y                   );
       auto const  is_front_available = (y < (board_height-1));
 
+      linkset.set(Direction::front,is_front_available? &square_table[y+1][x]:nullptr);
+      linkset.set(Direction::back , is_back_available? &square_table[y-1][x]:nullptr);
+
       linkset.set(Direction::left      ,(                      is_left_available)? &square_table[y  ][x-1]:nullptr);
       linkset.set(Direction::back_left ,( is_back_available && is_left_available)? &square_table[y-1][x-1]:nullptr);
       linkset.set(Direction::front_left,(is_front_available && is_left_available)? &square_table[y+1][x-1]:nullptr);
@@ -96,6 +99,7 @@ new_piece(int  x, int  y) noexcept
   sq.set_piece(p);
 
   p->set_square(&sq);
+  p->set_direction(Direction::front);
 
   return p;
 }

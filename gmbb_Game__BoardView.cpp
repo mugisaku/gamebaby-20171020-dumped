@@ -84,13 +84,10 @@ namespace{
 void
 render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
 {
-  static Pixel const  pixels[] = {Pixel(),black,Pixel(),Pixel()};
+  constexpr int  w = 24;
+  constexpr int  h = 48;
 
-  tmp_image.fill();
-
-  tmp_image.print(u"主",Point(),large_glset,pixels);
-
-  dst.transfer(tmp_image,Rectangle(),dst_point);
+  dst.transfer(character_image,Rectangle(0,0,w,h),dst_point,8);
 }
 
 
@@ -105,20 +102,6 @@ render_square(game::Square const&  sq, Image&  dst, Point  dst_point) noexcept
 
     if(item)
     {
-      char16_t const*  s;
-
-        switch(item->get_kind())
-        {
-      case(game::GameItemKind::sword ): s = u"けん";break;
-      case(game::GameItemKind::shield): s = u"たて";break;
-      case(game::GameItemKind::belt  ): s = u"おび";break;
-      case(game::GameItemKind::wand  ): s = u"つえ";break;
-      case(game::GameItemKind::card  ): s = u"ふだ";break;
-      case(game::GameItemKind::water ): s = u"みず";break;
-        }
-
-
-      dst.print(s,Point(),glset,default_pixels);
     }
 
 

@@ -43,7 +43,7 @@ Image
   std::vector<Pixel>  pixels;
 
 public:
-  Image() noexcept;
+  Image() noexcept{}
   Image(int  w, int  h) noexcept;
 
 
@@ -80,7 +80,7 @@ public:
   void  print(const char*      s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept;
   void  print(const char16_t*  s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept;
 
-  void  transfer(Image const&  src, Rectangle  src_rect, Point  dst_pt) noexcept;
+  void  transfer(Image const&  src, Rectangle  src_rect, Point  dst_pt, int  z=0) noexcept;
 
 };
 

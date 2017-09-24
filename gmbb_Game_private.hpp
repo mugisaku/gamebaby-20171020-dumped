@@ -37,6 +37,11 @@ screen_image;
 
 
 extern
+Image
+character_image;
+
+
+extern
 GlyphSet
 glset;
 

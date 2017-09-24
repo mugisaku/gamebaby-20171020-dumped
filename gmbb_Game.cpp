@@ -18,6 +18,10 @@ covered_ptr<game::Piece>
 hero_piece;
 
 
+Image
+character_image;
+
+
 int
 response_value;
 
@@ -144,6 +148,12 @@ initialize() noexcept
 {
         glset.load_from_file("/usr/local/share/gmbb/small_font.bin");
   large_glset.load_from_file("/usr/local/share/gmbb/large_font.bin");
+
+  File  f("",File::get_content_from_file("../bin/image.png"));
+
+  auto  r = f.make_reader();
+
+  character_image.load_png(r);
 
   hero_piece = board.new_piece(2,2);
 
