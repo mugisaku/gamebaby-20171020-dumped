@@ -138,6 +138,19 @@ delete_piece(covered_ptr<Piece>  p) noexcept
 }
 
 
+void
+Board::
+step() const noexcept
+{
+  auto  next = first;
+
+    while(next)
+    {
+      next->step();
+
+      next = next->get_link().next;
+    }
+}
 
 
 }

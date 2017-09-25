@@ -5,6 +5,7 @@
 #include"game_Hero.hpp"
 #include"game_Enemy.hpp"
 #include"game_Board.hpp"
+#include"gmbb_Figures.hpp"
 #include<covered_ptr>
 
 
@@ -72,6 +73,11 @@ Piece
 
   Direction  direction;
 
+  int  action_index=0;
+  int    wait_value=10;
+  int    wait_count=0;
+  int   frame_count=0;
+
   int     sleep_count=0;
   int      seal_count=0;
   int    poison_count=0;
@@ -113,6 +119,10 @@ public:
   Board&  get_board() const noexcept{return *board;}
 
   PieceLink&  get_link() noexcept{return link;}
+
+  gmbb::Rectangle  get_image_rectangle() const noexcept;
+
+  void  step() noexcept;
 
 };
 

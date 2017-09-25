@@ -13,18 +13,23 @@ MenuWindow*
 menu_window;
 
 
+constexpr uint32_t  key_flags = (flags_of_input::p_button|flags_of_input::n_button);
+
+
 void  process(Controller const&  ctrl) noexcept;
 
 
 void
 operate(Controller const&  ctrl) noexcept
 {
+  using namespace gmbb::flags_of_input;
+
   constexpr int        talk = 0;
   constexpr int  belongings = 1;
   constexpr int        foot = 2;
   constexpr int   interrupt = 3;
 
-    if(ctrl.test(p_button_pressed))
+    if(ctrl.test(p_button))
     {
         switch(menu_window->get_item_index())
         {
@@ -52,7 +57,7 @@ operate(Controller const&  ctrl) noexcept
     }
 
   else
-    if(ctrl.test(n_button_pressed))
+    if(ctrl.test(n_button))
     {
       menu_window->reset_cursor();
 
@@ -62,12 +67,14 @@ operate(Controller const&  ctrl) noexcept
 
 
       hide_status_reportor();
+
+      wait_until_button_is_released(key_flags);
     }
 
-  else if(ctrl.test(up_button_pressed)   ){menu_window->move_cursor_to_up();}
-  else if(ctrl.test(down_button_pressed) ){menu_window->move_cursor_to_down();}
-  else if(ctrl.test(left_button_pressed) ){menu_window->move_cursor_to_left();}
-  else if(ctrl.test(right_button_pressed)){menu_window->move_cursor_to_right();}
+  else if(ctrl.test(up_button)   ){menu_window->move_cursor_to_up();}
+  else if(ctrl.test(down_button) ){menu_window->move_cursor_to_down();}
+  else if(ctrl.test(left_button) ){menu_window->move_cursor_to_left();}
+  else if(ctrl.test(right_button)){menu_window->move_cursor_to_right();}
 }
 
 
@@ -81,7 +88,8 @@ process(Controller const&  ctrl) noexcept
     }
 
   else
-    if(*menu_window == WindowState::full_opened)
+    if((*menu_window == WindowState::full_opened) &&
+       is_not_waiting_for(key_flags))
     {
       operate(ctrl);
     }
@@ -112,6 +120,8 @@ start_main_menu() noexcept
         });
     }
 
+
+  wait_until_button_is_released(key_flags);
 
   menu_window->enter_into(root_widget,Point(8,24));
 

@@ -5,7 +5,7 @@ namespace gmbb{
 
 
 void
-move(game::Piece&  p, game::Square&  sq)
+move(game::Piece&  p, game::Direction  d, game::Square&  sq)
 {
     if(!sq.get_piece() && (sq != game::SquareKind::wall))
     {
@@ -15,6 +15,40 @@ move(game::Piece&  p, game::Square&  sq)
       p.set_square(&sq);
 
       update_board_view();
+
+      using game::Direction;
+
+        switch(d)
+        {
+      case(Direction::front):
+          move_board_view_to_down();
+          break;
+      case(Direction::front_left):
+          move_board_view_to_left();
+          move_board_view_to_down();
+          break;
+      case(Direction::left):
+          move_board_view_to_left();
+          break;
+      case(Direction::back_left):
+          move_board_view_to_up();
+          move_board_view_to_left();
+          break;
+      case(Direction::back):
+          move_board_view_to_up();
+          break;
+      case(Direction::back_right):
+          move_board_view_to_up();
+          move_board_view_to_right();
+          break;
+      case(Direction::right):
+          move_board_view_to_right();
+          break;
+      case(Direction::front_right):
+          move_board_view_to_down();
+          move_board_view_to_right();
+          break;
+        }
     }
 }
 
@@ -24,11 +58,13 @@ move_hero_piece_to_forward()
 {
   auto  sq = hero_piece->get_square();
 
-  auto  dst = (*sq)[hero_piece->get_direction()];
+  auto  d = hero_piece->get_direction();
+
+  auto  dst = (*sq)[d];
 
     if(dst)
     {
-      move(*hero_piece,*dst);
+      move(*hero_piece,d,*dst);
     }
 }
 
@@ -56,11 +92,13 @@ move_hero_piece_to_backward()
 {
   auto  sq = hero_piece->get_square();
 
-  auto  dst = (*sq)[get_opposite(hero_piece->get_direction())];
+  auto  d = get_opposite(hero_piece->get_direction());
+
+  auto  dst = (*sq)[d];
 
     if(dst)
     {
-      move(*hero_piece,*dst);
+      move(*hero_piece,d,*dst);
     }
 }
 

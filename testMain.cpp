@@ -104,27 +104,29 @@ quit()
 void
 process_key_down(const SDL_KeyboardEvent&  evt)
 {
+  using namespace gmbb::flags_of_input;
+
   if(!evt.repeat)
   {
       switch(evt.keysym.sym)
       {
-    case(SDLK_UP   ): ctrl.set(   up_button_pressed);break;
-    case(SDLK_LEFT ): ctrl.set( left_button_pressed);break;
-    case(SDLK_RIGHT): ctrl.set(right_button_pressed);break;
-    case(SDLK_DOWN ): ctrl.set( down_button_pressed);break;
+    case(SDLK_UP   ): ctrl.set(   up_button);break;
+    case(SDLK_LEFT ): ctrl.set( left_button);break;
+    case(SDLK_RIGHT): ctrl.set(right_button);break;
+    case(SDLK_DOWN ): ctrl.set( down_button);break;
 
-    case(SDLK_SPACE ): ctrl.set(start_button_pressed);break;
+    case(SDLK_SPACE ): ctrl.set(start_button);break;
     case(SDLK_LSHIFT):
-    case(SDLK_RSHIFT): ctrl.set(shift_button_pressed);break;
+    case(SDLK_RSHIFT): ctrl.set(shift_button);break;
 
     case(SDLK_RETURN):
     case(SDLK_z):
-        ctrl.set(p_button_pressed);
+        ctrl.set(p_button);
         break;
     case(SDLK_RCTRL):
     case(SDLK_LCTRL):
     case(SDLK_x    ):
-        ctrl.set(n_button_pressed);
+        ctrl.set(n_button);
         break;
     case(SDLK_F1):
         SDL_SaveBMP(surface,"__SCREEN.bmp");
@@ -137,25 +139,27 @@ process_key_down(const SDL_KeyboardEvent&  evt)
 void
 process_key_up(const SDL_KeyboardEvent&  evt)
 {
+  using namespace gmbb::flags_of_input;
+
     switch(evt.keysym.sym)
     {
-  case(SDLK_UP   ): ctrl.set(   up_button_released);break;
-  case(SDLK_LEFT ): ctrl.set( left_button_released);break;
-  case(SDLK_RIGHT): ctrl.set(right_button_released);break;
-  case(SDLK_DOWN ): ctrl.set( down_button_released);break;
+  case(SDLK_UP   ): ctrl.unset(   up_button);break;
+  case(SDLK_LEFT ): ctrl.unset( left_button);break;
+  case(SDLK_RIGHT): ctrl.unset(right_button);break;
+  case(SDLK_DOWN ): ctrl.unset( down_button);break;
 
-  case(SDLK_SPACE ): ctrl.set(start_button_released);break;
+  case(SDLK_SPACE ): ctrl.unset(start_button);break;
   case(SDLK_LSHIFT):
-  case(SDLK_RSHIFT): ctrl.set(shift_button_released);break;
+  case(SDLK_RSHIFT): ctrl.unset(shift_button);break;
 
   case(SDLK_RETURN):
   case(SDLK_z     ):
-      ctrl.set(p_button_released);
+      ctrl.unset(p_button);
       break;
   case(SDLK_RCTRL):
   case(SDLK_LCTRL):
   case(SDLK_x    ):
-      ctrl.set(n_button_released);
+      ctrl.unset(n_button);
       break;
     }
 }
@@ -179,8 +183,6 @@ void
 main_loop()
 {
   static SDL_Event  evt;
-
-  ctrl.clear_state();
 
     while(SDL_PollEvent(&evt))
     {

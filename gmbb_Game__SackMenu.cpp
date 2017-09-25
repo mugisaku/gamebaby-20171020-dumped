@@ -20,6 +20,8 @@ item_ptr;
 void
 operate(Controller const&  ctrl) noexcept
 {
+  using namespace gmbb::flags_of_input;
+
   static bool  waiting;
 
     if(waiting)
@@ -48,7 +50,7 @@ operate(Controller const&  ctrl) noexcept
     }
 
   else
-    if(ctrl.test(p_button_pressed))
+    if(ctrl.test(p_button))
     {
       auto&  gi = hero.get_sack().get_item(menu_window->get_item_index());
 
@@ -63,7 +65,7 @@ operate(Controller const&  ctrl) noexcept
     }
 
   else
-    if(ctrl.test(n_button_pressed))
+    if(ctrl.test(n_button))
     {
       menu_window->reset_cursor();
 
@@ -72,10 +74,10 @@ operate(Controller const&  ctrl) noexcept
       pop_routine();
     }
 
-  else if(ctrl.test(up_button_pressed)   ){menu_window->move_cursor_to_up();}
-  else if(ctrl.test(down_button_pressed) ){menu_window->move_cursor_to_down();}
-  else if(ctrl.test(left_button_pressed) ){menu_window->move_cursor_to_left();}
-  else if(ctrl.test(right_button_pressed)){menu_window->move_cursor_to_right();}
+  else if(ctrl.test(up_button)   ){menu_window->move_cursor_to_up();}
+  else if(ctrl.test(down_button) ){menu_window->move_cursor_to_down();}
+  else if(ctrl.test(left_button) ){menu_window->move_cursor_to_left();}
+  else if(ctrl.test(right_button)){menu_window->move_cursor_to_right();}
 }
 
 

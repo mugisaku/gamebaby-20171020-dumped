@@ -24,7 +24,9 @@ is_cancelable;
 void
 operate(Controller const&  ctrl) noexcept
 {
-    if(ctrl.test(p_button_pressed))
+  using namespace gmbb::flags_of_input;
+
+    if(ctrl.test(p_button))
     {
       set_response(menu_window->get_item_index());
 
@@ -34,7 +36,7 @@ operate(Controller const&  ctrl) noexcept
     }
 
   else
-    if(is_cancelable && ctrl.test(n_button_pressed))
+    if(is_cancelable && ctrl.test(n_button))
     {
       set_response(-1);
 
@@ -43,8 +45,8 @@ operate(Controller const&  ctrl) noexcept
       pop_routine();
     }
 
-  else if(ctrl.test(up_button_pressed)   ){menu_window->move_cursor_to_up();}
-  else if(ctrl.test(down_button_pressed) ){menu_window->move_cursor_to_down();}
+  else if(ctrl.test(up_button)  ){menu_window->move_cursor_to_up();}
+  else if(ctrl.test(down_button)){menu_window->move_cursor_to_down();}
 }
 
 

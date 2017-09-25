@@ -49,6 +49,8 @@ public:
   void                set_hero_piece(covered_ptr<Piece>  p) noexcept{hero_piece = p;}
   covered_ptr<Piece>  get_hero_piece() const noexcept{return hero_piece;}
 
+  void  step() const noexcept;
+
 };
 
 

@@ -56,6 +56,28 @@ void
 
 
 
+uint32_t
+flags_for_waiting;
+
+
+
+
+void
+wait_until_button_is_released(uint32_t  flags) noexcept
+{
+  flags_for_waiting |= flags;
+}
+
+
+bool
+is_not_waiting_for(uint32_t  flags) noexcept
+{
+  return !(flags_for_waiting&flags);
+}
+
+
+
+
 std::vector<Routine>
 routine_stack;
 
@@ -82,7 +104,7 @@ pop_routine() noexcept
 void
 waiting(Controller const&  ctrl)
 {
-  static ButtonState  btnst;
+  using namespace gmbb::flags_of_input;
 
     if(routine_stack.size())
     {
@@ -90,32 +112,28 @@ waiting(Controller const&  ctrl)
     }
 
   else
-    if(ctrl.test(p_button_pressed))
+    if(ctrl.test(p_button))
     {
-      start_main_menu();
-
-      return;
     }
 
+  else
+    if(ctrl.test(n_button) && is_not_waiting_for(flags_of_input::p_button|flags_of_input::n_button))
+    {
+      start_main_menu();
+    }
 
-/*
-  if(btnst.test(   up_button_pressed) || ctrl.test(up_button_pressed   )){btnst.set(   up_button_pressed);  move_board_view_to_up(   );}
-  if(btnst.test( left_button_pressed) || ctrl.test(left_button_pressed )){btnst.set( left_button_pressed);  move_board_view_to_left( );}
-  if(btnst.test(right_button_pressed) || ctrl.test(right_button_pressed)){btnst.set(right_button_pressed);  move_board_view_to_right();}
-  if(btnst.test( down_button_pressed) || ctrl.test(down_button_pressed )){btnst.set( down_button_pressed);  move_board_view_to_down( );}
-*/
+  else
+    {
+        if(ctrl.test(up_button   )){move_hero_piece_to_forward();}
+        if(ctrl.test(left_button )){turn_hero_piece_to_left( );}
+        if(ctrl.test(right_button)){turn_hero_piece_to_right();}
+        if(ctrl.test(down_button )){move_hero_piece_to_backward();}
 
 
-  if(ctrl.test(up_button_pressed   )){  move_hero_piece_to_forward(   );}
-  if(ctrl.test(left_button_pressed )){  turn_hero_piece_to_left( );}
-  if(ctrl.test(right_button_pressed)){  turn_hero_piece_to_right();}
-  if(ctrl.test(down_button_pressed )){  move_hero_piece_to_backward( );}
+      board.step();
 
-  if(ctrl.test(   up_button_released)){btnst.unset(   up_button_pressed);}
-  if(ctrl.test( left_button_released)){btnst.unset( left_button_pressed);}
-  if(ctrl.test(right_button_released)){btnst.unset(right_button_pressed);}
-  if(ctrl.test( down_button_released)){btnst.unset( down_button_pressed);}
-
+      update_board_view();
+    }
 }
 
 
@@ -190,6 +208,9 @@ initialize() noexcept
 void
 step(Controller const&  ctrl)
 {
+  flags_for_waiting &= ctrl.get();
+
+
   current_callback(ctrl);
 
   root_widget.update();

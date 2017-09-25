@@ -64,6 +64,11 @@ void   pop_routine(          ) noexcept;
 
 
 
+void  wait_until_button_is_released(uint32_t  flags) noexcept;
+
+bool  is_not_waiting_for(uint32_t  flags) noexcept;
+
+
 void  move_hero_piece_to_forward();
 void  turn_hero_piece_to_left();
 void  turn_hero_piece_to_right();

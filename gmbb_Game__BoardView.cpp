@@ -84,10 +84,9 @@ namespace{
 void
 render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
 {
-  constexpr int  w = 24;
-  constexpr int  h = 48;
+  int  z = p.get_square()->get_y();
 
-  dst.transfer(character_image,Rectangle(0,0,w,h),dst_point,8);
+  dst.transfer(character_image,p.get_image_rectangle(),dst_point,z);
 }
 
 
@@ -175,7 +174,7 @@ render(Image&  dst) noexcept
 }
 
 
-constexpr int  move_amount = 1;
+constexpr int  move_amount = 24;
 
 
 }
