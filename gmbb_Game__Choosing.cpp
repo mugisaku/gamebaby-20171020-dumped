@@ -13,6 +13,9 @@ MenuWindow*
 menu_window;
 
 
+constexpr int  key_flags = flags_of_input::p_button|flags_of_input::n_button;
+
+
 char16_t const*
 table[8];
 
@@ -33,6 +36,8 @@ operate(Controller const&  ctrl) noexcept
       menu_window->leave_from_parent();
 
       pop_routine();
+
+      wait_until_be_released(key_flags);
     }
 
   else
@@ -43,6 +48,8 @@ operate(Controller const&  ctrl) noexcept
       menu_window->leave_from_parent();
 
       pop_routine();
+
+      wait_until_be_released(key_flags);
     }
 
   else if(ctrl.test(up_button)  ){menu_window->move_cursor_to_up();}
@@ -69,7 +76,8 @@ process(Controller const&  ctrl) noexcept
     }
 
   else
-    if(*menu_window == WindowState::full_opened)
+    if((*menu_window == WindowState::full_opened) &&
+       is_not_waiting_for(key_flags))
     {
       operate(ctrl);
     }
@@ -101,6 +109,8 @@ start_choosing(std::initializer_list<char16_t const*>  ls, Point  point, bool  c
       e = *it++;
     }
 
+
+  wait_until_be_released(key_flags);
 
   menu_window->enter_into(root_widget,point);
 

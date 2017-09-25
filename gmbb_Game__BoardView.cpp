@@ -86,6 +86,8 @@ render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
 {
   int  z = p.get_square()->get_y();
 
+  dst_point.y -= 24;
+
   dst.transfer(character_image,p.get_image_rectangle(),dst_point,z);
 }
 
@@ -101,6 +103,18 @@ render_square(game::Square const&  sq, Image&  dst, Point  dst_point) noexcept
 
     if(item)
     {
+      int  x;
+      int  y;
+
+        switch(item->get_kind())
+        {
+      case(game::GameItemKind::sword):
+          y = 24*5;
+          break;
+        }
+
+
+      dst.transfer(character_image,Rectangle(x,y,24,24),0);
     }
 
 

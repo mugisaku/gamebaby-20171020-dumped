@@ -89,7 +89,7 @@ process(Controller const&  ctrl) noexcept
             {
               window->clear();
 
-              wait_until_button_is_released(key_flags);
+              wait_until_be_released(key_flags);
             }
         }
     }
@@ -116,7 +116,7 @@ start_message(char16_t const*  text) noexcept
     }
 
 
-  wait_until_button_is_released(key_flags);
+  wait_until_be_released(key_flags);
 
   window->enter_into(root_widget,message_point);
 

@@ -3,6 +3,7 @@
 
 
 #include"gmbb.hpp"
+#include"gmbb_IntervalTimer.hpp"
 #include"game_Piece.hpp"
 #include"game_Board.hpp"
 #include"game_Sack.hpp"
@@ -41,6 +42,10 @@ Image
 character_image;
 
 
+extern IntervalTimer
+interval_timer;
+
+
 extern
 GlyphSet
 glset;
@@ -64,7 +69,7 @@ void   pop_routine(          ) noexcept;
 
 
 
-void  wait_until_button_is_released(uint32_t  flags) noexcept;
+void  wait_until_be_released(uint32_t  flags) noexcept;
 
 bool  is_not_waiting_for(uint32_t  flags) noexcept;
 

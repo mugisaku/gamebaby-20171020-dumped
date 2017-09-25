@@ -22,6 +22,10 @@ Image
 character_image;
 
 
+IntervalTimer
+interval_timer;
+
+
 int
 response_value;
 
@@ -63,7 +67,7 @@ flags_for_waiting;
 
 
 void
-wait_until_button_is_released(uint32_t  flags) noexcept
+wait_until_be_released(uint32_t  flags) noexcept
 {
   flags_for_waiting |= flags;
 }
@@ -124,10 +128,14 @@ waiting(Controller const&  ctrl)
 
   else
     {
-        if(ctrl.test(up_button   )){move_hero_piece_to_forward();}
-        if(ctrl.test(left_button )){turn_hero_piece_to_left( );}
-        if(ctrl.test(right_button)){turn_hero_piece_to_right();}
-        if(ctrl.test(down_button )){move_hero_piece_to_backward();}
+        if(interval_timer.check(280,ctrl.get_time()))
+        {
+               if(ctrl.test(up_button   )){move_hero_piece_to_forward();  interval_timer.enable();}
+          else if(ctrl.test(left_button )){turn_hero_piece_to_left( );  interval_timer.enable();}
+          else if(ctrl.test(right_button)){turn_hero_piece_to_right();  interval_timer.enable();}
+          else if(ctrl.test(down_button )){move_hero_piece_to_backward();  interval_timer.enable();}
+          else {interval_timer.disable();}
+        }
 
 
       board.step();

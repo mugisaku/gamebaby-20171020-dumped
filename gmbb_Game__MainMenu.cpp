@@ -68,7 +68,7 @@ operate(Controller const&  ctrl) noexcept
 
       hide_status_reportor();
 
-      wait_until_button_is_released(key_flags);
+      wait_until_be_released(key_flags);
     }
 
   else if(ctrl.test(up_button)   ){menu_window->move_cursor_to_up();}
@@ -121,7 +121,7 @@ start_main_menu() noexcept
     }
 
 
-  wait_until_button_is_released(key_flags);
+  wait_until_be_released(key_flags);
 
   menu_window->enter_into(root_widget,Point(8,24));
 

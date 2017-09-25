@@ -13,6 +13,9 @@ MenuWindow*
 menu_window;
 
 
+constexpr int  key_flags = flags_of_input::p_button|flags_of_input::n_button;
+
+
 covered_ptr<game::SackItem>
 item_ptr;
 
@@ -42,6 +45,7 @@ operate(Controller const&  ctrl) noexcept
               update_status_reportor();
               break;
           case(1):
+              
               break;
           case(2):
               break;
@@ -59,6 +63,8 @@ operate(Controller const&  ctrl) noexcept
       char16_t const*  fon = gi->get_first_operation_name();
 
 
+      wait_until_be_released(key_flags);
+
       start_choosing({fon,u"なげる",u"おく"},Point(40,80));
 
       waiting = true;
@@ -72,12 +78,19 @@ operate(Controller const&  ctrl) noexcept
       menu_window->leave_from_parent();
 
       pop_routine();
+
+      wait_until_be_released(key_flags);
     }
 
-  else if(ctrl.test(up_button)   ){menu_window->move_cursor_to_up();}
-  else if(ctrl.test(down_button) ){menu_window->move_cursor_to_down();}
-  else if(ctrl.test(left_button) ){menu_window->move_cursor_to_left();}
-  else if(ctrl.test(right_button)){menu_window->move_cursor_to_right();}
+  else
+    if(interval_timer.check(200,ctrl.get_time()))
+    {
+           if(ctrl.test(up_button)   ){menu_window->move_cursor_to_up();  interval_timer.enable();}
+      else if(ctrl.test(down_button) ){menu_window->move_cursor_to_down();  interval_timer.enable();}
+      else if(ctrl.test(left_button) ){menu_window->move_cursor_to_left();  interval_timer.enable();}
+      else if(ctrl.test(right_button)){menu_window->move_cursor_to_right();  interval_timer.enable();}
+      else {interval_timer.disable();}
+    }
 }
 
 
@@ -102,7 +115,8 @@ process(Controller const&  ctrl) noexcept
     }
 
   else
-    if(*menu_window == WindowState::full_opened)
+    if((*menu_window == WindowState::full_opened) &&
+       is_not_waiting_for(key_flags))
     {
       operate(ctrl);
     }
@@ -122,6 +136,9 @@ start_sack_menu() noexcept
       menu_window = new MenuWindow(menu,callback,1);
     }
 
+
+
+  wait_until_be_released(key_flags);
 
   menu_window->enter_into(root_widget,Point(96,24));
 

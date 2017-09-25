@@ -13,7 +13,7 @@ move(game::Piece&  p, game::Direction  d, game::Square&  sq)
 
       sq.set_piece(&p);
       p.set_square(&sq);
-
+//printf("%3d %3d\n",sq.get_x(),sq.get_y());
       update_board_view();
 
       using game::Direction;
@@ -72,7 +72,7 @@ move_hero_piece_to_forward()
 void
 turn_hero_piece_to_left()
 {
-  hero_piece->set_direction(get_left(hero_piece->get_direction()));
+  hero_piece->set_direction(get_right(hero_piece->get_direction()));
 
   update_board_view();
 }
@@ -81,7 +81,7 @@ turn_hero_piece_to_left()
 void
 turn_hero_piece_to_right()
 {
-  hero_piece->set_direction(get_right(hero_piece->get_direction()));
+  hero_piece->set_direction(get_left(hero_piece->get_direction()));
 
   update_board_view();
 }
