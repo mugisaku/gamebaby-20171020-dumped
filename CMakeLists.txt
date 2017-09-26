@@ -72,6 +72,7 @@ set(SOURCES
   gmbb_Game__BoardView.cpp
   gmbb_Game__move_hero_piece.cpp
   game_GameItem.cpp
+  game_SackItem.cpp
   game_Sack.cpp
   game_Hero.cpp
   game_Square.cpp

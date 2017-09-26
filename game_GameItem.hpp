@@ -35,8 +35,6 @@ GameItemKind
   card,
   water,
 
-  empty,
-
 };
 
 
@@ -135,7 +133,7 @@ GameItem
 
   char16_t const*  description=u"";
 
-  GameItemKind  kind=GameItemKind::empty;
+  GameItemKind  kind=GameItemKind::null;
   GameItemData  data;
 
 public:
@@ -157,8 +155,6 @@ public:
   GameItemKind  get_kind() const noexcept{return kind;}
 
   Price  get_price() const noexcept{return price;}
-
-  static GameItem const  empty;
 
 };
 

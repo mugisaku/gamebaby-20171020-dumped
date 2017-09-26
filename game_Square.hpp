@@ -4,18 +4,11 @@
 
 #include"game_Sack.hpp"
 #include"game_Direction.hpp"
+#include"game_Trap.hpp"
 #include"covered_ptr"
 
 
 namespace game{
-
-
-enum class
-TrapKind
-{
-  null,
-  
-};
 
 
 enum class
@@ -59,9 +52,7 @@ Square
 
   covered_ptr<Piece>  piece_ptr;
 
-  TrapKind  trap_kind=TrapKind::null;
-
-  int  trap_value=0;
+  Trap  trap;
 
 public:
   bool  operator==(SquareKind  k) const noexcept{return kind == k;}
@@ -77,14 +68,8 @@ public:
   SquareKind  get_kind(             ) const noexcept{return kind    ;}
   void        set_kind(SquareKind  k)       noexcept{       kind = k;}
 
-  void  set_trap(TrapKind  k, int  v=0) noexcept
-  {
-    trap_kind  = k;
-    trap_value = v;
-  }
-
-  TrapKind  get_trap_kind()  const noexcept{return trap_kind ;}
-  int       get_trap_value() const noexcept{return trap_value;}
+  void         set_trap(Trap const&  tr)       noexcept{       trap = tr;}
+  Trap const&  get_trap(               ) const noexcept{return trap     ;}
 
   covered_ptr<Square>  operator[](Direction  d) const noexcept{return linkset.get(d);}
 
@@ -92,8 +77,13 @@ public:
   covered_ptr<Piece>  get_piece(                     ) const noexcept{return piece_ptr    ;}
   void                set_piece(covered_ptr<Piece>  p)       noexcept{       piece_ptr = p;}
 
+
+  void  set_item(SackItem const&  i) noexcept{item = i;}
+
   SackItem&        get_item()       noexcept{return item;}
   SackItem const&  get_item() const noexcept{return item;}
+
+  bool  can_put_item() const noexcept{return !item && !trap;}
 
   void  remove_piece() noexcept;
 

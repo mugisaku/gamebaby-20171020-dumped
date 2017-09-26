@@ -2,26 +2,11 @@
 #define game_Sack_HPP
 
 
-#include"game_GameItem.hpp"
-#include"covered_ptr"
+#include"game_SackItem.hpp"
+#include<algorithm>
 
 
 namespace game{
-
-
-struct
-SackItem
-{
-  GameItem const*  pointer=&GameItem::empty;
-
-  uint8_t  number;
-
-  operator bool() const noexcept{return pointer;}
-
-  GameItem const*  operator->() const noexcept{return  pointer;}
-  GameItem const&  operator *() const noexcept{return *pointer;}
-
-};
 
 
 constexpr int  sack_capacity = 16;
@@ -32,8 +17,12 @@ Sack
 {
   SackItem  item_table[sack_capacity];
 
+  int  number_of_items=0;
+
 public:
   SackItem&  get_item(int  i) noexcept{return item_table[i];}
+
+  void  sort() noexcept{std::stable_sort(std::begin(item_table),std::end(item_table));}
 
   void  randomize() noexcept;
 

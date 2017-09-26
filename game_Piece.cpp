@@ -40,13 +40,91 @@ change_equipment(covered_ptr<SackItem>  p) noexcept
         switch(item->get_kind())
         {
       case(GameItemKind::sword):
-          sword_item = (sword_item == p)? nullptr:p;
+            if(sword_item == p)
+            {
+                if(p)
+                {
+                  p->unset_flag(SackItemFlag::be_equipped);
+                }
+
+
+              sword_item = nullptr;
+            }
+
+          else
+            {
+                if(sword_item)
+                {
+                  sword_item->unset_flag(SackItemFlag::be_equipped);
+                }
+
+
+                if(p)
+                {
+                  p->set_flag(SackItemFlag::be_equipped);
+                }
+
+
+              sword_item = p                                     ;
+            }
           break;
       case(GameItemKind::shield):
-          shield_item = (shield_item == p)? nullptr:p;
+            if(shield_item == p)
+            {
+                if(p)
+                {
+                  p->unset_flag(SackItemFlag::be_equipped);
+                }
+
+
+              shield_item = nullptr;
+            }
+
+          else
+            {
+                if(shield_item)
+                {
+                  shield_item->unset_flag(SackItemFlag::be_equipped);
+                }
+
+
+                if(p)
+                {
+                  p->set_flag(SackItemFlag::be_equipped);
+                }
+
+
+              shield_item = p;
+            }
           break;
       case(GameItemKind::belt):
-          belt_item = (belt_item == p)? nullptr:p;
+            if(belt_item == p)
+            {
+                if(p)
+                {
+                  p->unset_flag(SackItemFlag::be_equipped);
+                }
+
+
+              belt_item = nullptr;
+            }
+
+          else
+            {
+                if(belt_item)
+                {
+                  belt_item->unset_flag(SackItemFlag::be_equipped);
+                }
+
+
+                if(p)
+                {
+                  p->set_flag(SackItemFlag::be_equipped);
+                }
+
+
+              belt_item = p;
+            }
           break;
       default:;
         }

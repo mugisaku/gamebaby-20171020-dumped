@@ -45,7 +45,18 @@ operate(Controller const&  ctrl) noexcept
               update_status_reportor();
               break;
           case(1):
-              
+            {
+              auto&  sq = *hero_p.get_square();
+
+                if(sq.can_put_item())
+                {
+                  sq.set_item(*item_ptr);
+                }
+
+              else
+                {
+                }
+            }
               break;
           case(2):
               break;
@@ -58,16 +69,19 @@ operate(Controller const&  ctrl) noexcept
     {
       auto&  gi = hero.get_sack().get_item(menu_window->get_item_index());
 
-      item_ptr = &gi;
+        if(gi)
+        {
+          item_ptr = &gi;
 
-      char16_t const*  fon = gi->get_first_operation_name();
+          char16_t const*  fon = gi->get_first_operation_name();
 
 
-      wait_until_be_released(key_flags);
+          wait_until_be_released(key_flags);
 
-      start_choosing({fon,u"なげる",u"おく"},Point(40,80));
+          start_choosing({fon,u"なげる",u"おく"},Point(40,80));
 
-      waiting = true;
+          waiting = true;
+        }
     }
 
   else
@@ -101,7 +115,26 @@ callback(Image&  dst, Point  point, int  i)
 
   auto&  gi = hero.get_sack().get_item(i);
 
-  dst.print(gi->get_name(),point,glset,pixels);
+    if(gi)
+    {
+        if(gi.is_equipped())
+        {
+          dst.print(u'E',point,glset,pixels);
+        }
+
+
+      point.x += glset.get_width();
+
+        if(gi.is_cursed())
+        {
+          dst.print(u'C',point,glset,pixels);
+        }
+
+
+      point.x += glset.get_width();
+
+      dst.print(gi->get_name(),point,glset,pixels);
+    }
 }
 
 

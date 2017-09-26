@@ -97,11 +97,6 @@ get_first_operation_name() const noexcept
 
 
 GameItem const
-GameItem::
-empty;
-
-
-GameItem const
 game_item_table[] =
 {
   GameItem(u"きのぼう"        ,Price(0),u"",Sword(0)),

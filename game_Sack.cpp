@@ -17,8 +17,11 @@ randomize() noexcept
 
     for(auto&  i: item_table)
     {
-      i.pointer = &game_item_table[r.generate(game_item_total-1)];
+      i = SackItem(r.generate(8000)&1? &game_item_table[r.generate(game_item_total-1)]:nullptr);
     }
+
+
+  sort();
 }
 
 
