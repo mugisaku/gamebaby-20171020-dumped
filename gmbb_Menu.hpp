@@ -12,26 +12,37 @@
 namespace gmbb{
 
 
+class Image;
+
+using MenuItemRenderer = void  (*)(Image&  dst, Point  point, int  index) noexcept;
+
+
 class
 Menu
 {
   int  item_width;
   int  item_height;
 
-  int  column_number;
-  int     row_number;
+  int  row_number;
+
+  MenuItemRenderer  renderer;
 
 public:
-  Menu(int  item_w, int  item_h, int  col_n, int  row_n) noexcept;
+  constexpr Menu(int  item_w, int  item_h, int  row_n, MenuItemRenderer  rend) noexcept:
+  item_width( item_w),
+  item_height(item_h),
+  row_number(row_n),
+  renderer(rend){}
 
+  constexpr int  get_item_width()  const noexcept{return item_width ;}
+  constexpr int  get_item_height() const noexcept{return item_height;}
 
-  int  get_item_width()  const noexcept{return item_width;}
-  int  get_item_height() const noexcept{return item_height;}
+  constexpr int  get_row_number() const noexcept{return row_number;}
+  constexpr int  get_image_height() const noexcept{return item_height*row_number;}
 
-  int  get_column_number() const noexcept{return column_number;}
-  int  get_row_number()    const noexcept{return    row_number;}
+  void  set_row_number(int  n) noexcept{row_number = n;}
 
-  int  get_item_index(Point  point) const noexcept{return (column_number*point.y+point.x);}
+  void  render(Image&  dst, Point  dst_point, int  start_index, int  column_number=1) const noexcept;
 
 };
 

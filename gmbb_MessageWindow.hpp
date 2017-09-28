@@ -24,7 +24,7 @@ MessageWindow: public Window
   char16_t const*  output_pointer;
   char16_t*         input_pointer;
 
-  Pixel  pixels[2];
+  ColorIndex  coloring[4];
 
 public:
   MessageWindow(GlyphSet&  glset, int  column_number, int  row_number) noexcept;

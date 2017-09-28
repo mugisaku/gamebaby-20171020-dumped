@@ -30,8 +30,8 @@ Pixel
 };
 
 
-constexpr Pixel
-default_pixels[] = {Pixel(),Pixel(white),Pixel(),Pixel()};
+constexpr ColorIndex
+default_coloring[] = {0,white,0,0};
 
 
 class
@@ -62,12 +62,15 @@ public:
   void  fill(Pixel  pix=Pixel()) noexcept;
 
 
+  void  draw_dot(       Point  pt, ColorIndex  i) noexcept;
+  void  draw_dot_safely(Point  pt, ColorIndex  i) noexcept;
+
   void  draw_dot(       Point  pt, Pixel  pix) noexcept;
   void  draw_dot_safely(Point  pt, Pixel  pix) noexcept;
 
   void  draw_vline(       Point  pt, int  l, Pixel  pix) noexcept;
   void  draw_vline_safely(Point  pt, int  l, Pixel  pix) noexcept;
-  void  draw_hline(       Point  pt, int  l, Pixel  pix) noexcept;
+  void  draw_hline(       Point  pt, int  l, Pixel  pix, int  interval=0) noexcept;
   void  draw_hline_safely(Point  pt, int  l, Pixel  pix) noexcept;
 
   void  draw_line(Line  line, Pixel  pix) noexcept;
@@ -76,9 +79,9 @@ public:
   void  draw_rectangle_safely(Rectangle const&  rect, Pixel  pix) noexcept;
   void  fill_rectangle(       Rectangle         rect, Pixel  pix) noexcept;
 
-  void  print(      char16_t   c, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept;
-  void  print(const char*      s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept;
-  void  print(const char16_t*  s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept;
+  void  print(      char16_t   c, Point  pt, GlyphSet const&  glset, ColorIndex const*  coloring=default_coloring) noexcept;
+  void  print(const char*      s, Point  pt, GlyphSet const&  glset, ColorIndex const*  coloring=default_coloring) noexcept;
+  void  print(const char16_t*  s, Point  pt, GlyphSet const&  glset, ColorIndex const*  coloring=default_coloring) noexcept;
 
   void  transfer(Image const&  src, Rectangle  src_rect, Point  dst_pt, int  z=0) noexcept;
 

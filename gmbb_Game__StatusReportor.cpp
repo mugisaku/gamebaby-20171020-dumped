@@ -26,8 +26,6 @@ render(gmbb::Image&  dst) noexcept
 
   auto&  hero_p = *board.get_hero_piece();
 
-  static Pixel  const  pixels[] = {Pixel(null),Pixel(white),Pixel(null),Pixel(null)};
-
   Point  pt = rectangle;
 
   auto  w = glset.get_width();
@@ -40,39 +38,31 @@ render(gmbb::Image&  dst) noexcept
   auto  shield = hero_p.get_shield_item();
   auto    belt = hero_p.get_belt_item();
 
-  snprintf(buf,sizeof(buf),"けん");
-
-  dst.print(buf,pt,glset,pixels);
+  dst.print(u"けん",pt,glset);
 
     if(sword)
     {
-      dst.print((*sword)->get_name(),pt+Point(w*3),glset,pixels);
+      dst.print((*sword)->get_name(),pt+Point(w*3),glset);
     }
 
 
   pt.y += h;
 
-
-  snprintf(buf,sizeof(buf),"たて");
-
-  dst.print(buf,pt,glset,pixels);
+  dst.print(u"たて",pt,glset);
 
     if(shield)
     {
-      dst.print((*shield)->get_name(),pt+Point(w*3),glset,pixels);
+      dst.print((*shield)->get_name(),pt+Point(w*3),glset);
     }
 
 
   pt.y += h;
 
-
-  snprintf(buf,sizeof(buf),"おび");
-
-  dst.print(buf,pt,glset,pixels);
+  dst.print(u"おび",pt,glset);
 
     if(belt)
     {
-      dst.print((*belt)->get_name(),pt+Point(w*3),glset,pixels);
+      dst.print((*belt)->get_name(),pt+Point(w*3),glset);
     }
 
 

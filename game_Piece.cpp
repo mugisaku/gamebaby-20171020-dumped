@@ -1,5 +1,6 @@
 #include"game_Piece.hpp"
 #include"game_Board.hpp"
+#include"gmbb_unicode.hpp"
 #include<new>
 
 
@@ -29,107 +30,84 @@ reset(Enemy&  enem) noexcept
 }
 
 
+
+
 void
 Piece::
-change_equipment(covered_ptr<SackItem>  p) noexcept
+hold_item(covered_ptr<SackItem>  p) noexcept
 {
     if(p)
     {
+        if(unhold_item(p))
+        {
+          return;
+        }
+
+
       auto&  item = *p;
 
         switch(item->get_kind())
         {
       case(GameItemKind::sword):
-            if(sword_item == p)
-            {
-                if(p)
-                {
-                  p->unset_flag(SackItemFlag::be_equipped);
-                }
+          unhold_sword();
 
-
-              sword_item = nullptr;
-            }
-
-          else
-            {
-                if(sword_item)
-                {
-                  sword_item->unset_flag(SackItemFlag::be_equipped);
-                }
-
-
-                if(p)
-                {
-                  p->set_flag(SackItemFlag::be_equipped);
-                }
-
-
-              sword_item = p                                     ;
-            }
+                       p->set_flag(SackItemFlag::be_equipped);
+          sword_item = p                                     ;
           break;
       case(GameItemKind::shield):
-            if(shield_item == p)
-            {
-                if(p)
-                {
-                  p->unset_flag(SackItemFlag::be_equipped);
-                }
+          unhold_shield();
 
-
-              shield_item = nullptr;
-            }
-
-          else
-            {
-                if(shield_item)
-                {
-                  shield_item->unset_flag(SackItemFlag::be_equipped);
-                }
-
-
-                if(p)
-                {
-                  p->set_flag(SackItemFlag::be_equipped);
-                }
-
-
-              shield_item = p;
-            }
+                        p->set_flag(SackItemFlag::be_equipped);
+          shield_item = p                                     ;
           break;
       case(GameItemKind::belt):
-            if(belt_item == p)
-            {
-                if(p)
-                {
-                  p->unset_flag(SackItemFlag::be_equipped);
-                }
+          unhold_belt();
 
-
-              belt_item = nullptr;
-            }
-
-          else
-            {
-                if(belt_item)
-                {
-                  belt_item->unset_flag(SackItemFlag::be_equipped);
-                }
-
-
-                if(p)
-                {
-                  p->set_flag(SackItemFlag::be_equipped);
-                }
-
-
-              belt_item = p;
-            }
+                      p->set_flag(SackItemFlag::be_equipped);
+          belt_item = p                                     ;
           break;
       default:;
         }
+
+
+//printf("+%s を装備した\n",gmbb::to_string((*p)->get_name()).data());
     }
 }
+
+
+bool
+Piece::
+unhold_item(covered_ptr<SackItem>  p) noexcept
+{
+  bool  res = false;
+
+       if( sword_item == p){ unhold_sword();  res = true;}
+  else if(shield_item == p){unhold_shield();  res = true;}
+  else if(  belt_item == p){  unhold_belt();  res = true;}
+
+
+  return res;
+}
+
+
+namespace{
+void
+unhold(covered_ptr<SackItem>&  p) noexcept
+{
+    if(p)
+    {
+//printf("-%s を外した\n",gmbb::to_string((*p)->get_name()).data());
+      p->unset_flag(SackItemFlag::be_equipped);
+
+      p = nullptr;
+    }
+}
+}
+
+
+void  Piece::unhold_sword()  noexcept{unhold( sword_item);}
+void  Piece::unhold_shield() noexcept{unhold(shield_item);}
+void  Piece::unhold_belt()   noexcept{unhold(  belt_item);}
 
 
 gmbb::Rectangle

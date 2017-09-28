@@ -6,14 +6,27 @@
 namespace gmbb{
 
 
+
+
+void
 Menu::
-Menu(int  item_w, int  item_h, int  col_n, int  row_n) noexcept:
-item_width(item_w),
-item_height(item_h),
-column_number(col_n),
-row_number(row_n)
+render(Image&  dst, Point  dst_point, int  start_index, int  column_number) const noexcept
 {
+  int  current_index = start_index;
+
+    for(int  y = 0;  y < row_number;  ++y)
+    {
+        for(int  x = 0;  x < column_number;  ++x)
+        {
+          renderer(dst,Point(dst_point.x+(item_width*x),dst_point.y),current_index++);
+        }
+
+
+      dst_point.y += item_height;
+    }
 }
+
+
 
 
 }

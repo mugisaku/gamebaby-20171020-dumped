@@ -13,7 +13,9 @@
 #include"gmbb_FileWriter.hpp"
 #include"gmbb_Storage.hpp"
 #include"gmbb_Window.hpp"
-#include"gmbb_MenuWindow.hpp"
+#include"gmbb_ScrollStyleMenuWindow.hpp"
+#include"gmbb_ColumnStyleMenuWindow.hpp"
+#include"gmbb_Routine.hpp"
 #include"gmbb_unicode.hpp"
 
 

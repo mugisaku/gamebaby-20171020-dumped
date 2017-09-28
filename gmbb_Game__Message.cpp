@@ -63,43 +63,25 @@ process(Controller const&  ctrl) noexcept
 {
   using namespace gmbb::flags_of_input;
 
-    if((*window == WindowState::open_to_down) ||
-       (*window == WindowState::close_to_up ))
+    if(window->is_remaining())
     {
-      window->animate();
+      operate_message(ctrl);
     }
 
   else
-    if((*window == WindowState::full_opened) && is_not_waiting_for(key_flags))
+    if(ctrl.test(p_button))
     {
-        if(window->is_remaining())
+        if(window->is_clean())
         {
-          operate_message(ctrl);
+          pop_routine();
         }
 
       else
-        if(ctrl.test(p_button))
         {
-            if(window->is_clean())
-            {
-              window->set_state(WindowState::close_to_up);
-            }
+          window->clear();
 
-          else
-            {
-              window->clear();
-
-              wait_until_be_released(key_flags);
-            }
+          wait_until_button_is_released();
         }
-    }
-
-  else
-    if(*window == WindowState::hidden)
-    {
-      window->leave_from_parent();
-
-      pop_routine();
     }
 }
 
@@ -108,7 +90,7 @@ process(Controller const&  ctrl) noexcept
 
 
 void
-start_message(char16_t const*  text) noexcept
+open_message_window() noexcept
 {
     if(!window)
     {
@@ -116,14 +98,25 @@ start_message(char16_t const*  text) noexcept
     }
 
 
-  wait_until_be_released(key_flags);
-
   window->enter_into(root_widget,message_point);
 
-  window->set_state(WindowState::open_to_down);
+  window->set_state(WindowState::full_opened);
+}
+
+
+void
+close_message_window() noexcept
+{
+  window->leave_from_parent();
+}
+
+
+void
+start_message(char16_t const*  text) noexcept
+{
+  open_message_window();
 
   window->push(text);
-
 
   push_routine(process);
 }

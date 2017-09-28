@@ -11,6 +11,31 @@ namespace gmbb{
 
 void
 Image::
+draw_dot(Point  pt, ColorIndex  i) noexcept
+{
+    if(i)
+    {
+      this->pixels[(this->width*pt.y)+pt.x].index = i;
+    }
+}
+
+
+void
+Image::
+draw_dot_safely(Point  pt, ColorIndex  i) noexcept
+{
+    if((pt.x >=            0) &&
+       (pt.x <   this->width) &&
+       (pt.y >=            0) &&
+       (pt.y <  this->height))
+    {
+      draw_dot(pt,i);
+    }
+}
+
+
+void
+Image::
 draw_dot(Point  pt, Pixel  pix) noexcept
 {
     if(pix.index)
@@ -87,11 +112,24 @@ draw_vline_safely(Point  pt, int  l, Pixel  pix) noexcept
 
 void
 Image::
-draw_hline(Point  pt, int  l, Pixel  pix) noexcept
+draw_hline(Point  pt, int  l, Pixel  pix, int  interval) noexcept
 {
+  int  n = interval;
+
     while(l--)
     {
-      draw_dot(pt,pix);
+        if(n)
+        {
+          --n;
+        }
+
+      else
+        {
+          draw_dot(pt,pix);
+
+          n = interval;
+        }
+
 
       pt.x += 1;
     }

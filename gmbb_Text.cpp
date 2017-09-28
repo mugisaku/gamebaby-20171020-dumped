@@ -122,13 +122,13 @@ is_full() const noexcept
 
 void
 Text::
-render(Image&  dst, Point  point, GlyphSet const&  glset, Pixel const*  pixels) const noexcept
+render(Image&  dst, Point  point, GlyphSet const&  glset, ColorIndex const*  coloring) const noexcept
 {
   auto  next = first;
 
     while(next)
     {
-      dst.print(next->string.data(),point,glset,pixels);
+      dst.print(next->string.data(),point,glset,coloring);
 
       point.y += glset.get_height();
 

@@ -9,11 +9,8 @@ namespace gmbb{
 namespace{
 
 
-MenuWindow*
+ColumnStyleMenuWindow*
 menu_window;
-
-
-constexpr int  key_flags = flags_of_input::p_button|flags_of_input::n_button;
 
 
 covered_ptr<game::SackItem>
@@ -21,50 +18,86 @@ item_ptr;
 
 
 void
-operate(Controller const&  ctrl) noexcept
+callback(Image&  dst, Point  point, int  i)
+{
+  auto&  gi = hero.get_sack().get_item(i);
+
+    if(gi)
+    {
+        if(gi.is_equipped())
+        {
+          dst.print(u'E',point,glset);
+        }
+
+
+      point.x += glset.get_width();
+
+        if(gi.is_cursed())
+        {
+          dst.print(u'C',point,glset);
+        }
+
+
+      point.x += glset.get_width();
+
+      dst.print(gi->get_name(),point,glset);
+    }
+}
+
+
+void
+return_(int  retval) noexcept
+{
+  constexpr int  top    = 0;
+  constexpr int  throw_ = 1;
+  constexpr int  put    = 2;
+
+    if(retval >= 0)
+    {
+      auto&  hero_p = *board.get_hero_piece();
+
+        switch(retval)
+        {
+      case(top):
+          hero_p.hold_item(item_ptr);
+          break;
+      case(throw_):
+          hero_p.unhold_item(item_ptr);
+          break;
+      case(put):
+          auto&  sq = *hero_p.get_square();
+
+            if(sq.can_put_item())
+            {
+              sq.set_item(*item_ptr);
+
+              hero_p.unhold_item(item_ptr);
+            }
+
+          else
+            {
+            }
+
+          break;
+        }
+
+
+      hero.get_sack().sort();
+
+      update_status_monitor();
+      update_status_reportor();
+    }
+
+
+  close_choosing_window();
+}
+
+
+void
+process(Controller const&  ctrl) noexcept
 {
   using namespace gmbb::flags_of_input;
 
-  static bool  waiting;
-
-    if(waiting)
-    {
-      auto  r = get_response();
-
-      waiting = false;
-
-        if(r >= 0)
-        {
-          auto&  hero_p = *board.get_hero_piece();
-
-            switch(r)
-            {
-          case(0):
-              hero_p.change_equipment(item_ptr);
-              update_status_monitor();
-              update_status_reportor();
-              break;
-          case(1):
-            {
-              auto&  sq = *hero_p.get_square();
-
-                if(sq.can_put_item())
-                {
-                  sq.set_item(*item_ptr);
-                }
-
-              else
-                {
-                }
-            }
-              break;
-          case(2):
-              break;
-            }
-        }
-    }
-
-  else
     if(ctrl.test(p_button))
     {
       auto&  gi = hero.get_sack().get_item(menu_window->get_item_index());
@@ -76,24 +109,16 @@ operate(Controller const&  ctrl) noexcept
           char16_t const*  fon = gi->get_first_operation_name();
 
 
-          wait_until_be_released(key_flags);
+          prepare_choosing_window({fon,u"なげる",u"おく"},Point(40,80));
 
-          start_choosing({fon,u"なげる",u"おく"},Point(40,80));
-
-          waiting = true;
+          start_choosing();
         }
     }
 
   else
     if(ctrl.test(n_button))
     {
-      menu_window->reset_cursor();
-
-      menu_window->leave_from_parent();
-
       pop_routine();
-
-      wait_until_be_released(key_flags);
     }
 
   else
@@ -108,76 +133,44 @@ operate(Controller const&  ctrl) noexcept
 }
 
 
-void
-callback(Image&  dst, Point  point, int  i)
-{
-  Pixel  pixels[] = {Pixel(null),Pixel(white),Pixel(null),Pixel(null)};
-
-  auto&  gi = hero.get_sack().get_item(i);
-
-    if(gi)
-    {
-        if(gi.is_equipped())
-        {
-          dst.print(u'E',point,glset,pixels);
-        }
-
-
-      point.x += glset.get_width();
-
-        if(gi.is_cursed())
-        {
-          dst.print(u'C',point,glset,pixels);
-        }
-
-
-      point.x += glset.get_width();
-
-      dst.print(gi->get_name(),point,glset,pixels);
-    }
 }
 
 
 void
-process(Controller const&  ctrl) noexcept
+open_sack_menu_window() noexcept
 {
-    if((*menu_window == WindowState::open_to_down) ||
-       (*menu_window == WindowState::close_to_up))
+    if(!menu_window)
     {
-      menu_window->animate();
+      Menu  menu(glset.get_width()*20,glset.get_height(),8,callback);
+
+      menu_window = new ColumnStyleMenuWindow(menu,2);
     }
 
-  else
-    if((*menu_window == WindowState::full_opened) &&
-       is_not_waiting_for(key_flags))
-    {
-      operate(ctrl);
-    }
+
+
+  menu_window->enter_into(root_widget,Point(96,24));
+
+  menu_window->set_state(WindowState::full_opened);
 }
 
 
+void
+close_sack_menu_window() noexcept
+{
+  menu_window->reset_cursor();
+
+  menu_window->leave_from_parent();
+
+  menu_window->set_state(WindowState::hidden);
 }
 
 
 void
 start_sack_menu() noexcept
 {
-    if(!menu_window)
-    {
-      Menu  menu(glset.get_width()*20,glset.get_height(),2,8);
+  open_sack_menu_window();
 
-      menu_window = new MenuWindow(menu,callback,1);
-    }
-
-
-
-  wait_until_be_released(key_flags);
-
-  menu_window->enter_into(root_widget,Point(96,24));
-
-  menu_window->set_state(WindowState::open_to_down);
-
-  push_routine(process);
+  push_routine(process,return_);
 }
 
 

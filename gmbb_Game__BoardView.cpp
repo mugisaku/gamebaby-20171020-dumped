@@ -17,10 +17,6 @@ constexpr int  board_image_w = (square_size*game::board_width );
 constexpr int  board_image_h = (square_size*game::board_height);
 
 
-Image
-tmp_image(square_size,square_size);
-
-
 class
 BoardView: public Widget
 {
@@ -95,30 +91,49 @@ render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
 void
 render_square(game::Square const&  sq, Image&  dst, Point  dst_point) noexcept
 {
-  tmp_image.fill( (sq == game::SquareKind::room         )? light_gray
-                 :(sq == game::SquareKind::wall         )? gray
-                 :Pixel(0));
+  Rectangle  rect(24*4,24*10,24,24);
+
+    if(sq == game::SquareKind::room)
+    {
+      rect.y += 24;
+    }
+
+
+  dst.transfer(character_image,rect,dst_point,0);
 
   auto&  item = sq.get_item();
 
     if(item)
     {
-      int  x;
-      int  y;
+      int  x =     0;
+      int  y = 24*10;
 
         switch(item->get_kind())
         {
       case(game::GameItemKind::sword):
-          y = 24*5;
+          break;
+      case(game::GameItemKind::shield):
+          y += 24;
+          break;
+      case(game::GameItemKind::belt):
+          x += 24;
+          break;
+      case(game::GameItemKind::wand):
+          x += 24;
+          y += 24;
+          break;
+      case(game::GameItemKind::card):
+          x += 24*2;
+          break;
+      case(game::GameItemKind::water):
+          x += 24*2;
+          y += 24;
           break;
         }
 
 
-      dst.transfer(character_image,Rectangle(x,y,24,24),0);
+      dst.transfer(character_image,Rectangle(x,y,24,24),dst_point,0);
     }
-
-
-  dst.transfer(tmp_image,Rectangle(),dst_point);
 }
 
 
@@ -206,6 +221,11 @@ show_board_view() noexcept
     if(!view)
     {
       view = new BoardView(board);
+
+      auto&  sq = *hero_piece->get_square();
+
+      view->point.x = (24*sq.get_x())-(screen_width /2);
+      view->point.y = (24*sq.get_y())-(screen_height/2);
     }
 
 

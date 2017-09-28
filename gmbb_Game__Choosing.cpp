@@ -9,15 +9,16 @@ namespace gmbb{
 namespace{
 
 
-MenuWindow*
+ColumnStyleMenuWindow*
 menu_window;
-
-
-constexpr int  key_flags = flags_of_input::p_button|flags_of_input::n_button;
 
 
 char16_t const*
 table[8];
+
+
+Point
+window_point;
 
 
 bool
@@ -25,82 +26,60 @@ is_cancelable;
 
 
 void
-operate(Controller const&  ctrl) noexcept
+process(Controller const&  ctrl) noexcept
 {
   using namespace gmbb::flags_of_input;
 
     if(ctrl.test(p_button))
     {
-      set_response(menu_window->get_item_index());
-
-      menu_window->leave_from_parent();
-
-      pop_routine();
-
-      wait_until_be_released(key_flags);
+      pop_routine(menu_window->get_item_index());
     }
 
   else
     if(is_cancelable && ctrl.test(n_button))
     {
-      set_response(-1);
-
-      menu_window->leave_from_parent();
-
-      pop_routine();
-
-      wait_until_be_released(key_flags);
+      pop_routine(-1);
     }
 
-  else if(ctrl.test(up_button)  ){menu_window->move_cursor_to_up();}
-  else if(ctrl.test(down_button)){menu_window->move_cursor_to_down();}
+  else
+    if(interval_timer.check(200,ctrl.get_time()))
+    {
+           if(ctrl.test(up_button)  ){  menu_window->move_cursor_to_up();  interval_timer.enable();}
+      else if(ctrl.test(down_button)){  menu_window->move_cursor_to_down();  interval_timer.enable();}
+      else {interval_timer.disable();}
+    }
 }
 
 
 void
 callback(Image&  dst, Point  point, int  i) noexcept
 {
-  Pixel  pixels[] = {Pixel(null),Pixel(white),Pixel(null),Pixel(null)};
-
-  dst.print(table[i],point,glset,pixels);
+  dst.print(table[i],point,glset);
 }
 
 
 void
-process(Controller const&  ctrl) noexcept
-{
-    if((*menu_window == WindowState::open_to_down) ||
-       (*menu_window == WindowState::close_to_up))
-    {
-      menu_window->animate();
-    }
-
-  else
-    if((*menu_window == WindowState::full_opened) &&
-       is_not_waiting_for(key_flags))
-    {
-      operate(ctrl);
-    }
-}
-
-
-}
-
-
-void
-start_choosing(std::initializer_list<char16_t const*>  ls, Point  point, bool  cancelable) noexcept
+create_window() noexcept
 {
     if(!menu_window)
     {
-      Menu  menu(glset.get_width()*5,glset.get_height(),1,8);
+      Menu  menu(glset.get_width()*5,glset.get_height(),0,callback);
 
-      menu_window = new MenuWindow(menu,callback);
-
-      menu_window->lock_base();
+      menu_window = new ColumnStyleMenuWindow(menu);
     }
+}
 
 
-  menu_window->change_visible_row_number(ls.size());
+}
+
+
+void
+prepare_choosing_window(std::initializer_list<char16_t const*>  ls, Point  point) noexcept
+{
+  create_window();
+
+
+  menu_window->change_row_number(ls.size());
 
   auto  it = ls.begin();
 
@@ -110,11 +89,32 @@ start_choosing(std::initializer_list<char16_t const*>  ls, Point  point, bool  c
     }
 
 
-  wait_until_be_released(key_flags);
+  window_point = point;
+}
 
-  menu_window->enter_into(root_widget,point);
 
-  menu_window->set_state(WindowState::open_to_down);
+void
+open_choosing_window() noexcept
+{
+  create_window();
+
+  menu_window->enter_into(root_widget,window_point);
+
+  menu_window->set_state(WindowState::full_opened);
+}
+
+
+void
+close_choosing_window() noexcept
+{
+  menu_window->leave_from_parent();
+}
+
+
+void
+start_choosing(bool  cancelable) noexcept
+{
+  open_choosing_window();
 
   is_cancelable = cancelable;
 

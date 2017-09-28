@@ -79,6 +79,21 @@ to_char32(const char*  utf8, size_t  byte_number)
 
 
 
+std::string
+to_string(char16_t const*  u16s)
+{
+  std::string  s;
+
+    while(*u16s)
+    {
+      s += UTF8Chunk(*u16s++).codes;
+    }
+
+
+  return std::move(s);
+}
+
+
 std::u16string
 to_u16string(char const*  s)
 {

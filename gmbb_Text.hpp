@@ -41,7 +41,7 @@ public:
 
   bool  is_full() const noexcept;
 
-  void  render(Image&  dst, Point  point, GlyphSet const&  glset, Pixel const*  pixels) const noexcept;
+  void  render(Image&  dst, Point  point, GlyphSet const&  glset, ColorIndex const*  coloring) const noexcept;
 
 };
 

@@ -12,7 +12,7 @@ namespace gmbb{
 
 void
 Image::
-print(char16_t  c, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept
+print(char16_t  c, Point  pt, GlyphSet const&  glset, ColorIndex const*  coloring) noexcept
 {
   auto  p = glset.get_glyph_data(c);
 
@@ -32,11 +32,11 @@ print(char16_t  c, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noex
 
             for(int  xx = 0;  xx < w;  xx += 1)
             {
-              auto&  src = pixels[code>>shift_amount];
+              auto  src = coloring[code>>shift_amount];
 
-                if(src.index && (dst->z <= src.z))
+                if(src)
                 {
-                  *dst = src;
+                  dst->index = src;
                 }
 
 
@@ -53,7 +53,7 @@ print(char16_t  c, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noex
 
 void
 Image::
-print(const char*  s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept
+print(const char*  s, Point  pt, GlyphSet const&  glset, ColorIndex const*  coloring) noexcept
 {
     while(*s)
     {
@@ -63,7 +63,7 @@ print(const char*  s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) n
 
       s += byte_number;
 
-      print(static_cast<char16_t>(c),pt,glset,pixels);
+      print(static_cast<char16_t>(c),pt,glset,coloring);
 
       pt.x += glset.get_width();
     }
@@ -74,11 +74,11 @@ print(const char*  s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) n
 
 void
 Image::
-print(const char16_t*  s, Point  pt, GlyphSet const&  glset, Pixel const*  pixels) noexcept
+print(const char16_t*  s, Point  pt, GlyphSet const&  glset, ColorIndex const*  coloring) noexcept
 {
     while(*s)
     {
-      print(*s++,pt,glset,pixels);
+      print(*s++,pt,glset,coloring);
 
       pt.x += glset.get_width();
     }

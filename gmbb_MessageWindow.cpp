@@ -18,8 +18,7 @@ output_pointer(buffer)
 {
   Window::set_state(WindowState::open_to_down);
 
-  pixels[0].index = predefined_color_index::null;
-  pixels[1].index = predefined_color_index::white;
+  coloring[1] = white;
 }
 
 
@@ -195,7 +194,7 @@ render(Image&  dst) noexcept
 
     if(Window::get_state() == WindowState::full_opened)
     {
-      text.render(dst,Point(rectangle.x+8,rectangle.y+8),*glyphset,pixels);
+      text.render(dst,Point(rectangle.x+8,rectangle.y+8),*glyphset,coloring);
     }
 }
 

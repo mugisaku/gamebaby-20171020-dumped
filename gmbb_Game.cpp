@@ -26,14 +26,6 @@ IntervalTimer
 interval_timer;
 
 
-int
-response_value;
-
-
-void   set_response(int  v) noexcept{response_value = v;}
-int    get_response(      ) noexcept{return response_value;}
-
-
 Image
 screen_image(screen_width,screen_height);
 
@@ -54,76 +46,37 @@ bool
 screen_is_needing_to_redraw = true;
 
 
-void
-(*current_callback)(Controller const&  ctrl);
-
-
-
-
-uint32_t
-flags_for_waiting;
-
-
 
 
 void
-wait_until_be_released(uint32_t  flags) noexcept
+return_(int  retval) noexcept
 {
-  flags_for_waiting |= flags;
-}
-
-
-bool
-is_not_waiting_for(uint32_t  flags) noexcept
-{
-  return !(flags_for_waiting&flags);
-}
-
-
-
-
-std::vector<Routine>
-routine_stack;
-
-
-void
-push_routine(Routine  r) noexcept
-{
-  routine_stack.emplace_back(r);
-}
-
-
-void
-pop_routine() noexcept
-{
-    if(routine_stack.size())
+    if(is_main_menu_window_opened())
     {
-      routine_stack.pop_back();
+      close_main_menu_window();
+
+      hide_status_reportor();
     }
 }
 
 
-
-
 void
-waiting(Controller const&  ctrl)
+waiting(Controller const&  ctrl) noexcept
 {
   using namespace gmbb::flags_of_input;
 
-    if(routine_stack.size())
-    {
-      routine_stack.back()(ctrl);
-    }
-
-  else
     if(ctrl.test(p_button))
     {
     }
 
   else
-    if(ctrl.test(n_button) && is_not_waiting_for(flags_of_input::p_button|flags_of_input::n_button))
+    if(ctrl.test(n_button))
     {
+      open_main_menu_window();
+
       start_main_menu();
+
+      show_status_reportor();
     }
 
   else
@@ -187,7 +140,7 @@ initialize() noexcept
 
   board.set_hero_piece(hero_piece);
 
-  current_callback = waiting;
+  push_routine(waiting,return_);
 
   show_board_view();
   show_status_monitor();
@@ -216,10 +169,7 @@ initialize() noexcept
 void
 step(Controller const&  ctrl)
 {
-  flags_for_waiting &= ctrl.get();
-
-
-  current_callback(ctrl);
+  call_routine(ctrl);
 
   root_widget.update();
 

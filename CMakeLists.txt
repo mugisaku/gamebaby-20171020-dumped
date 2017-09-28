@@ -56,12 +56,14 @@ set(SOURCES
   gmbb_Text.cpp
   gmbb_MessageWindow.cpp
   gmbb_Menu.cpp
-  gmbb_MenuWindow.cpp
+  gmbb_ScrollStyleMenuWindow.cpp
+  gmbb_ColumnStyleMenuWindow.cpp
   gmbb_RandomNumber.cpp
   gmbb_LineMaker.cpp
   gmbb_Widget.cpp
   gmbb_Window.cpp
   gmbb_Window__draw_frame.cpp
+  gmbb_Routine.cpp
   gmbb_Game.cpp
   gmbb_Game__Message.cpp
   gmbb_Game__MainMenu.cpp

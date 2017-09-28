@@ -110,7 +110,12 @@ public:
   void       set_direction(Direction  d)       noexcept{direction = d;}
   Direction  get_direction(            ) const noexcept{return direction;}
 
-  void  change_equipment(covered_ptr<SackItem>  p) noexcept;
+  void    hold_item(covered_ptr<SackItem>  p) noexcept;
+  bool  unhold_item(covered_ptr<SackItem>  p) noexcept;
+
+  void  unhold_sword() noexcept;
+  void  unhold_shield() noexcept;
+  void  unhold_belt() noexcept;
 
   covered_ptr<SackItem>  get_sword_item()  const noexcept{return  sword_item;}
   covered_ptr<SackItem>  get_shield_item() const noexcept{return shield_item;}

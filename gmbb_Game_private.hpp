@@ -61,17 +61,6 @@ Widget
 root_widget;
 
 
-using Routine = void(*)(Controller const&  ctrl) noexcept;
-
-void  push_routine(Routine  r) noexcept;
-void   pop_routine(          ) noexcept;
-
-
-
-
-void  wait_until_be_released(uint32_t  flags) noexcept;
-
-bool  is_not_waiting_for(uint32_t  flags) noexcept;
 
 
 void  move_hero_piece_to_forward();
@@ -97,14 +86,35 @@ void  show_status_reportor() noexcept;
 void  hide_status_reportor() noexcept;
 void  update_status_reportor() noexcept;
 
+
+bool  is_status_monitor_window_opened() noexcept;
+bool  is_status_report_window_opened()  noexcept;
+
+
+void   open_main_menu_window() noexcept;
+void  close_main_menu_window() noexcept;
 void  start_main_menu() noexcept;
+bool  is_main_menu_window_opened() noexcept;
+
+
+void   open_sack_menu_window() noexcept;
+void  close_sack_menu_window() noexcept;
 void  start_sack_menu() noexcept;
-void    start_message(char16_t const*  text) noexcept;
-void    start_choosing(std::initializer_list<char16_t const*>  ls, Point  point, bool  cancelable=true) noexcept;
+bool  is_sack_menu_window_opened()      noexcept;
 
 
-void  set_response(int  v) noexcept;
-int   get_response(      ) noexcept;
+void  prepare_choosing_window(std::initializer_list<char16_t const*>  ls, Point  point) noexcept;
+void   open_choosing_window() noexcept;
+void  close_choosing_window() noexcept;
+void    start_choosing(bool  cancelable=true) noexcept;
+bool  is_choosing_window_opened()       noexcept;
+
+
+void   open_message_window() noexcept;
+void  close_message_window() noexcept;
+void  start_message(char16_t const*  text) noexcept;
+bool  is_message_window_opened()        noexcept;
+
 
 
 

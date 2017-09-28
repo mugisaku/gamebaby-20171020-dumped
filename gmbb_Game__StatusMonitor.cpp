@@ -26,9 +26,7 @@ render(gmbb::Image&  dst) noexcept
 
   snprintf(buf,sizeof(buf),"HP%3d/%3d",hero_p->get_hp(),hero_p->get_hp_max());
 
-  static Pixel  const  pixels[] = {Pixel(),white,Pixel(),Pixel()};
-
-  dst.print(buf,rectangle,glset,pixels);
+  dst.print(buf,rectangle,glset);
 }
 
 

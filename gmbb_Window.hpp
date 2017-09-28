@@ -30,9 +30,9 @@ protected:
   WindowState  state=WindowState::hidden;
 
   Pixel  pixels[4] = {Pixel(predefined_color_index::null),
-                      Pixel(predefined_color_index::blue),
-                      Pixel(predefined_color_index::white),
-                      Pixel(predefined_color_index::light_gray)};
+                      Pixel(predefined_color_index::blue      ,30000),
+                      Pixel(predefined_color_index::white     ,30000),
+                      Pixel(predefined_color_index::light_gray,30000)};
 
   int   width_max=0;
   int  height_max=0;
