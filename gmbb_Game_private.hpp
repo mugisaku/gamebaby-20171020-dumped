@@ -16,6 +16,11 @@ namespace gmbb{
 constexpr int  screen_width  = 320;
 constexpr int  screen_height = 240;
 
+constexpr int  square_size = 24;
+
+constexpr int  board_image_w = (square_size*game::board_width );
+constexpr int  board_image_h = (square_size*game::board_height);
+
 
 extern
 game::Hero
@@ -69,10 +74,7 @@ void  turn_hero_piece_to_right();
 void  move_hero_piece_to_backward();
 
 
-void  move_board_view_to_up();
-void  move_board_view_to_left();
-void  move_board_view_to_right();
-void  move_board_view_to_down();
+void  move_board_view(int  x, int  y) noexcept;
 
 void  show_board_view() noexcept;
 void  hide_board_view() noexcept;
@@ -116,6 +118,9 @@ void  start_message(char16_t const*  text) noexcept;
 bool  is_message_window_opened()        noexcept;
 
 
+
+void  update_piece(game::Piece&  p) noexcept;
+void  render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept;
 
 
 }

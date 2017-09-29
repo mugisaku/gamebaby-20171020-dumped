@@ -4,51 +4,47 @@
 namespace gmbb{
 
 
+namespace{
 void
-move(game::Piece&  p, game::Direction  d, game::Square&  sq)
+move_(game::Piece&  actor, int  count) noexcept
+{
+  using game::Direction;
+
+  Point  pt;
+
+    switch(actor.get_moving_direction())
+    {
+  case(Direction::front      ): pt = Point( 0, 1);break;
+  case(Direction::front_left ): pt = Point(-1, 1);break;
+  case(Direction::left       ): pt = Point(-1, 0);break;
+  case(Direction::back_left  ): pt = Point(-1,-1);break;
+  case(Direction::back       ): pt = Point( 0,-1);break;
+  case(Direction::back_right ): pt = Point( 1,-1);break;
+  case(Direction::right      ): pt = Point( 1, 0);break;
+  case(Direction::front_right): pt = Point( 1, 1);break;
+    }
+
+
+  actor.move_rendering_point(pt.x,pt.y);
+  move_board_view(           pt.x,pt.y);
+}
+}
+
+
+void
+move(game::Piece&  p, game::Square&  sq)
 {
     if(!sq.get_piece() && (sq != game::SquareKind::wall))
     {
+      p.set_rendering_point_by_current_square(square_size);
+
+p.get_rendering_point().print();
       p.get_square()->set_piece(nullptr);
 
       sq.set_piece(&p);
       p.set_square(&sq);
-//printf("%3d %3d\n",sq.get_x(),sq.get_y());
-      update_board_view();
 
-      using game::Direction;
-
-        switch(d)
-        {
-      case(Direction::front):
-          move_board_view_to_down();
-          break;
-      case(Direction::front_left):
-          move_board_view_to_left();
-          move_board_view_to_down();
-          break;
-      case(Direction::left):
-          move_board_view_to_left();
-          break;
-      case(Direction::back_left):
-          move_board_view_to_up();
-          move_board_view_to_left();
-          break;
-      case(Direction::back):
-          move_board_view_to_up();
-          break;
-      case(Direction::back_right):
-          move_board_view_to_up();
-          move_board_view_to_right();
-          break;
-      case(Direction::right):
-          move_board_view_to_right();
-          break;
-      case(Direction::front_right):
-          move_board_view_to_down();
-          move_board_view_to_right();
-          break;
-        }
+      p.push_action(move_,square_size);
     }
 }
 
@@ -58,13 +54,16 @@ move_hero_piece_to_forward()
 {
   auto  sq = hero_piece->get_square();
 
-  auto  d = hero_piece->get_direction();
+  auto  d = hero_piece->get_face_direction();
+
+  hero_piece->set_moving_direction(d);
+
 
   auto  dst = (*sq)[d];
 
     if(dst)
     {
-      move(*hero_piece,d,*dst);
+      move(*hero_piece,*dst);
     }
 }
 
@@ -72,7 +71,7 @@ move_hero_piece_to_forward()
 void
 turn_hero_piece_to_left()
 {
-  hero_piece->set_direction(get_right(hero_piece->get_direction()));
+  hero_piece->turn_face_direction_to_left();
 
   update_board_view();
 }
@@ -81,7 +80,7 @@ turn_hero_piece_to_left()
 void
 turn_hero_piece_to_right()
 {
-  hero_piece->set_direction(get_left(hero_piece->get_direction()));
+  hero_piece->turn_face_direction_to_right();
 
   update_board_view();
 }
@@ -92,13 +91,16 @@ move_hero_piece_to_backward()
 {
   auto  sq = hero_piece->get_square();
 
-  auto  d = get_opposite(hero_piece->get_direction());
+  auto  d = get_opposite(hero_piece->get_face_direction());
+
+  hero_piece->set_moving_direction(d);
+
 
   auto  dst = (*sq)[d];
 
     if(dst)
     {
-      move(*hero_piece,d,*dst);
+      move(*hero_piece,*dst);
     }
 }
 

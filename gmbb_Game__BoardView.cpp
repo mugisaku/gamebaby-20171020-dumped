@@ -78,17 +78,6 @@ revise_point() noexcept
 
 namespace{
 void
-render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
-{
-  int  z = p.get_square()->get_y();
-
-  dst_point.y -= 24;
-
-  dst.transfer(character_image,p.get_image_rectangle(),dst_point,z);
-}
-
-
-void
 render_square(game::Square const&  sq, Image&  dst, Point  dst_point) noexcept
 {
   Rectangle  rect(24*4,24*10,24,24);
@@ -150,17 +139,7 @@ render_row(Square const*  begin,
         }
 
 
-      auto&  sq = *current++;
-
-      render_square(sq,dst,dst_point);
-
-      auto  p = sq.get_piece();
-
-        if(p)
-        {
-          render_piece(*p,dst,dst_point);
-        }
-
+      render_square(*current++,dst,dst_point);
 
       dst_point.x += square_size;
     }
@@ -200,19 +179,30 @@ render(Image&  dst) noexcept
       start_point.y +=           1;
               dst_y += square_size;
     }
+
+
+  auto  next = board.get_first_piece();
+
+    while(next)
+    {
+      next->render(dst,view->point);
+
+      next = next->get_next();
+    }
 }
 
 
-constexpr int  move_amount = 24;
-
-
 }
 
 
-void  move_board_view_to_up()   {  view->point.y -= move_amount;  update_board_view();}
-void  move_board_view_to_left() {  view->point.x -= move_amount;  update_board_view();}
-void  move_board_view_to_right(){  view->point.x += move_amount;  update_board_view();}
-void  move_board_view_to_down() {  view->point.y += move_amount;  update_board_view();}
+void
+move_board_view(int  x, int  y) noexcept
+{
+  view->point.x += x;
+  view->point.y += y;
+
+  update_board_view();
+}
 
 
 void

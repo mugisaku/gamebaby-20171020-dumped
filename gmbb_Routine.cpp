@@ -29,7 +29,7 @@ push_routine(Routine::OnStepCallback  st, Routine::OnReturnCallback  ret) noexce
 {
   routine_stack.emplace_back(st,ret);
 
-  flags = 0xFFFFFFFF;
+  wait_until_button_is_released();
 }
 
 
@@ -40,7 +40,7 @@ pop_routine() noexcept
     {
       routine_stack.pop_back();
 
-      flags = 0xFFFFFFFF;
+      wait_until_button_is_released();
 
         if(routine_stack.size())
         {

@@ -40,8 +40,41 @@ sort() noexcept
 
 void
 Sack::
+clear() noexcept
+{
+    for(auto&  i: value_table)
+    {
+      i = SackItem();
+    }
+}
+
+
+bool
+Sack::
+try_push_item(SackItem const&  item) noexcept
+{
+    for(auto&  v: value_table)
+    {
+        if(!v)
+        {
+          v = item;
+
+          return true;
+        }
+    }
+
+
+  return false;
+}
+
+
+void
+Sack::
 randomize() noexcept
 {
+  clear();
+
+
   gmbb::RandomNumber  r;
 
     for(auto&  i: value_table)

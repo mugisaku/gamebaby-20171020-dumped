@@ -2,6 +2,9 @@
 #define GMBB_Figures_HPP
 
 
+#include<cstdio>
+
+
 #ifndef report
 #define report printf("[report] %s, %s, %d\n",__FILE__,__func__,__LINE__);
 #endif
@@ -25,6 +28,11 @@ Point
     return Point(x+rhs.x,y+rhs.y);
   }
 
+  constexpr Point  operator-(Point const&  rhs) const noexcept
+  {
+    return Point(x-rhs.x,y-rhs.y);
+  }
+
   constexpr Point  operator*(int  n) const noexcept
   {
     return Point(x*n,y*n);
@@ -38,6 +46,11 @@ Point
   constexpr Point  operator%(int  n) const noexcept
   {
     return Point(x%n,y%n);
+  }
+
+  constexpr Point  operator-() const noexcept
+  {
+    return Point(-x,-y);
   }
 
   constexpr Point&  operator+=(Point const&  rhs) noexcept
@@ -70,6 +83,11 @@ Point
     y %= n;
 
     return *this;
+  }
+
+  void  print(char const*  prefix="") const
+  {
+    printf("[print point %s] %4d %4d\n",prefix,x,y);
   }
 
 };

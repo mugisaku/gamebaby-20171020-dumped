@@ -49,6 +49,8 @@ public:
   void                set_hero_piece(covered_ptr<Piece>  p) noexcept{hero_piece = p;}
   covered_ptr<Piece>  get_hero_piece() const noexcept{return hero_piece;}
 
+  Piece const*  get_first_piece() const noexcept{return first.get_const_raw_pointer();}
+
   void  step() const noexcept;
 
 };
@@ -61,6 +63,10 @@ PieceLink
 
   covered_ptr<Piece>  previous;
   covered_ptr<Piece>      next;
+
+public:
+  Piece const*  get_previous() const{return previous.get_const_raw_pointer();}
+  Piece const*      get_next() const{return     next.get_const_raw_pointer();}
 
 };
 

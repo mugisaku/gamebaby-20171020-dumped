@@ -49,6 +49,8 @@ public:
   constexpr T* operator->() const noexcept{return  raw_pointer;}
   constexpr T& operator[](int  i) const noexcept{return raw_pointer[i];}
 
+  constexpr T const*  get_const_raw_pointer() const noexcept{return raw_pointer;}
+
 };
 
 

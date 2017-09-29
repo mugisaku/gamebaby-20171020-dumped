@@ -18,12 +18,14 @@ Sack
   SackItem     value_table[sack_capacity];
   SackItem*  pointer_table[sack_capacity];
 
-  int  number_of_items=0;
-
 public:
   Sack() noexcept;
 
   SackItem&  get_item(int  i) noexcept{return *pointer_table[i];}
+
+  void  clear() noexcept;
+
+  bool  try_push_item(SackItem const&  item) noexcept;
 
   void       sort() noexcept;
   void  randomize() noexcept;

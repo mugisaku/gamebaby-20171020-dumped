@@ -138,6 +138,9 @@ initialize() noexcept
 
   hero_piece->reset(hero);
 
+  hero_piece->set_update_callback(update_piece);
+  hero_piece->set_render_callback(render_piece);
+
   board.set_hero_piece(hero_piece);
 
   push_routine(waiting,return_);
