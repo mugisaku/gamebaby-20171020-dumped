@@ -29,6 +29,11 @@ return_(int  retval) noexcept
       break;
   case(belongings):
       close_sack_menu_window();
+
+        if(retval < 0)
+        {
+          pop_routine();
+        }
       break;
   case(foot):
       close_message_window();

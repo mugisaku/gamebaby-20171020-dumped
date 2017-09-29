@@ -81,7 +81,7 @@ waiting(Controller const&  ctrl) noexcept
 
   else
     {
-        if(interval_timer.check(280,ctrl.get_time()))
+        if(!hero_piece->is_busy() && interval_timer.check(280,ctrl.get_time()))
         {
                if(ctrl.test(up_button   )){move_hero_piece_to_forward();  interval_timer.enable();}
           else if(ctrl.test(left_button )){turn_hero_piece_to_left( );  interval_timer.enable();}
@@ -134,9 +134,11 @@ initialize() noexcept
 
   character_image.load_png(r);
 
-  hero_piece = board.new_piece(2,2);
+  hero_piece = board.new_piece(1,1);
 
   hero_piece->reset(hero);
+
+  hero_piece->set_rendering_point_by_current_square(square_size);
 
   hero_piece->set_update_callback(update_piece);
   hero_piece->set_render_callback(render_piece);

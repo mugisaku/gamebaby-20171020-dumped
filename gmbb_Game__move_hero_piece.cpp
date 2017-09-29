@@ -38,7 +38,6 @@ move(game::Piece&  p, game::Square&  sq)
     {
       p.set_rendering_point_by_current_square(square_size);
 
-p.get_rendering_point().print();
       p.get_square()->set_piece(nullptr);
 
       sq.set_piece(&p);

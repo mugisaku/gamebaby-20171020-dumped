@@ -72,6 +72,10 @@ return_(int  retval) noexcept
               sq.set_item(*item_ptr);
 
               hero_p.unhold_item(item_ptr);
+
+              *item_ptr = game::SackItem();
+
+              pop_routine(-1);
             }
 
           else
@@ -109,7 +113,7 @@ process(Controller const&  ctrl) noexcept
           char16_t const*  fon = gi->get_first_operation_name();
 
 
-          prepare_choosing_window({fon,u"なげる",u"おく"},Point(40,80));
+          prepare_choosing_window({fon,u"なげる",hero_piece->get_square()->can_put_item()? u"おく":nullptr},Point(40,80));
 
           start_choosing();
         }

@@ -197,6 +197,8 @@ public:
 
   void  push_action(Action::Callback  cb, int  count=0) noexcept{action_stack.emplace_back(cb,count);}
 
+  bool  is_busy() const noexcept{return action_stack.size();}
+
   void  set_update_callback(UpdateCallback  cb) noexcept{update_callback = cb;}
   void  set_render_callback(RenderCallback  cb) noexcept{render_callback = cb;}
 

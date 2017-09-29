@@ -9,6 +9,9 @@ using game::Square;
 using game::Direction;
 
 
+namespace{
+
+
 gmbb::Rectangle
 get_image_rectangle(Piece const&  p) noexcept
 {
@@ -64,6 +67,49 @@ get_image_rectangle(Piece const&  p) noexcept
 
 
 void
+revise_point(Point&  point, Rectangle const&   rect) noexcept
+{
+    if(point.x < -rect.w)
+    {
+        while(point.x < -rect.w)
+        {
+          point.x += board_image_w;
+        }
+    }
+
+  else
+    if(point.x >= board_image_w+rect.w)
+    {
+        while(point.x >= board_image_w+rect.w)
+        {
+          point.x -= board_image_w;
+        }
+    }
+
+
+    if(point.y < -rect.h)
+    {
+        while(point.y < -rect.h)
+        {
+          point.y += board_image_h;
+        }
+    }
+
+  else
+    if(point.y >= board_image_h+rect.h)
+    {
+        while(point.y >= board_image_h+rect.h)
+        {
+          point.y -= board_image_h;
+        }
+    }
+}
+
+
+}
+
+
+void
 update_piece(game::Piece&  p) noexcept
 {
   p.increase_frame_index_when_over(8);
@@ -78,11 +124,16 @@ update_piece(game::Piece&  p) noexcept
 void
 render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
 {
-  int  z = dst_point.y;
+  auto  rect = get_image_rectangle(p);
 
   dst_point.y -= square_size;
 
-  dst.transfer(character_image,get_image_rectangle(p),dst_point,z);
+  revise_point(dst_point,rect);
+
+  int  z = dst_point.y;
+
+
+  dst.transfer(character_image,rect,dst_point,board_image_h+z);
 }
 
 

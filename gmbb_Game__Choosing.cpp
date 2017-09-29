@@ -79,15 +79,22 @@ prepare_choosing_window(std::initializer_list<char16_t const*>  ls, Point  point
   create_window();
 
 
-  menu_window->change_row_number(ls.size());
+  int  row_n = 0;
 
-  auto  it = ls.begin();
+  auto  it = std::begin(table);
 
-    for(auto&  e: table)
+    for(auto&  s: ls)
     {
-      e = *it++;
+        if(s)
+        {
+          *it++ = s;
+
+          ++row_n;
+        }
     }
 
+
+  menu_window->change_row_number(row_n);
 
   window_point = point;
 }
@@ -108,6 +115,8 @@ void
 close_choosing_window() noexcept
 {
   menu_window->leave_from_parent();
+
+  menu_window->reset_cursor();
 }
 
 
