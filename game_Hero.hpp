@@ -11,7 +11,7 @@ namespace game{
 class
 Hero
 {
-  char16_t*  name;
+  char const*  name;
 
   int  damage_totality=0;
 
@@ -25,7 +25,7 @@ Hero
 public:
   Hero();
 
-  char16_t const*  get_name() const noexcept{return name;}
+  char const*  get_name() const noexcept{return name;}
 
   Sack&  get_sack() noexcept{return sack;}
 

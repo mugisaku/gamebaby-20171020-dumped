@@ -51,7 +51,7 @@ clear() noexcept
 
 bool
 Sack::
-try_push_item(SackItem const&  item) noexcept
+try_to_push_item(SackItem const&  item) noexcept
 {
     for(auto&  v: value_table)
     {

@@ -115,6 +115,54 @@ to_u16string(char const*  s)
 
 
 
+int
+u16vsnprintf(char16_t*  buf, size_t  n, char const* fmt, va_list  ap)
+{
+  char  cbuf[2048];
+
+  int  res = vsnprintf(cbuf,sizeof(cbuf),fmt,ap);
+
+    if(res < (n/sizeof(char16_t)))
+    {
+      char const*  p = cbuf;
+
+        while(*p)
+        {
+          auto  byte_number = utf8_byte_number(*p);
+
+          *buf++ = to_char32(p,byte_number);
+
+          p += byte_number;
+        }
+
+
+      *buf = 0;
+
+      return res;
+    }
+
+
+  return -1;
+}
+
+
+int
+u16snprintf(char16_t*  buf, size_t  n, char const* fmt, ...)
+{
+  va_list  ap;
+  va_start(ap,fmt);
+
+  auto  res = u16vsnprintf(buf,n,fmt,ap);
+
+  va_end(ap);
+
+
+  return res;
+}
+
+
+
+
 UTF8Chunk::
 UTF8Chunk(char32_t  c)
 {

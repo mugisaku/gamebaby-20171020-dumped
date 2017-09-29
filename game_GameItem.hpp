@@ -127,7 +127,7 @@ Price
 class
 GameItem
 {
-  char16_t const*  name=u"";
+  char const*  name="";
 
   Price  price;
 
@@ -138,16 +138,16 @@ GameItem
 
 public:
   GameItem() noexcept{}
-  GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Sword const&     swd) noexcept;
-  GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Shield const&    shl) noexcept;
-  GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Belt const&  blt) noexcept;
-  GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Wand const&  wnd) noexcept;
-  GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Card const&  crd) noexcept;
-  GameItem(char16_t const*  name_, Price  pri, char16_t const*  desc, Water const&  wat) noexcept;
+  GameItem(char const*  name_, Price  pri, char16_t const*  desc, Sword const&     swd) noexcept;
+  GameItem(char const*  name_, Price  pri, char16_t const*  desc, Shield const&    shl) noexcept;
+  GameItem(char const*  name_, Price  pri, char16_t const*  desc, Belt const&  blt) noexcept;
+  GameItem(char const*  name_, Price  pri, char16_t const*  desc, Wand const&  wnd) noexcept;
+  GameItem(char const*  name_, Price  pri, char16_t const*  desc, Card const&  crd) noexcept;
+  GameItem(char const*  name_, Price  pri, char16_t const*  desc, Water const&  wat) noexcept;
 
   GameItemData const*  operator->() const noexcept{return &data;}
 
-  char16_t const*  get_name() const noexcept{return name;}
+  char     const*  get_name() const noexcept{return name;}
   char16_t const*  get_description() const noexcept{return description;}
 
   char16_t const*  get_first_operation_name() const noexcept;

@@ -107,7 +107,10 @@ open_message_window() noexcept
 void
 close_message_window() noexcept
 {
-  window->leave_from_parent();
+    if(window)
+    {
+      window->leave_from_parent();
+    }
 }
 
 

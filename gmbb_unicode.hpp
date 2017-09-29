@@ -5,6 +5,7 @@
 #include<string>
 #include<cstdint>
 #include<cstddef>
+#include<cstdarg>
 
 
 namespace gmbb{
@@ -19,6 +20,9 @@ size_t  utf8_byte_number(unsigned char  c);
 
 
 char32_t  to_char32(const char*  utf8, size_t  byte_number);
+
+int  u16vsnprintf(char16_t*  buf, size_t  n, char const* fmt, va_list  ap);
+int  u16snprintf(char16_t*  buf, size_t  n, char const* fmt, ...);
 
 std::u16string  to_u16string(char const*  s);
 std::string  to_string(char16_t const*  u16s);

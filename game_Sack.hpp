@@ -25,7 +25,7 @@ public:
 
   void  clear() noexcept;
 
-  bool  try_push_item(SackItem const&  item) noexcept;
+  bool  try_to_push_item(SackItem const&  item) noexcept;
 
   void       sort() noexcept;
   void  randomize() noexcept;

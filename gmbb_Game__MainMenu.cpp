@@ -70,12 +70,11 @@ process(Controller const&  ctrl) noexcept
 
             if(item)
             {
-              std::u16string  s(item->get_name());
+              char16_t  buf[256];
 
-              s += u"　がおちている";
+              u16snprintf(buf,sizeof(buf),"%s　がおちている",item->get_name());
 
-
-              start_message(s.data());
+              start_message(buf);
             }
 
           else

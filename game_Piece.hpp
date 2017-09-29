@@ -83,7 +83,7 @@ Piece
   PieceKind  kind=PieceKind::null;
   PieceData  data;
 
-  char16_t const*  name;
+  char const*  name;
 
   int  hp    ;
   int  hp_max;

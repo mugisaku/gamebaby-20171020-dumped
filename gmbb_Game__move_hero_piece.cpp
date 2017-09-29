@@ -28,6 +28,47 @@ move_(game::Piece&  actor, int  count) noexcept
   actor.move_rendering_point(pt.x,pt.y);
   move_board_view(           pt.x,pt.y);
 }
+void
+pickup(game::Piece&  actor, int  count) noexcept
+{
+    if(!count)
+    {
+      close_message_window();
+
+      return;
+    }
+
+
+  auto&  sq = *actor.get_square();
+
+  auto&  i = sq.get_item();
+
+    if(i)
+    {
+      char16_t  buf[256]=u"";
+
+      auto  pickedup = hero.get_sack().try_to_push_item(i);
+
+      char const*  fmt = "%sを　ひろった";
+
+      auto  name = i->get_name();
+
+        if(!pickedup)
+        {
+          fmt = "%sがおちていたが　もちものがいっぱいで　ひろえない";
+        }
+
+      else
+        {
+          i = game::SackItem();
+        }
+
+
+      u16snprintf(buf,sizeof(buf),fmt,name);
+
+      start_message(buf);
+    }
+}
 }
 
 
@@ -43,6 +84,7 @@ move(game::Piece&  p, game::Square&  sq)
       sq.set_piece(&p);
       p.set_square(&sq);
 
+      p.push_action(pickup,2);
       p.push_action(move_,square_size);
     }
 }

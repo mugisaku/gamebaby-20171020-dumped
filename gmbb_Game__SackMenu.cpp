@@ -174,6 +174,8 @@ start_sack_menu() noexcept
 {
   open_sack_menu_window();
 
+  hero.get_sack().sort();
+
   push_routine(process,return_);
 }
 
