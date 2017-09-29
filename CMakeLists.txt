@@ -80,6 +80,7 @@ set(SOURCES
   game_Hero.cpp
   game_Square.cpp
   game_Board.cpp
+  game_ActionStack.cpp
   game_Piece.cpp
 )
 

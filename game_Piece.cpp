@@ -166,17 +166,7 @@ step() noexcept
     }
 
 
-    if(action_stack.size())
-    {
-      auto&  act = action_stack.back();
-
-      act.callback(*this,--act.count);
-
-        if(!act.count)
-        {
-          action_stack.pop_back();
-        }
-    }
+  action_stack(*this);
 }
 
 

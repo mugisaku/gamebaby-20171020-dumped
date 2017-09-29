@@ -5,6 +5,7 @@
 #include"game_Hero.hpp"
 #include"game_Enemy.hpp"
 #include"game_Board.hpp"
+#include"game_ActionStack.hpp"
 #include"gmbb_Figures.hpp"
 #include"gmbb_Image.hpp"
 #include<covered_ptr>
@@ -67,22 +68,6 @@ PieceFlag
 };
 
 
-struct
-Action
-{
-  using Callback = void  (*)(Piece&  actor, int  count) noexcept;
-
-  Callback  callback;
-
-  int  count;
-
-  constexpr Action(Callback  cb, int  c=0) noexcept:
-  callback(cb),
-  count(c){}
-
-};
-
-
 class
 Piece
 {
@@ -126,7 +111,7 @@ Piece
   covered_ptr<SackItem>  shield_item;
   covered_ptr<SackItem>    belt_item;
 
-  std::vector<Action>  action_stack;
+  ActionStack  action_stack;
 
 public:
   Piece(Board&  brd) noexcept: board(&brd){}
@@ -195,9 +180,9 @@ public:
   Piece const*  get_previous() const noexcept{return link.get_previous();}
   Piece const*  get_next()     const noexcept{return link.get_next();}
 
-  void  push_action(Action::Callback  cb, int  count=0) noexcept{action_stack.emplace_back(cb,count);}
+  void  push_action(Action::Callback  cb, int  count=0) noexcept{action_stack.push(cb,count);}
 
-  bool  is_busy() const noexcept{return action_stack.size();}
+  bool  is_busy() const noexcept{return action_stack;}
 
   void  set_update_callback(UpdateCallback  cb) noexcept{update_callback = cb;}
   void  set_render_callback(RenderCallback  cb) noexcept{render_callback = cb;}
