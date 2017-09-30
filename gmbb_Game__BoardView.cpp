@@ -185,9 +185,9 @@ render(Image&  dst) noexcept
 
     while(next)
     {
-      next->render(dst,view->point);
+      next->render(dst,next->get_rendering_point()-view->point);
 
-      next = next->get_next();
+      next = static_cast<Piece const*>(next->get_const_next());
     }
 }
 

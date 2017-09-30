@@ -14,6 +14,10 @@ constexpr int  board_width  = 14;
 constexpr int  board_height = 14;
 
 
+constexpr int  board_image_width  = square_size*board_width ;
+constexpr int  board_image_height = square_size*board_height;
+
+
 class Piece;
 
 
@@ -52,21 +56,6 @@ public:
   Piece const*  get_first_piece() const noexcept{return first.get_const_raw_pointer();}
 
   void  step() const noexcept;
-
-};
-
-
-class
-PieceLink
-{
-  friend Board;
-
-  covered_ptr<Piece>  previous;
-  covered_ptr<Piece>      next;
-
-public:
-  Piece const*  get_previous() const{return previous.get_const_raw_pointer();}
-  Piece const*      get_next() const{return     next.get_const_raw_pointer();}
 
 };
 

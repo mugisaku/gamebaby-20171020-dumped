@@ -38,6 +38,9 @@ public:
 };
 
 
+constexpr int  square_size = 24;
+
+
 class
 Square
 {

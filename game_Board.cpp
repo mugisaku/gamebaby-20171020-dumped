@@ -80,10 +80,9 @@ new_piece(int  x, int  y) noexcept
 
     if(last)
     {
-      last->get_link().next = p;
+      last->link(p);
 
-      p->get_link().previous = last    ;
-                               last = p;
+      last = p;
     }
 
   else
@@ -101,6 +100,8 @@ new_piece(int  x, int  y) noexcept
   p->set_square(&sq);
   p->set_direction(Direction::front);
 
+  p->set_rendering_point_by_current_square();
+
   return p;
 }
 
@@ -111,23 +112,18 @@ delete_piece(covered_ptr<Piece>  p) noexcept
 {
     if(p)
     {
-      auto&  ln = p->get_link();
-
-        if(ln.previous){ln.previous->get_link().next = ln.next;}
-        if(ln.next){ln.next->get_link().previous = ln.previous;}
-
-      ln.previous = nullptr;
-      ln.next     = nullptr;
+      auto  previous = p->get_previous();
+      auto      next = p->get_next();
 
         if(first == p)
         {
-          first = ln.next;
+          first = next;
         }
 
 
         if(last == p)
         {
-          last = ln.previous;
+          last = previous;
         }
 
 
@@ -148,7 +144,7 @@ step() const noexcept
     {
       next->step();
 
-      next = next->get_link().next;
+      next = next->get_next();
     }
 }
 

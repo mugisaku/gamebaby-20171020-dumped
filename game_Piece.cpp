@@ -114,59 +114,25 @@ void  Piece::unhold_belt()   noexcept{unhold(  belt_item);}
 
 void
 Piece::
-reset_frame() noexcept
-{
-  frame_count = 0;
-  frame_index = 0;
-}
-
-
-void
-Piece::
-increase_frame_index_when_over(int  limit) noexcept
-{
-    if(frame_count >= limit)
-    {
-      frame_count  = 0;
-      frame_index += 1;
-    }
-}
-
-
-void
-Piece::
-change_action_index(int  v) noexcept
-{
-  action_index = v;
-
-  reset_frame();
-}
-
-
-void
-Piece::
-set_rendering_point_by_current_square(int  square_size) noexcept
+set_rendering_point_by_current_square() noexcept
 {
   auto&  sq = *square;
 
-  rendering_point = gmbb::Point(square_size*sq.get_x(),
-                                square_size*sq.get_y());
+  set_rendering_point(gmbb::Point(square_size*sq.get_x(),
+                                  square_size*sq.get_y()));
 }
+
+
+gmbb::Image*
+Piece::
+source_image;
 
 
 void
 Piece::
-step() noexcept
+set_source_image(gmbb::Image&  src) noexcept
 {
-  ++frame_count;
-
-    if(update_callback)
-    {
-      update_callback(*this);
-    }
-
-
-  action_stack(*this);
+  source_image = &src;
 }
 
 

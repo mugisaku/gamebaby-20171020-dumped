@@ -1,17 +1,13 @@
-#include"gmbb_Game_private.hpp"
+#include"game_Piece.hpp"
+#include"game_Board.hpp"
+#include"gmbb_unicode.hpp"
+#include<new>
 
 
-namespace gmbb{
-
-
-using  game::Piece;
-using game::Square;
-using game::Direction;
+namespace game{
 
 
 namespace{
-
-
 gmbb::Rectangle
 get_image_rectangle(Piece const&  p) noexcept
 {
@@ -67,22 +63,22 @@ get_image_rectangle(Piece const&  p) noexcept
 
 
 void
-revise_point(Point&  point, Rectangle const&   rect) noexcept
+revise_point(gmbb::Point&  point, gmbb::Rectangle const&   rect) noexcept
 {
     if(point.x < -rect.w)
     {
         while(point.x < -rect.w)
         {
-          point.x += board_image_w;
+          point.x += board_image_width;
         }
     }
 
   else
-    if(point.x >= board_image_w+rect.w)
+    if(point.x >= board_image_width+rect.w)
     {
-        while(point.x >= board_image_w+rect.w)
+        while(point.x >= board_image_width+rect.w)
         {
-          point.x -= board_image_w;
+          point.x -= board_image_width;
         }
     }
 
@@ -91,16 +87,16 @@ revise_point(Point&  point, Rectangle const&   rect) noexcept
     {
         while(point.y < -rect.h)
         {
-          point.y += board_image_h;
+          point.y += board_image_height;
         }
     }
 
   else
-    if(point.y >= board_image_h+rect.h)
+    if(point.y >= board_image_height+rect.h)
     {
-        while(point.y >= board_image_h+rect.h)
+        while(point.y >= board_image_height+rect.h)
         {
-          point.y -= board_image_h;
+          point.y -= board_image_height;
         }
     }
 }
@@ -110,21 +106,10 @@ revise_point(Point&  point, Rectangle const&   rect) noexcept
 
 
 void
-update_piece(game::Piece&  p) noexcept
+Piece::
+render(gmbb::Image&  dst, gmbb::Point  dst_point) const noexcept
 {
-  p.increase_frame_index_when_over(8);
-
-    if(p.get_frame_index() >= 4)
-    {
-      p.reset_frame();
-    }
-}
-
-
-void
-render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
-{
-  auto  rect = get_image_rectangle(p);
+  auto  rect = get_image_rectangle(*this);
 
   dst_point.y -= square_size;
 
@@ -133,8 +118,10 @@ render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept
   int  z = dst_point.y;
 
 
-  dst.transfer(character_image,rect,dst_point,board_image_h+z);
+  dst.transfer(*source_image,rect,dst_point,board_image_height+z);
 }
+
+
 
 
 }

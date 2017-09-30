@@ -7,13 +7,11 @@
 namespace game{
 
 
-class Piece;
-
-
+template<typename  T>
 struct
 Action
 {
-  using Callback = void  (*)(Piece&  actor, int  count) noexcept;
+  using Callback = void  (*)(T&  actor, int  count) noexcept;
 
   Callback  callback;
 
@@ -23,27 +21,50 @@ Action
   callback(cb),
   count(c){}
 
-};
+  class Stack
+  {
+  public:
+    static constexpr int  capacity = 16;
+
+  private:
+    Action<T>  array[capacity];
+
+    int  index=0;
+
+  public:
+    void  push(Action::Callback  cb, int  count=1) noexcept
+    {
+      array[index++] = Action(cb,count);
+    }
 
 
-class
-ActionStack
-{
-public:
-  static constexpr int  capacity = 16;
+    void   pop() noexcept{--index;}
 
-private:
-  Action  array[capacity];
+    operator bool() const noexcept{return index;}
 
-  int  index=0;
+    void  operator()(T&  t) noexcept
+    {
+    START:
 
-public:
-  void  push(Action::Callback  cb, int  count=1) noexcept;
-  void   pop(                                  ) noexcept;
+        if(index)
+        {
+          auto&  act = array[index-1];
 
-  operator bool() const noexcept{return index;}
+            if(!act.count)
+            {
+              pop();
 
-  void  operator()(Piece&  p) noexcept;
+              goto START;
+            }
+
+          else
+            {
+              act.callback(t,--act.count);
+            }
+        }
+    }
+
+  };
 
 };
 

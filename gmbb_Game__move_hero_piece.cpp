@@ -77,7 +77,7 @@ move(game::Piece&  p, game::Square&  sq)
 {
     if(!sq.get_piece() && (sq != game::SquareKind::wall))
     {
-      p.set_rendering_point_by_current_square(square_size);
+      p.set_rendering_point_by_current_square();
 
       p.get_square()->set_piece(nullptr);
 

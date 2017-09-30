@@ -134,14 +134,11 @@ initialize() noexcept
 
   character_image.load_png(r);
 
+  game::Piece::set_source_image(character_image);
+
   hero_piece = board.new_piece(1,1);
 
   hero_piece->reset(hero);
-
-  hero_piece->set_rendering_point_by_current_square(square_size);
-
-  hero_piece->set_update_callback(update_piece);
-  hero_piece->set_render_callback(render_piece);
 
   board.set_hero_piece(hero_piece);
 

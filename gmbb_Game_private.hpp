@@ -120,10 +120,6 @@ bool  is_message_window_opened()        noexcept;
 
 
 
-void  update_piece(game::Piece&  p) noexcept;
-void  render_piece(game::Piece const&  p, Image&  dst, Point  dst_point) noexcept;
-
-
 }
 
 
