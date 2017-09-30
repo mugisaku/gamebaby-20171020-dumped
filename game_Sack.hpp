@@ -25,6 +25,8 @@ public:
 
   void  clear() noexcept;
 
+  covered_ptr<SackItem>  find_empty() noexcept;
+
   bool  try_to_push_item(SackItem const&  item) noexcept;
 
   void       sort() noexcept;

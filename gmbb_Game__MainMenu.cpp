@@ -19,9 +19,15 @@ ScrollStyleMenuWindow*
 menu_window;
 
 
+covered_ptr<game::SackItem>
+empty;
+
+
 void
 return_(int  retval) noexcept
 {
+  constexpr Point  point(80,80);
+
     switch(menu_window->get_item_index())
     {
   case(talk):
@@ -36,7 +42,32 @@ return_(int  retval) noexcept
         }
       break;
   case(foot):
+    {
+        if(empty && (retval == 0))
+        {
+          auto&  sq = *hero_piece->get_square();
+
+          auto&  item = sq.get_item();
+          auto&  trap = sq.get_trap();
+
+            if(item)
+            {
+              *empty = item                   ;
+                       item = game::SackItem();
+
+              pop_routine();
+            }
+
+          else
+            if(trap)
+            {
+              pop_routine();
+            }
+        }
+
+
       close_message_window();
+   }
       break;
   case(interrupt):
       break;
@@ -65,24 +96,46 @@ process(Controller const&  ctrl) noexcept
         {
           auto&  sq = *hero_piece->get_square();
 
-          auto   item = sq.get_item();
+          auto&  item = sq.get_item();
           auto&  trap = sq.get_trap();
 
             if(item)
             {
               char16_t  buf[256];
 
+              empty = hero.get_sack().find_empty();
+
               u16snprintf(buf,sizeof(buf),"%s　がおちている",item->get_name());
 
-              start_message(buf);
+                if(empty)
+                {
+                  start_message_with_choosing(buf,{u"ひろう",u"ひろわない"});
+                }
+
+              else
+                {
+                  start_message(buf);
+                }
             }
 
           else
             if(trap)
             {
-              std::u16string  s(u"ワナがある");
+              char16_t  buf[256];
 
-              start_message(s.data());
+              empty = hero.get_sack().find_empty();
+
+              u16snprintf(buf,sizeof(buf),"%sのワナ　がある",trap.get_name());
+
+                if(empty)
+                {
+                  start_message_with_choosing(buf,{u"さどうさせる",u"とりはずす",u"はかいする"});
+                }
+
+              else
+                {
+                  start_message(buf);
+                }
             }
 
           else

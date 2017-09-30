@@ -16,6 +16,12 @@ constexpr uint32_t  key_flags = flags_of_input::p_button;
 MessageWindow*
 window;
 
+bool
+is_finished;
+
+bool
+has_choosing;
+
 
 void
 operate_message(Controller const&  ctrl) noexcept
@@ -56,6 +62,11 @@ operate_message(Controller const&  ctrl) noexcept
 }
 
 
+void
+return_(int  retval) noexcept
+{
+  pop_routine();
+}
 
 
 void
@@ -71,14 +82,22 @@ process(Controller const&  ctrl) noexcept
   else
     if(ctrl.test(p_button))
     {
-        if(window->is_clean())
+        if(is_finished)
         {
-          pop_routine();
+            if(has_choosing)
+            {
+              start_choosing();
+            }
+
+          else
+            {
+              pop_routine();
+            }
         }
 
       else
         {
-          window->clear();
+          is_finished = true;
 
           wait_until_button_is_released();
         }
@@ -110,18 +129,54 @@ close_message_window() noexcept
     if(window)
     {
       window->leave_from_parent();
+
+      close_choosing_window();
     }
 }
 
 
 void
-start_message(char16_t const*  text) noexcept
+start_message(char16_t const*  text, bool  cleaning) noexcept
 {
   open_message_window();
 
+    if(cleaning)
+    {
+      window->clear();
+    }
+
+
   window->push(text);
 
+  is_finished = false;
+
+  has_choosing = false;
+
+
   push_routine(process);
+}
+
+
+void
+start_message_with_choosing(char16_t const*  text, std::initializer_list<char16_t const*>  ls, bool  cleaning) noexcept
+{
+  open_message_window();
+
+    if(cleaning)
+    {
+      window->clear();
+    }
+
+
+  window->push(text);
+
+  prepare_choosing_window(ls,message_point+Point(248,24));
+
+  is_finished = false;
+
+  has_choosing = true;
+
+  push_routine(process,return_);
 }
 
 

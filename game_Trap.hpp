@@ -16,6 +16,8 @@ TrapKind
 class
 Trap
 {
+  char const*  name="";
+
   TrapKind  kind=TrapKind::null;
 
   int  value=0;
@@ -26,6 +28,8 @@ public:
   operator bool() const noexcept{return kind != TrapKind::null;}
 
   bool  operator==(TrapKind  k) const noexcept{return kind == k;}
+
+  char const*  get_name() const noexcept{return name;}
 
   TrapKind  get_kind()  const noexcept{return kind;}
 

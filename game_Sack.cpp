@@ -49,18 +49,34 @@ clear() noexcept
 }
 
 
-bool
+covered_ptr<SackItem>
 Sack::
-try_to_push_item(SackItem const&  item) noexcept
+find_empty() noexcept
 {
     for(auto&  v: value_table)
     {
         if(!v)
         {
-          v = item;
-
-          return true;
+          return &v;
         }
+    }
+
+
+  return nullptr;
+}
+
+
+bool
+Sack::
+try_to_push_item(SackItem const&  item) noexcept
+{
+  auto  p = find_empty();
+
+    if(p)
+    {
+      *p = item;
+
+      return true;
     }
 
 

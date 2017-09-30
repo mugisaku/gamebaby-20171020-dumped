@@ -114,9 +114,12 @@ open_choosing_window() noexcept
 void
 close_choosing_window() noexcept
 {
-  menu_window->leave_from_parent();
+    if(menu_window)
+    {
+      menu_window->leave_from_parent();
 
-  menu_window->reset_cursor();
+      menu_window->reset_cursor();
+    }
 }
 
 

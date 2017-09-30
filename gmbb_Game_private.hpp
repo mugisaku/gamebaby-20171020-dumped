@@ -114,7 +114,8 @@ bool  is_choosing_window_opened()       noexcept;
 
 void   open_message_window() noexcept;
 void  close_message_window() noexcept;
-void  start_message(char16_t const*  text) noexcept;
+void  start_message(char16_t const*  text, bool  cleaning=true) noexcept;
+void  start_message_with_choosing(char16_t const*  text, std::initializer_list<char16_t const*>  ls, bool  cleaning=true) noexcept;
 bool  is_message_window_opened()        noexcept;
 
 

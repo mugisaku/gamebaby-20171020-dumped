@@ -68,9 +68,6 @@ public:
   SquareKind  get_kind(             ) const noexcept{return kind    ;}
   void        set_kind(SquareKind  k)       noexcept{       kind = k;}
 
-  void         set_trap(Trap const&  tr)       noexcept{       trap = tr;}
-  Trap const&  get_trap(               ) const noexcept{return trap     ;}
-
   covered_ptr<Square>  operator[](Direction  d) const noexcept{return linkset.get(d);}
 
 
@@ -84,6 +81,11 @@ public:
   SackItem const&  get_item() const noexcept{return item;}
 
   bool  can_put_item() const noexcept{return !item && !trap;}
+
+
+  void         set_trap(Trap const&  tr)       noexcept{       trap = tr;}
+  Trap const&  get_trap(               ) const noexcept{return trap     ;}
+
 
   void  remove_piece() noexcept;
 
