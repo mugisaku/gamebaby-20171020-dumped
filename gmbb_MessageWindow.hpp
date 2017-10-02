@@ -42,7 +42,7 @@ public:
   void  push(char16_t const*  src);
   void  push(std::initializer_list<char16_t const*>  ls);
 
-  void  render(Image&  dst) noexcept override;
+  void  render(Image&  dst, Point  dst_point) const noexcept override;
 
 };
 

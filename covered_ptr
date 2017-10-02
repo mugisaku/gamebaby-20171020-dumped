@@ -11,11 +11,13 @@ covered_ptr
 {
   T*  raw_pointer;
 
+  template<typename  U> constexpr T*  convert(void*  p){return static_cast<T*>(static_cast<U*>(p));}
+
 public:
   constexpr covered_ptr(T*  p=nullptr) noexcept: raw_pointer(p){}
 
-  template<typename  U> constexpr covered_ptr(U*  p)             noexcept: raw_pointer(static_cast<T*>(p                     )){}
-  template<typename  U> constexpr covered_ptr(covered_ptr<U>  p) noexcept: raw_pointer(static_cast<T*>(p.get_opaque_pointer())){}
+  template<typename  U> constexpr covered_ptr(U*  p)             noexcept: raw_pointer(static_cast<T*>(p                )){}
+  template<typename  U> constexpr covered_ptr(covered_ptr<U>  p) noexcept: raw_pointer(convert<U>(p.get_opaque_pointer())){}
   constexpr covered_ptr(std::unique_ptr<T>&  p) noexcept: raw_pointer(p.get()){}
 
   covered_ptr&  operator=(T*  p) noexcept
@@ -36,7 +38,7 @@ public:
   template<typename  U>
   covered_ptr&  operator=(covered_ptr<U>  p) noexcept
   {
-    raw_pointer = static_cast<T*>(p.get_opaque_pointer());
+    raw_pointer = convert<U>(p.get_opaque_pointer());
 
     return *this;
   }

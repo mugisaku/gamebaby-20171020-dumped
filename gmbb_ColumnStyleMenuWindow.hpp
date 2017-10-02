@@ -38,7 +38,7 @@ public:
 
   void  reset_cursor() noexcept;
 
-  void  render(Image&  dst) noexcept override;
+  void  render(Image&  dst, Point  dst_point) const noexcept override;
 
 };
 

@@ -121,12 +121,12 @@ draw_frame_bottom(Image&  dst, int  x, int  y, int  w, Pixel const*  pixels) noe
 
 void
 Window::
-draw_frame(Image&  dst) const noexcept
+draw_frame(Image&  dst, Point  dst_point) const noexcept
 {
-  int  x = rectangle.x;
-  int  y = rectangle.y;
-  int  w = rectangle.w;
-  int  h = rectangle.h;
+  int  x = dst_point.x;
+  int  y = dst_point.y;
+  int  w = width;
+  int  h = height;
 
   draw_frame_top(   dst,x,y    ,w     ,pixels);
   draw_frame_body(  dst,x,y  +8,w,h-16,pixels);

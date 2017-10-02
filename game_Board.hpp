@@ -2,6 +2,7 @@
 #define game_Board_HPP
 
 
+#include"gmbb_GadgetContainer.hpp"
 #include"game_Square.hpp"
 #include"covered_ptr"
 #include<vector>
@@ -22,7 +23,7 @@ class Piece;
 
 
 class
-Board
+Board: public gmbb::GadgetContainer
 {
   std::vector<Piece*>  pointer_hunger;
 
@@ -31,11 +32,6 @@ Board
   Square  square_table[board_height][board_width];
 
   covered_ptr<Piece>  hero_piece;
-
-  covered_ptr<Piece>  first;
-  covered_ptr<Piece>   last;
-
-  int  number_of_pieces=0;
 
 public:
   Board() noexcept;
@@ -52,8 +48,6 @@ public:
 
   void                set_hero_piece(covered_ptr<Piece>  p) noexcept{hero_piece = p;}
   covered_ptr<Piece>  get_hero_piece() const noexcept{return hero_piece;}
-
-  Piece const*  get_first_piece() const noexcept{return first.get_const_raw_pointer();}
 
   void  step() const noexcept;
 

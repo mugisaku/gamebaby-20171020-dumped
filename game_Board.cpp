@@ -78,22 +78,7 @@ new_piece(int  x, int  y) noexcept
     }
 
 
-    if(last)
-    {
-      last->link(p);
-
-      last = p;
-    }
-
-  else
-    {
-      first = p;
-       last = p;
-    }
-
-
-  ++number_of_pieces;
-
+  insert_to_last(*p);
 
   sq.set_piece(p);
 
@@ -112,24 +97,9 @@ delete_piece(covered_ptr<Piece>  p) noexcept
 {
     if(p)
     {
-      auto  previous = p->get_previous();
-      auto      next = p->get_next();
-
-        if(first == p)
-        {
-          first = next;
-        }
-
-
-        if(last == p)
-        {
-          last = previous;
-        }
-
+      remove(*p);
 
       piece_stock.emplace_back(p);
-
-      --number_of_pieces;
     }
 }
 
@@ -138,11 +108,11 @@ void
 Board::
 step() const noexcept
 {
-  auto  next = first;
+  auto  next = get_first();
 
     while(next)
     {
-      next->step();
+      next->update();
 
       next = next->get_next();
     }

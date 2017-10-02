@@ -46,7 +46,7 @@ move_cursor_to_left()  noexcept
     {
       page_index -= 1;
 
-      notify_flag(needing_to_redraw);
+      notify_needing_to_redraw();
     }
 }
 
@@ -59,7 +59,7 @@ move_cursor_to_right() noexcept
     {
       page_index += 1;
 
-      notify_flag(needing_to_redraw);
+      notify_needing_to_redraw();
     }
 }
 
@@ -72,7 +72,7 @@ move_cursor_to_up()    noexcept
     {
       row_index -= 1;
 
-      notify_flag(needing_to_redraw);
+      notify_needing_to_redraw();
     }
 }
 
@@ -85,7 +85,7 @@ move_cursor_to_down()  noexcept
     {
       row_index += 1;
 
-      notify_flag(needing_to_redraw);
+      notify_needing_to_redraw();
     }
 }
 
@@ -105,13 +105,13 @@ change_row_number(int  n) noexcept
 
 void
 ColumnStyleMenuWindow::
-render(Image&  dst) noexcept
+render(Image&  dst, Point  dst_point) const noexcept
 {
-  Window::render(dst);
+  Window::render(dst,dst_point);
 
     if(Window::get_state() == WindowState::full_opened)
     {
-      Point  const base_offset(rectangle.x+8,rectangle.y+8);
+      Point  const base_offset(dst_point+8);
 
       int  h = menu.get_item_height();
 

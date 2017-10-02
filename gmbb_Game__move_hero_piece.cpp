@@ -25,8 +25,8 @@ move_(game::Piece&  actor, int  count) noexcept
     }
 
 
-  actor.move_rendering_point(pt.x,pt.y);
-  move_board_view(           pt.x,pt.y);
+  actor.move_relative_point(pt.x,pt.y);
+  move_board_view(          pt.x,pt.y);
 }
 void
 pickup(game::Piece&  actor, int  count) noexcept

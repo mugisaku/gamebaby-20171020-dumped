@@ -31,23 +31,23 @@ set_state(WindowState  st) noexcept
   case(WindowState::hidden):
       break;
   case(WindowState::open_to_down):
-      rectangle.w = width_max;
-      rectangle.h =        16;
+      width  = width_max;
+      height =        16;
       break;
   case(WindowState::close_to_left):
   case(WindowState::close_to_up):
   case(WindowState::full_opened):
-      rectangle.w = width_max;
-      rectangle.h = height_max;
+      width  = width_max;
+      height = height_max;
       break;
   case(WindowState::open_to_right):
-      rectangle.w =         16;
-      rectangle.h = height_max;
+      width  =         16;
+      height = height_max;
       break;
     }
 
 
-  redraw();
+  notify_needing_to_redraw();
 }
 
 
@@ -59,7 +59,7 @@ change_border0_color(ColorIndex  ci) noexcept
 {
   pixels[2] = ci;
 
-  redraw();
+  notify_needing_to_redraw();
 }
 
 
@@ -69,7 +69,7 @@ change_border1_color(ColorIndex  ci) noexcept
 {
   pixels[2] = ci;
 
-  redraw();
+  notify_needing_to_redraw();
 }
 
 
@@ -79,7 +79,7 @@ change_surface_color(ColorIndex  ci) noexcept
 {
   pixels[1] = ci;
 
-  redraw();
+  notify_needing_to_redraw();
 }
 
 
@@ -97,67 +97,67 @@ animate() noexcept
   case(WindowState::full_opened):
       break;
   case(WindowState::open_to_right):
-        if(rectangle.w < width_max)
+        if(width < width_max)
         {
-          rectangle.w += step;
+          width += step;
 
-            if(rectangle.w >= width_max)
+            if(width >= width_max)
             {
-              rectangle.w = width_max;
+              width = width_max;
 
               state = WindowState::full_opened;
             }
 
 
-          redraw();
+          notify_needing_to_redraw();
         }
       break;
   case(WindowState::close_to_left):
-        if(rectangle.w > 16)
+        if(width > 16)
         {
-          rectangle.w -= step;
+          width -= step;
 
-            if(rectangle.w <= 16)
+            if(width <= 16)
             {
-              rectangle.w = 16;
+              width = 16;
 
               state = WindowState::hidden;
             }
 
 
-          redraw();
+          notify_needing_to_redraw();
         }
       break;
   case(WindowState::open_to_down):
-        if(rectangle.h < height_max)
+        if(height < height_max)
         {
-          rectangle.h += step;
+          height += step;
 
-            if(rectangle.h >= height_max)
+            if(height >= height_max)
             {
-              rectangle.h = height_max;
+              height = height_max;
 
               state = WindowState::full_opened;
             }
 
 
-          redraw();
+          notify_needing_to_redraw();
         }
       break;
   case(WindowState::close_to_up):
-        if(rectangle.h > 16)
+        if(height > 16)
         {
-          rectangle.h -= step;
+          height -= step;
 
-            if(rectangle.h <= 16)
+            if(height <= 16)
             {
-              rectangle.h = 16;
+              height = 16;
 
               state = WindowState::hidden;
             }
 
 
-          redraw();
+          notify_needing_to_redraw();
         }
       break;
     }
@@ -166,13 +166,11 @@ animate() noexcept
 
 void
 Window::
-render(Image&  dst) noexcept
+render(Image&  dst, Point  dst_point) const noexcept
 {
     if(state != WindowState::hidden)
     {
-      draw_frame(dst);
-
-      Widget::render(dst);
+      draw_frame(dst,dst_point);
     }
 }
 

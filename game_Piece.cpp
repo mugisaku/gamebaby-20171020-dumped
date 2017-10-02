@@ -118,21 +118,8 @@ set_rendering_point_by_current_square() noexcept
 {
   auto&  sq = *square;
 
-  set_rendering_point(gmbb::Point(square_size*sq.get_x(),
-                                  square_size*sq.get_y()));
-}
-
-
-gmbb::Image*
-Piece::
-source_image;
-
-
-void
-Piece::
-set_source_image(gmbb::Image&  src) noexcept
-{
-  source_image = &src;
+  set_relative_point(gmbb::Point(square_size*sq.get_x(),
+                                 square_size*sq.get_y()));
 }
 
 

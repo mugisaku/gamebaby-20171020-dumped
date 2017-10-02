@@ -185,10 +185,12 @@ open_main_menu_window() noexcept
 
 
       menu_window = new ScrollStyleMenuWindow(menu,2,2);
+
+      menu_window->set_name("main menu window");
     }
 
 
-  menu_window->enter_into(root_widget,Point(8,24));
+  menu_window->enter_into_container(root_widget,Point(8,24));
 
   menu_window->set_state(WindowState::full_opened);
 }
@@ -199,7 +201,7 @@ close_main_menu_window() noexcept
 {
   menu_window->reset_cursor();
 
-  menu_window->leave_from_parent();
+  menu_window->exit_from_container();
 }
 
 

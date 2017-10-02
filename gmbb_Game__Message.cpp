@@ -117,7 +117,7 @@ open_message_window() noexcept
     }
 
 
-  window->enter_into(root_widget,message_point);
+  window->enter_into_container(root_widget,message_point);
 
   window->set_state(WindowState::full_opened);
 }
@@ -128,7 +128,7 @@ close_message_window() noexcept
 {
     if(window)
     {
-      window->leave_from_parent();
+      window->exit_from_container();
 
       close_choosing_window();
     }

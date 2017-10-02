@@ -2,7 +2,7 @@
 #define GMBB_WINDOW_HPP
 
 
-#include"gmbb_Widget.hpp"
+#include"gmbb_Gadget.hpp"
 
 
 namespace gmbb{
@@ -24,7 +24,7 @@ WindowState
 
 
 class
-Window: public Widget
+Window: public Gadget
 {
 protected:
   WindowState  state=WindowState::hidden;
@@ -34,10 +34,12 @@ protected:
                       Pixel(predefined_color_index::white     ,30000),
                       Pixel(predefined_color_index::light_gray,30000)};
 
+  int   width    =0;
   int   width_max=0;
+  int  height    =0;
   int  height_max=0;
 
-  void  draw_frame(Image&  dst) const noexcept;
+  void  draw_frame(Image&  dst, Point  dst_point) const noexcept;
 
 public:
   Window() noexcept{}
@@ -57,7 +59,7 @@ public:
 
   void  animate() noexcept;
 
-  void  render(Image&  dst) noexcept override;
+  void  render(Image&  dst, Point  dst_point) const noexcept override;
 
 };
 

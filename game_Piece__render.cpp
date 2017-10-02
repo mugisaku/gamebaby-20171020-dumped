@@ -117,8 +117,7 @@ render(gmbb::Image&  dst, gmbb::Point  dst_point) const noexcept
 
   int  z = dst_point.y;
 
-
-  dst.transfer(*source_image,rect,dst_point,board_image_height+z);
+  dst.transfer(*get_source_image(),rect,dst_point,board_image_height+z);
 }
 
 

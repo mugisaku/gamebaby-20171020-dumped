@@ -3,8 +3,10 @@
 
 
 #include"gmbb.hpp"
+#include"gmbb_GadgetContainer.hpp"
 #include"gmbb_IntervalTimer.hpp"
 #include"game_Piece.hpp"
+#include"game_EffectObject.hpp"
 #include"game_Board.hpp"
 #include"game_Sack.hpp"
 #include<initializer_list>
@@ -62,7 +64,7 @@ large_glset;
 
 
 extern
-Widget
+GadgetContainer
 root_widget;
 
 
@@ -73,6 +75,8 @@ void  turn_hero_piece_to_left();
 void  turn_hero_piece_to_right();
 void  move_hero_piece_to_backward();
 
+
+Point  get_board_view_offset() noexcept;
 
 void  move_board_view(int  x, int  y) noexcept;
 
@@ -117,6 +121,20 @@ void  close_message_window() noexcept;
 void  start_message(char16_t const*  text, bool  cleaning=true) noexcept;
 void  start_message_with_choosing(char16_t const*  text, std::initializer_list<char16_t const*>  ls, bool  cleaning=true) noexcept;
 bool  is_message_window_opened()        noexcept;
+
+
+
+void  append_enemy();
+
+
+covered_ptr<game::EffectObject>     new_effect_object();
+void                             delete_effect_object(covered_ptr<game::EffectObject>  fo);
+
+bool  has_active_effect_object();
+
+void  update_effect();
+void  render_effect();
+
 
 
 

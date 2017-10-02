@@ -60,7 +60,8 @@ set(SOURCES
   gmbb_ColumnStyleMenuWindow.cpp
   gmbb_RandomNumber.cpp
   gmbb_LineMaker.cpp
-  gmbb_Widget.cpp
+  gmbb_Gadget.cpp
+  gmbb_GadgetContainer.cpp
   gmbb_Window.cpp
   gmbb_Window__draw_frame.cpp
   gmbb_Routine.cpp
@@ -72,14 +73,16 @@ set(SOURCES
   gmbb_Game__StatusMonitor.cpp
   gmbb_Game__StatusReportor.cpp
   gmbb_Game__BoardView.cpp
+  gmbb_Game__EffectObject.cpp
   gmbb_Game__move_hero_piece.cpp
+  gmbb_Game__append_enemy.cpp
   game_GameItem.cpp
   game_SackItem.cpp
   game_Sack.cpp
   game_Hero.cpp
   game_Square.cpp
   game_Board.cpp
-  game_Object.cpp
+  game_EffectObject.cpp
   game_Piece.cpp
   game_Piece__render.cpp
 )

@@ -8,17 +8,17 @@ namespace{
 
 
 class
-StatusMonitor: public Widget
+StatusMonitor: public Gadget
 {
 public:
-  void  render(Image&  dst) noexcept;
+  void  render(Image&  dst, Point  dst_point) const noexcept;
 
 } *mon;
 
 
 void
 StatusMonitor::
-render(gmbb::Image&  dst) noexcept
+render(gmbb::Image&  dst, Point  dst_point) const noexcept
 {
   char  buf[256];
 
@@ -26,7 +26,7 @@ render(gmbb::Image&  dst) noexcept
 
   snprintf(buf,sizeof(buf),"HP%3d/%3d",hero_p->get_hp(),hero_p->get_hp_max());
 
-  dst.print(buf,rectangle,glset);
+  dst.print(buf,dst_point,glset);
 }
 
 
@@ -39,24 +39,26 @@ show_status_monitor() noexcept
     if(!mon)
     {
       mon = new StatusMonitor;
+
+      mon->set_name("statuis monitor");
     }
 
 
-  mon->enter_into(root_widget,Point(120,0));
+  mon->enter_into_container(root_widget,Point(120,0));
 }
 
 
 void
 hide_status_monitor() noexcept
 {
-  mon->leave_from_parent();
+  mon->exit_from_container();
 }
 
 
 void
 update_status_monitor() noexcept
 {
-  mon->notify_flag(needing_to_redraw);
+  mon->notify_needing_to_redraw();
 }
 
 

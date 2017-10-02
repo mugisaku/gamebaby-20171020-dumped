@@ -46,6 +46,31 @@ callback(Image&  dst, Point  point, int  i)
 
 
 void
+cb(game::EffectObject&  fo, int  count) noexcept
+{
+  fo.move_relative_point(1,1);
+
+    if(!count)
+    {
+      delete_effect_object(&fo);
+    }
+}
+
+
+void
+throw_item() noexcept
+{
+  *item_ptr = game::SackItem();
+
+  auto  p = new_effect_object();
+
+  p->set_relative_point(hero_piece->get_relative_point());
+
+  p->push_action(cb,256);
+}
+
+
+void
 return_(int  retval) noexcept
 {
   constexpr int  top    = 0;
@@ -63,6 +88,10 @@ return_(int  retval) noexcept
           break;
       case(throw_):
           hero_p.unhold_item(item_ptr);
+
+          throw_item();
+
+          pop_routine(-1);
           break;
       case(put):
           auto&  sq = *hero_p.get_square();
@@ -148,11 +177,13 @@ open_sack_menu_window() noexcept
       Menu  menu(glset.get_width()*20,glset.get_height(),8,callback);
 
       menu_window = new ColumnStyleMenuWindow(menu,2);
+
+      menu_window->set_name("sack menu window");
     }
 
 
 
-  menu_window->enter_into(root_widget,Point(96,24));
+  menu_window->enter_into_container(root_widget,Point(96,24));
 
   menu_window->set_state(WindowState::full_opened);
 }
@@ -163,7 +194,7 @@ close_sack_menu_window() noexcept
 {
   menu_window->reset_cursor();
 
-  menu_window->leave_from_parent();
+  menu_window->exit_from_container();
 
   menu_window->set_state(WindowState::hidden);
 }

@@ -40,7 +40,7 @@ move_cursor_to_left()  noexcept
     {
       offset.x -= 1;
 
-      notify_flag(needing_to_redraw);
+      notify_needing_to_redraw();
     }
 }
 
@@ -53,7 +53,7 @@ move_cursor_to_right() noexcept
    {
      offset.x += 1;
 
-     notify_flag(needing_to_redraw);
+     notify_needing_to_redraw();
    }
 }
 
@@ -65,7 +65,7 @@ move_cursor_to_up()    noexcept
        if(offset.y){offset.y -= 1;}
   else if(  y_base){y_base   -= 1;}
 
-  notify_flag(needing_to_redraw);
+  notify_needing_to_redraw();
 }
 
 
@@ -76,7 +76,7 @@ move_cursor_to_down()  noexcept
        if(                      offset.y < (menu.get_row_number()-1)){offset.y += 1;}
   else if((y_base+menu.get_row_number()) < (         row_number  -1)){y_base   += 1;}
 
-  notify_flag(needing_to_redraw);
+  notify_needing_to_redraw();
 }
 
 
@@ -84,13 +84,13 @@ move_cursor_to_down()  noexcept
 
 void
 ScrollStyleMenuWindow::
-render(Image&  dst) noexcept
+render(Image&  dst, Point  dst_point) const noexcept
 {
-  Window::render(dst);
+  Window::render(dst,dst_point);
 
     if(Window::get_state() == WindowState::full_opened)
     {
-      Point  const base_offset(rectangle.x+8,rectangle.y+8);
+      Point  const base_offset(dst_point+8);
 
       int  w = menu.get_item_width();
       int  h = menu.get_item_height();

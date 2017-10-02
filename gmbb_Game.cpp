@@ -38,7 +38,7 @@ GlyphSet
 large_glset;
 
 
-Widget
+GadgetContainer
 root_widget;
 
 
@@ -165,21 +165,32 @@ initialize() noexcept
     for(int  x = 1;  x < game::board_width -1;  ++x){
       board.get_square(x,y).set_kind(game::SquareKind::room);
     }}
+
+
+  append_enemy();
 }
 
 
 void
 step(Controller const&  ctrl)
 {
-  call_routine(ctrl);
+    if(!has_active_effect_object())
+    {
+      call_routine(ctrl);
+    }
+
 
   root_widget.update();
 
-    if(root_widget.is_needing_to_redraw())
+  update_effect();
+
+    if(root_widget.is_needing_to_redraw() || has_active_effect_object())
     {
       screen_image.fill();
 
-      root_widget.render(screen_image);
+      root_widget.render(screen_image,Point());
+
+      render_effect();
 
       screen_is_needing_to_redraw = true;
     }

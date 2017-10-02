@@ -18,18 +18,16 @@ constexpr int  board_image_h = (square_size*game::board_height);
 
 
 class
-BoardView: public Widget
+BoardView: public Gadget
 {
 public:
-  game::Board const*  target;
-
   Point  point;
 
-  BoardView(game::Board&  board) noexcept: target(&board){}
+  BoardView() noexcept{}
 
   void  revise_point() noexcept;
 
-  void  render(Image&  dst) noexcept override;
+  void  render(Image&  dst, Point  dst_point) const noexcept override;
 
 } *view;
 
@@ -149,10 +147,14 @@ render_row(Square const*  begin,
 
 void
 BoardView::
-render(Image&  dst) noexcept
+render(Image&  dst, Point  dst_point) const noexcept
 {
-  revise_point();
+/*
+static int  n;
 
+printf("%4d\n",n++);
+fflush(stdout);
+*/
   constexpr int  w = (screen_width /square_size);
   constexpr int  h = (screen_height/square_size);
 
@@ -181,17 +183,26 @@ render(Image&  dst) noexcept
     }
 
 
-  auto  next = board.get_first_piece();
+  covered_ptr<Piece>  next = board.get_first();
 
     while(next)
     {
-      next->render(dst,next->get_rendering_point()-view->point);
+      next->cancel_needing_to_redraw();
 
-      next = static_cast<Piece const*>(next->get_const_next());
+      next->render(dst,next->get_relative_point()-view->point);
+
+      next = next->get_next();
     }
 }
 
 
+}
+
+
+Point
+get_board_view_offset() noexcept
+{
+  return view->point;
 }
 
 
@@ -210,30 +221,34 @@ show_board_view() noexcept
 {
     if(!view)
     {
-      view = new BoardView(board);
+      view = new BoardView;
 
       auto&  sq = *hero_piece->get_square();
 
       view->point.x = (24*sq.get_x())-(screen_width /2);
       view->point.y = (24*sq.get_y())-(screen_height/2);
+
+      view->set_name("board view");
     }
 
 
-  view->enter_into(root_widget,Point());
+  view->enter_into_container(root_widget,Point());
 }
 
 
 void
 hide_board_view() noexcept
 {
-  view->leave_from_parent();
+  view->exit_from_container();
 }
 
 
 void
 update_board_view() noexcept
 {
-  view->redraw();
+  view->revise_point();
+
+  view->notify_needing_to_redraw();
 }
 
 

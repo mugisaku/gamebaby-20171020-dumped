@@ -11,22 +11,22 @@ class
 StatusReportor: public Window
 {
 public:
-  void  render(Image&  dst) noexcept override;
+  void  render(Image&  dst, Point  dst_point) const noexcept override;
 
 } *rep;
 
 
 void
 StatusReportor::
-render(gmbb::Image&  dst) noexcept
+render(gmbb::Image&  dst, Point  dst_point) const noexcept
 {
-  Window::render(dst);
+  Window::render(dst,dst_point);
 
   char  buf[256];
 
   auto&  hero_p = *board.get_hero_piece();
 
-  Point  pt = rectangle;
+  Point  pt = dst_point;
 
   auto  w = glset.get_width();
   auto  h = glset.get_height();
@@ -83,10 +83,12 @@ show_status_reportor() noexcept
       rep = new StatusReportor;
 
       rep->resize(300,80);
+
+      rep->set_name("status repoter");
     }
 
 
-  rep->enter_into(root_widget,Point(8,160));
+  rep->enter_into_container(root_widget,Point(8,160));
 
   rep->set_state(WindowState::full_opened);
 }
@@ -95,14 +97,14 @@ show_status_reportor() noexcept
 void
 hide_status_reportor() noexcept
 {
-  rep->leave_from_parent();
+  rep->exit_from_container();
 }
 
 
 void
 update_status_reportor() noexcept
 {
-  rep->notify_flag(needing_to_redraw);
+  rep->notify_needing_to_redraw();
 }
 
 

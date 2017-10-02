@@ -170,7 +170,7 @@ step()
         {
           text.push(*output_pointer++);
 
-          notify_flag(needing_to_redraw);
+          notify_needing_to_redraw();
         }
     }
 }
@@ -182,19 +182,19 @@ scroll()
 {
   text.rotate();
 
-  notify_flag(needing_to_redraw);
+  notify_needing_to_redraw();
 }
 
 
 void
 MessageWindow::
-render(Image&  dst) noexcept
+render(Image&  dst, Point  dst_point) const noexcept
 {
-  Window::render(dst);
+  Window::render(dst,dst_point);
 
     if(Window::get_state() == WindowState::full_opened)
     {
-      text.render(dst,Point(rectangle.x+8,rectangle.y+8),*glyphset,coloring);
+      text.render(dst,dst_point+8,*glyphset,coloring);
     }
 }
 

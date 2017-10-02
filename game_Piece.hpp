@@ -5,8 +5,8 @@
 #include"game_Hero.hpp"
 #include"game_Enemy.hpp"
 #include"game_Board.hpp"
-#include"game_Object.hpp"
-#include"game_ActionStack.hpp"
+#include"gmbb_ActionStack.hpp"
+#include"game_EffectObject.hpp"
 
 
 namespace game{
@@ -57,10 +57,8 @@ class Piece;
 
 
 class
-Piece: public Object
+Piece: public EffectObject
 {
-  static gmbb::Image*  source_image;
-
   covered_ptr<Board>    board;
   covered_ptr<Square>  square;
 
@@ -82,8 +80,6 @@ Piece: public Object
   covered_ptr<SackItem>   sword_item;
   covered_ptr<SackItem>  shield_item;
   covered_ptr<SackItem>    belt_item;
-
-  Action<Piece>::Stack  action_stack;
 
   gmbb::Point  image_base_point;
 
@@ -116,7 +112,7 @@ public:
   covered_ptr<SackItem>  get_shield_item() const noexcept{return shield_item;}
   covered_ptr<SackItem>  get_belt_item()   const noexcept{return   belt_item;}
 
-  void  push_action(Action<Piece>::Callback  cb, int  count=1) noexcept{action_stack.push(cb,count);}
+  void  push_action(gmbb::Action::Callback<Piece>  cb, int  count=1) noexcept{action_stack.push(cb,count);}
 
   bool  is_busy() const noexcept{return action_stack;}
 
@@ -124,25 +120,7 @@ public:
 
   void  set_rendering_point_by_current_square() noexcept;
 
-  void  update() noexcept override
-  {
-    Object::update();
-
-    increase_frame_index_when_over(8);
-
-      if(get_frame_index() >= 4)
-      {
-        reset_frame();
-      }
-
-
-    action_stack(*this);
-  }
-
-
   void  render(gmbb::Image&  dst, gmbb::Point  dst_point) const noexcept;
-
-  static void  set_source_image(gmbb::Image&  src) noexcept;
 
 };
 

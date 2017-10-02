@@ -66,6 +66,8 @@ create_window() noexcept
       Menu  menu(glset.get_width()*5,glset.get_height(),0,callback);
 
       menu_window = new ColumnStyleMenuWindow(menu);
+
+      menu_window->set_name("choosing menu window");
     }
 }
 
@@ -105,7 +107,7 @@ open_choosing_window() noexcept
 {
   create_window();
 
-  menu_window->enter_into(root_widget,window_point);
+  menu_window->enter_into_container(root_widget,window_point);
 
   menu_window->set_state(WindowState::full_opened);
 }
@@ -116,7 +118,7 @@ close_choosing_window() noexcept
 {
     if(menu_window)
     {
-      menu_window->leave_from_parent();
+      menu_window->exit_from_container();
 
       menu_window->reset_cursor();
     }
