@@ -19,7 +19,7 @@ ScrollStyleMenuWindow*
 menu_window;
 
 
-covered_ptr<game::SackItem>
+covered_ptr<SackItem>
 empty;
 
 
@@ -52,8 +52,8 @@ return_(int  retval) noexcept
 
             if(item)
             {
-              *empty = item                   ;
-                       item = game::SackItem();
+              *empty = item             ;
+                       item = SackItem();
 
               pop_routine();
             }

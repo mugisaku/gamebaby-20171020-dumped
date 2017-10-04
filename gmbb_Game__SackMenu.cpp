@@ -13,7 +13,7 @@ ColumnStyleMenuWindow*
 menu_window;
 
 
-covered_ptr<game::SackItem>
+covered_ptr<SackItem>
 item_ptr;
 
 
@@ -46,7 +46,7 @@ callback(Image&  dst, Point  point, int  i)
 
 
 void
-cb(game::EffectObject&  fo, int  count) noexcept
+cb(EffectObject&  fo, int  count) noexcept
 {
   fo.move_relative_point(1,1);
 
@@ -60,13 +60,13 @@ cb(game::EffectObject&  fo, int  count) noexcept
 void
 throw_item() noexcept
 {
-  *item_ptr = game::SackItem();
+  *item_ptr = SackItem();
 
   auto  p = new_effect_object();
 
   p->set_relative_point(hero_piece->get_relative_point());
 
-  p->push_action(cb,256);
+//  p->push_action(cb,256);
 }
 
 
@@ -102,7 +102,7 @@ return_(int  retval) noexcept
 
               hero_p.unhold_item(item_ptr);
 
-              *item_ptr = game::SackItem();
+              *item_ptr = SackItem();
 
               pop_routine(-1);
             }

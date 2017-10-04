@@ -2,7 +2,9 @@
 #define game_Trap_HPP
 
 
-namespace game{
+
+
+namespace gmbb{
 
 
 enum class

@@ -7,16 +7,6 @@ namespace gmbb{
 namespace{
 
 
-using  game::Piece;
-using game::Square;
-
-
-constexpr int  square_size = 24;
-
-constexpr int  board_image_w = (square_size*game::board_width );
-constexpr int  board_image_h = (square_size*game::board_height);
-
-
 class
 BoardView: public Gadget
 {
@@ -76,11 +66,11 @@ revise_point() noexcept
 
 namespace{
 void
-render_square(game::Square const&  sq, Image&  dst, Point  dst_point) noexcept
+render_square(Square const&  sq, Image&  dst, Point  dst_point) noexcept
 {
   Rectangle  rect(24*4,24*10,24,24);
 
-    if(sq == game::SquareKind::room)
+    if(sq == SquareKind::room)
     {
       rect.y += 24;
     }
@@ -97,22 +87,22 @@ render_square(game::Square const&  sq, Image&  dst, Point  dst_point) noexcept
 
         switch(item->get_kind())
         {
-      case(game::GameItemKind::sword):
+      case(GameItemKind::sword):
           break;
-      case(game::GameItemKind::shield):
+      case(GameItemKind::shield):
           y += 24;
           break;
-      case(game::GameItemKind::belt):
+      case(GameItemKind::belt):
           x += 24;
           break;
-      case(game::GameItemKind::wand):
+      case(GameItemKind::wand):
           x += 24;
           y += 24;
           break;
-      case(game::GameItemKind::card):
+      case(GameItemKind::card):
           x += 24*2;
           break;
-      case(game::GameItemKind::water):
+      case(GameItemKind::water):
           x += 24*2;
           y += 24;
           break;
@@ -149,12 +139,6 @@ void
 BoardView::
 render(Image&  dst, Point  dst_point) const noexcept
 {
-/*
-static int  n;
-
-printf("%4d\n",n++);
-fflush(stdout);
-*/
   constexpr int  w = (screen_width /square_size);
   constexpr int  h = (screen_height/square_size);
 
@@ -166,7 +150,7 @@ fflush(stdout);
 
     while(dst_y < screen_height)
     {
-        if(start_point.y >= game::board_height)
+        if(start_point.y >= board_height)
         {
           start_point.y = 0;
         }
@@ -174,7 +158,7 @@ fflush(stdout);
 
       auto  line_begin = &board.get_square(0,start_point.y);
       auto       start = line_begin+start_point.x;
-      auto    line_end = line_begin+game::board_width;
+      auto    line_end = line_begin+board_width;
 
       render_row(line_begin,start,line_end,dst,Point(dst_x,dst_y));
 

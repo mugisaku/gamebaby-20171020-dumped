@@ -1,7 +1,7 @@
 #include"game_Hero.hpp"
 
 
-namespace game{
+namespace gmbb{
 
 
 

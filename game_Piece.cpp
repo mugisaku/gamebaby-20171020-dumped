@@ -1,10 +1,10 @@
 #include"game_Piece.hpp"
-#include"game_Board.hpp"
-#include"gmbb_unicode.hpp"
-#include<new>
+#include"game_Square.hpp"
 
 
-namespace game{
+
+
+namespace gmbb{
 
 
 
@@ -13,8 +13,6 @@ void
 Piece::
 reset(Hero&  hero) noexcept
 {
-  data.hero  = &hero;
-
   name = hero.get_name();
 
   hp     = 20;
@@ -26,7 +24,6 @@ void
 Piece::
 reset(Enemy&  enem) noexcept
 {
-  data.enemy = &enem;
 }
 
 
@@ -110,16 +107,14 @@ void  Piece::unhold_shield() noexcept{unhold(shield_item);}
 void  Piece::unhold_belt()   noexcept{unhold(  belt_item);}
 
 
-
-
 void
 Piece::
-set_rendering_point_by_current_square() noexcept
+set_position_by_current_square() noexcept
 {
-  auto&  sq = *square;
+  PieceBase::update();
 
-  set_relative_point(gmbb::Point(square_size*sq.get_x(),
-                                 square_size*sq.get_y()));
+  set_x_position(fixed_t(square_size*square->get_x()));
+  set_y_position(fixed_t(square_size*square->get_y()));
 }
 
 

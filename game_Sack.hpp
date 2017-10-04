@@ -6,7 +6,7 @@
 #include<algorithm>
 
 
-namespace game{
+namespace gmbb{
 
 
 constexpr int  sack_capacity = 16;

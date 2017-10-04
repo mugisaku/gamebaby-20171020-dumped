@@ -4,12 +4,59 @@
 namespace gmbb{
 
 
-namespace{
-void
-move_(game::Piece&  actor, int  count) noexcept
-{
-  using game::Direction;
 
+
+enum class
+ActionIndex: int
+{
+  null,
+  moving,
+};
+
+
+
+
+namespace{
+
+
+void
+set_order_of_when_moving(Piece&  p) noexcept
+{
+  constexpr int  u = square_size  ;
+  constexpr int  h = square_size*2;
+
+  static RenderingOrder  const front[3] = 
+  {
+    RenderingOrder(u*0,u*0,u,h,Point(0,-u)),
+    RenderingOrder(u*1,u*0,u,h,Point(0,-u)),
+    RenderingOrder(u*2,u*0,u,h,Point(0,-u)),
+  };
+
+
+  RenderingOrder const*  ptr;
+
+    switch(p.get_face_direction())
+    {
+  case(Direction::front      ): ptr = front;break;
+  case(Direction::front_left ): ptr = front;break;
+  case(Direction::left       ): ptr = front;break;
+  case(Direction::back_left  ): ptr = front;break;
+  case(Direction::back       ): ptr = front;break;
+  case(Direction::back_right ): ptr = front;break;
+  case(Direction::right      ): ptr = front;break;
+  case(Direction::front_right): ptr = front;break;
+    }
+
+
+  auto  i = p.get_frame_count()&1;
+
+  return p.set_rendering_order(ptr+i);
+}
+
+
+void
+move_(Piece&  actor, int  count) noexcept
+{
   Point  pt;
 
     switch(actor.get_moving_direction())
@@ -29,7 +76,7 @@ move_(game::Piece&  actor, int  count) noexcept
   move_board_view(          pt.x,pt.y);
 }
 void
-pickup(game::Piece&  actor, int  count) noexcept
+pickup_item_if_is(Piece&  actor, int  count) noexcept
 {
     if(!count)
     {
@@ -60,7 +107,7 @@ pickup(game::Piece&  actor, int  count) noexcept
 
       else
         {
-          i = game::SackItem();
+          i = SackItem();
         }
 
 
@@ -69,24 +116,50 @@ pickup(game::Piece&  actor, int  count) noexcept
       start_message(buf);
     }
 }
-}
 
 
-void
-move(game::Piece&  p, game::Square&  sq)
+bool
+prepare_to_move(Piece&  p, Square&  sq)
 {
-    if(!sq.get_piece() && (sq != game::SquareKind::wall))
+    if(!sq.get_piece() && (sq != SquareKind::wall))
     {
-      p.set_rendering_point_by_current_square();
-
       p.get_square()->set_piece(nullptr);
 
       sq.set_piece(&p);
       p.set_square(&sq);
 
-      p.push_action(pickup,2);
-      p.push_action(move_,square_size);
+      p.change_action_index(ActionIndex::moving);
     }
+}
+
+
+}
+
+
+void
+controll_hero_piece(Piece&  self) noexcept
+{
+    switch(self.get_action_index())
+    {
+  case(ActionIndex::null):
+    {
+      static RenderingOrder const  orders[] = {
+        RenderingOrder(0,0,24,48,Point(0,0)),
+      };
+
+
+      hero_piece->set_rendering_order(orders);
+    }
+      break;
+  case(ActionIndex::moving):
+    {
+      set_order_of_when_moving(self);
+
+      self.set_x_vector(fixed_t(1));
+    }
+      break;
+    }
+
 }
 
 
@@ -104,7 +177,7 @@ move_hero_piece_to_forward()
 
     if(dst)
     {
-      move(*hero_piece,*dst);
+      prepare_to_move(*hero_piece,*dst);
     }
 }
 
@@ -141,7 +214,7 @@ move_hero_piece_to_backward()
 
     if(dst)
     {
-      move(*hero_piece,*dst);
+      prepare_to_move(*hero_piece,*dst);
     }
 }
 

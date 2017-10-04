@@ -6,15 +6,15 @@
 namespace gmbb{
 
 
-game::Hero
+Hero
 hero;
 
 
-game::Board
+Board
 board;
 
 
-covered_ptr<game::Piece>
+covered_ptr<Piece>
 hero_piece;
 
 
@@ -81,7 +81,7 @@ waiting(Controller const&  ctrl) noexcept
 
   else
     {
-        if(!hero_piece->is_busy() && interval_timer.check(280,ctrl.get_time()))
+        if(interval_timer.check(280,ctrl.get_time()))
         {
                if(ctrl.test(up_button   )){move_hero_piece_to_forward();  interval_timer.enable();}
           else if(ctrl.test(left_button )){turn_hero_piece_to_left( );  interval_timer.enable();}
@@ -134,11 +134,11 @@ initialize() noexcept
 
   character_image.load_png(r);
 
-  game::Piece::set_source_image(character_image);
+  Piece::set_source_image(character_image);
 
   hero_piece = board.new_piece(1,1);
 
-  hero_piece->reset(hero);
+  hero_piece->set_callback(controll_hero_piece);
 
   board.set_hero_piece(hero_piece);
 
@@ -147,23 +147,23 @@ initialize() noexcept
   show_board_view();
   show_status_monitor();
 
-    for(int  x = 0;  x < game::board_width;  ++x)
+    for(int  x = 0;  x < board_width;  ++x)
     {
-      board.get_square(x,                   0).set_kind(game::SquareKind::wall);
-      board.get_square(x,game::board_height-1).set_kind(game::SquareKind::wall);
+      board.get_square(x,             0).set_kind(SquareKind::wall);
+      board.get_square(x,board_height-1).set_kind(SquareKind::wall);
     }
 
 
-    for(int  y = 1;  y < game::board_height-1;  ++y)
+    for(int  y = 1;  y < board_height-1;  ++y)
     {
-      board.get_square(                  0,y).set_kind(game::SquareKind::wall);
-      board.get_square(game::board_width-1,y).set_kind(game::SquareKind::wall);
+      board.get_square(            0,y).set_kind(SquareKind::wall);
+      board.get_square(board_width-1,y).set_kind(SquareKind::wall);
     }
 
 
-    for(int  y = 1;  y < game::board_height-1;  ++y){
-    for(int  x = 1;  x < game::board_width -1;  ++x){
-      board.get_square(x,y).set_kind(game::SquareKind::room);
+    for(int  y = 1;  y < board_height-1;  ++y){
+    for(int  x = 1;  x < board_width -1;  ++x){
+      board.get_square(x,y).set_kind(SquareKind::room);
     }}
 
 

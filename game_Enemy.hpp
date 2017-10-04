@@ -5,7 +5,7 @@
 #include"game_GameItem.hpp"
 
 
-namespace game{
+namespace gmbb{
 
 
 class

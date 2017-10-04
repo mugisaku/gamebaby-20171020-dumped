@@ -1,11 +1,11 @@
-#ifndef game_Direction_HPP
-#define game_Direction_HPP
+#ifndef gmbb_Direction_HPP
+#define gmbb_Direction_HPP
 
 
 #include<algorithm>
 
 
-namespace game{
+namespace gmbb{
 
 
 enum class
@@ -74,7 +74,7 @@ get_right(Direction  d) noexcept
 
 
 constexpr int
-get_distance(game::Direction  a, game::Direction  b) noexcept
+get_distance(Direction  a, Direction  b) noexcept
 {
   auto  diff = std::abs(static_cast<int>(a)-static_cast<int>(b));
 

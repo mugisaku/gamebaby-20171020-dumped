@@ -6,7 +6,7 @@
 #include"covered_ptr"
 
 
-namespace game{
+namespace gmbb{
 
 
 enum class

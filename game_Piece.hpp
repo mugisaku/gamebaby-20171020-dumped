@@ -2,14 +2,13 @@
 #define game_Piece_HPP
 
 
+#include"gmbb.hpp"
 #include"game_Hero.hpp"
 #include"game_Enemy.hpp"
-#include"game_Board.hpp"
-#include"gmbb_ActionStack.hpp"
-#include"game_EffectObject.hpp"
+#include"game_Square.hpp"
 
 
-namespace game{
+namespace gmbb{
 
 
 enum class
@@ -20,17 +19,6 @@ PieceKind
   friend_hero,
   enemy,
 
-};
-
-
-union
-PieceData
-{
-  covered_ptr<Hero>    hero;
-  covered_ptr<Enemy>  enemy;
-
-   PieceData(){}
-  ~PieceData(){}
 };
 
 
@@ -52,18 +40,15 @@ Attribute
 };
 
 
-class Square;
-class Piece;
+using Board = ProtoBoard<Square,Piece>;
 
 
 class
-Piece: public EffectObject
+Piece: public PieceBase
 {
-  covered_ptr<Board>    board;
-  covered_ptr<Square>  square;
+  covered_ptr<Board>  board;
 
   PieceKind  kind=PieceKind::null;
-  PieceData  data;
 
   char const*  name;
 
@@ -81,21 +66,17 @@ Piece: public EffectObject
   covered_ptr<SackItem>  shield_item;
   covered_ptr<SackItem>    belt_item;
 
-  gmbb::Point  image_base_point;
-
 public:
   Piece(Board&  brd) noexcept: board(&brd){}
-  Piece(Piece const&  rhs) noexcept=delete;
-  Piece(Piece&&       rhs) noexcept=delete;
+  Piece(Piece const&) noexcept=delete;
+  Piece(Piece&&     ) noexcept=delete;
 
-  Piece&  operator=(Piece const&  rhs) noexcept=delete;
-  Piece&  operator=(Piece&&       rhs) noexcept=delete;
+
+  Piece&  operator=(Piece const&) noexcept=delete;
+  Piece&  operator=(Piece&&     ) noexcept=delete;
 
   void  reset(Hero&   hero) noexcept;
   void  reset(Enemy&  enem) noexcept;
-
-  void                 set_square(covered_ptr<Square>  sq)       noexcept{       square = sq;}
-  covered_ptr<Square>  get_square(                       ) const noexcept{return square     ;}
 
 
   int  get_hp()     const noexcept{return hp    ;}
@@ -112,17 +93,15 @@ public:
   covered_ptr<SackItem>  get_shield_item() const noexcept{return shield_item;}
   covered_ptr<SackItem>  get_belt_item()   const noexcept{return   belt_item;}
 
-  void  push_action(gmbb::Action::Callback<Piece>  cb, int  count=1) noexcept{action_stack.push(cb,count);}
 
-  bool  is_busy() const noexcept{return action_stack;}
 
   Board&  get_board() const noexcept{return *board;}
 
-  void  set_rendering_point_by_current_square() noexcept;
-
-  void  render(gmbb::Image&  dst, gmbb::Point  dst_point) const noexcept;
+  void  set_position_by_current_square() noexcept;
 
 };
+
+
 
 
 }

@@ -3,12 +3,7 @@
 
 
 #include"gmbb.hpp"
-#include"gmbb_GadgetContainer.hpp"
-#include"gmbb_IntervalTimer.hpp"
-#include"game_Piece.hpp"
-#include"game_EffectObject.hpp"
-#include"game_Board.hpp"
-#include"game_Sack.hpp"
+#include"game.hpp"
 #include<initializer_list>
 
 
@@ -18,24 +13,22 @@ namespace gmbb{
 constexpr int  screen_width  = 320;
 constexpr int  screen_height = 240;
 
-constexpr int  square_size = 24;
-
-constexpr int  board_image_w = (square_size*game::board_width );
-constexpr int  board_image_h = (square_size*game::board_height);
+constexpr int  board_image_w = (square_size*board_width );
+constexpr int  board_image_h = (square_size*board_height);
 
 
 extern
-game::Hero
+Hero
 hero;
 
 
 extern
-covered_ptr<game::Piece>
+covered_ptr<Piece>
 hero_piece;
 
 
 extern
-game::Board
+Board
 board;
 
 
@@ -69,6 +62,8 @@ root_widget;
 
 
 
+
+void  controll_hero_piece(Piece&  self) noexcept;
 
 void  move_hero_piece_to_forward();
 void  turn_hero_piece_to_left();
@@ -127,8 +122,8 @@ bool  is_message_window_opened()        noexcept;
 void  append_enemy();
 
 
-covered_ptr<game::EffectObject>     new_effect_object();
-void                             delete_effect_object(covered_ptr<game::EffectObject>  fo);
+covered_ptr<EffectObject>     new_effect_object();
+void                           delete_effect_object(covered_ptr<EffectObject>  fo);
 
 bool  has_active_effect_object();
 

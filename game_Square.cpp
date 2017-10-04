@@ -4,24 +4,7 @@
 
 
 
-namespace game{
-
-
-
-
-void
-Square::
-reset(int  x_, int  y_, SquareLinkSet const&  linkset_) noexcept
-{
-  x = x_;
-  y = y_;
-
-  linkset = linkset_;
-
-  item = SackItem();
-
-  piece_ptr = nullptr;
-}
+namespace gmbb{
 
 
 void
@@ -37,7 +20,6 @@ remove_piece() noexcept
       piece_ptr = nullptr;
     }
 }
-
 
 
 }

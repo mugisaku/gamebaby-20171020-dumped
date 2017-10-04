@@ -10,11 +10,11 @@ namespace{
 constexpr int  number_of_objects = 80;
 
 
-game::EffectObject
+EffectObject
 object_array[number_of_objects];
 
 
-covered_ptr<game::EffectObject>
+covered_ptr<EffectObject>
 stock[number_of_objects];
 
 
@@ -22,14 +22,14 @@ int
 index;
 
 
-covered_ptr<game::EffectObject>  first;
-covered_ptr<game::EffectObject>   last;
+covered_ptr<EffectObject>  first;
+covered_ptr<EffectObject>   last;
 
 
 }
 
 
-covered_ptr<game::EffectObject>
+covered_ptr<EffectObject>
 new_effect_object()
 {
   static bool  initialized;
@@ -68,7 +68,7 @@ new_effect_object()
 
 
 void
-delete_effect_object(covered_ptr<game::EffectObject>  fo)
+delete_effect_object(covered_ptr<EffectObject>  fo)
 {
   auto  previous = fo->get_previous();
   auto      next = fo->get_next();
@@ -121,7 +121,7 @@ render_effect()
     {
       next->render(screen_image,next->get_relative_point()-get_board_view_offset());
 
-      next = static_cast<game::EffectObject const*>(next->get_next().get_const_raw_pointer());
+      next = static_cast<EffectObject const*>(next->get_next().get_const_raw_pointer());
     }
 }
 
