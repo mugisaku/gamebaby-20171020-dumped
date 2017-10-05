@@ -11,16 +11,6 @@
 namespace gmbb{
 
 
-enum class
-ObjectFlag
-{
-  no_animation = 0x1,
-  blink        = 0x2,
-  invisible    = 0x4,
-
-};
-
-
 struct
 RenderingOrder
 {
@@ -55,18 +45,25 @@ EffectObject: public Gadget
   Direction  moving_direction=Direction::front;
   Direction    face_direction=Direction::front;
 
-  RenderingOrder const*  rendering_order_array=nullptr;
+  RenderingOrder const*  rendering_order_array[8];
 
   int  number_of_rendering_orders=0;
 
   ActionIndex  action_index=static_cast<ActionIndex>(0);
-  int  frame_count=0;
+  int  pattern_index=0;
+  uint32_t  frame_count=0;
 
   FixedPointNumber  x_vector;
   FixedPointNumber  y_vector;
 
   FixedPointNumber  x_position;
   FixedPointNumber  y_position;
+
+  int  visible_interval=1;
+  int  visible_count=0;
+
+  int  invisible_interval=0;
+  int  invisible_count=0;
 
   uint32_t  i_state=0;
   uint32_t  x_state=0;
@@ -109,14 +106,22 @@ public:
 
   void  change_action_index(ActionIndex  i) noexcept;
 
-  int     get_frame_count(        ) const noexcept{return frame_count    ;}
-  void  reset_frame_count(int  v=0)       noexcept{       frame_count = v;}
+  uint32_t     get_frame_count(             ) const noexcept{return frame_count    ;}
+  void       reset_frame_count(uint32_t  v=0)       noexcept{       frame_count = v;}
 
+  int   get_pattern_index(      ) const noexcept{return pattern_index    ;}
+  void  set_pattern_index(int  i)       noexcept{       pattern_index = i;}
 
   void  set_rendering_order(RenderingOrder const*  orders, int  n=1) noexcept
   {
-    rendering_order_array = orders;
     number_of_rendering_orders = n;
+
+    RenderingOrder const**  dst = rendering_order_array;
+
+      while(n--)
+      {
+        *dst++ = orders++;
+      }
   }
 
 
@@ -133,9 +138,15 @@ public:
   fixed_t  get_y_vector() const noexcept{return y_vector;}
 
 
+  void    set_visible_interval(int  v) noexcept{  visible_interval = v;}
+  void  set_invisible_interval(int  v) noexcept{invisible_interval = v;}
+
+
   void  set_callback(Callback<EffectObject>  cb) noexcept{callback = cb;}
 
   template<typename  T> void  set_callback(Callback<T>  cb) noexcept{callback = convert(cb);}
+
+  bool  check_visible_count() noexcept;
 
   void  update() noexcept override;
 

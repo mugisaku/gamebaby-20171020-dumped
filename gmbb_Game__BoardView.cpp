@@ -173,7 +173,11 @@ render(Image&  dst, Point  dst_point) const noexcept
     {
       next->cancel_needing_to_redraw();
 
-      next->render(dst,next->get_relative_point()-view->point);
+        if(next->check_visible_count())
+        {
+          next->render(dst,next->get_relative_point()-view->point);
+        }
+
 
       next = next->get_next();
     }

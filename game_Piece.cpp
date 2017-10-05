@@ -111,8 +111,6 @@ void
 Piece::
 set_position_by_current_square() noexcept
 {
-  PieceBase::update();
-
   set_x_position(fixed_t(square_size*square->get_x()));
   set_y_position(fixed_t(square_size*square->get_y()));
 }

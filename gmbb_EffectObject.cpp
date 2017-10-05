@@ -15,7 +15,46 @@ change_action_index(ActionIndex  i) noexcept
 {
   action_index = i;
 
+  pattern_index = 0;
+
   reset_frame_count();
+}
+
+
+bool
+EffectObject::
+check_visible_count() noexcept
+{
+    if(invisible_count)
+    {
+      --invisible_count;
+
+      return false;
+    }
+
+
+    if(!invisible_count)
+    {
+        if(visible_count)
+        {
+          --visible_count;
+
+          return true;
+        }
+
+
+        if(!visible_count)
+        {
+            visible_count =   visible_interval;
+          invisible_count = invisible_interval;
+        }
+
+
+      return true;
+    }
+
+
+  return false;
 }
 
 
@@ -33,7 +72,7 @@ update() noexcept
 
   x_position += x_vector;
   y_position += y_vector;
-printf("%d\n",x_position.get_raw_value().data);
+
   set_relative_point(Point(*x_position,*y_position));
 }
 
@@ -44,7 +83,7 @@ render(Image&  dst, Point  dst_point) const noexcept
 {
     for(int  i = 0;  i < number_of_rendering_orders;  ++i)
     {
-      auto&  o = rendering_order_array[i];
+      auto&  o = *rendering_order_array[i];
 
       dst_point += o.dst_offset;
 

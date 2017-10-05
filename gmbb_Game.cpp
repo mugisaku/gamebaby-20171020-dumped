@@ -137,6 +137,7 @@ initialize() noexcept
   Piece::set_source_image(character_image);
 
   hero_piece = board.new_piece(1,1);
+  hero_piece->set_position_by_current_square();
 
   hero_piece->set_callback(controll_hero_piece);
 
