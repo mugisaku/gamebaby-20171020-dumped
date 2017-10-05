@@ -98,9 +98,9 @@ return_(int  retval) noexcept
 
             if(sq.can_put_item())
             {
-              sq.set_item(*item_ptr);
-
               hero_p.unhold_item(item_ptr);
+
+              sq.set_item(*item_ptr);
 
               *item_ptr = SackItem();
 

@@ -52,12 +52,14 @@ private:
   }
 
 public:
-  constexpr explicit FixedPointNumber(int  n=0) noexcept: value((n<<shift_amount)){}
+  constexpr explicit FixedPointNumber(int  n=0) noexcept: value(n<<shift_amount){}
   constexpr explicit FixedPointNumber(char const*  s) noexcept: value(to_int(s)){}
   constexpr explicit FixedPointNumber(RawValue  v) noexcept: value(v.data){}
 
   Type&  operator=(int  n) noexcept{return *this = Type(n);}
   Type&  operator=(RawValue  v) noexcept{return *this = Type(v);}
+
+  constexpr  operator bool() const noexcept{return value;}
 
   constexpr bool  operator==(Type const&  rhs) const noexcept{return value == rhs.value;}
   constexpr bool  operator!=(Type const&  rhs) const noexcept{return value != rhs.value;}
@@ -79,6 +81,7 @@ public:
   Type&  operator%=(int  n) noexcept{value %= n;  return *this;}
 
   int32_t  operator*() const noexcept{return value>>shift_amount;}
+
 
   RawValue  get_raw_value() const noexcept{return RawValue(value);}
 

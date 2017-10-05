@@ -11,12 +11,17 @@ ActionIndex: int
 {
   null,
   moving,
+  message,
 };
 
 
 
 
 namespace{
+
+
+bool
+is_busy;
 
 
 void
@@ -106,29 +111,23 @@ set_order_of_when_moving(Piece&  p) noexcept
 
   static int const  table[] = {0,1,0,2};
 
-  auto  i = table[p.get_frame_count()%6];
+  auto  i = table[p.get_frame_count()%square_size/6];
 
   return p.set_rendering_order(ptr+i);
 }
 
 
 void
-pickup_item_if_is(Piece&  actor, int  count) noexcept
+pickup_item_if_is(Piece&  actor) noexcept
 {
-    if(!count)
-    {
-      close_message_window();
-
-      return;
-    }
-
-
   auto&  sq = *actor.get_square();
 
   auto&  i = sq.get_item();
 
     if(i)
     {
+      actor.change_action_index(ActionIndex::message);
+
       char16_t  buf[256]=u"";
 
       auto  pickedup = hero.get_sack().try_to_push_item(i);
@@ -151,6 +150,13 @@ pickup_item_if_is(Piece&  actor, int  count) noexcept
       u16snprintf(buf,sizeof(buf),fmt,name);
 
       start_message(buf);
+    }
+
+  else
+    {
+      actor.change_action_index(ActionIndex::null);
+
+      is_busy = false;
     }
 }
 
@@ -184,6 +190,8 @@ prepare_to_move(Piece&  p, Square&  sq)
 
       p.set_x_vector(fixed_t(pt.x));
       p.set_y_vector(fixed_t(pt.y));
+
+      is_busy = true;
     }
 }
 
@@ -194,24 +202,33 @@ prepare_to_move(Piece&  p, Square&  sq)
 void
 controll_hero_piece(Piece&  self) noexcept
 {
+  set_order_of_when_moving(self);
+
     switch(self.get_action_index())
     {
   case(ActionIndex::null):
-    {
-      set_order_of_when_moving(self);
-    }
       break;
   case(ActionIndex::moving):
     {
-      set_order_of_when_moving(self);
+      move_board_view(*self.get_x_vector(),
+                      *self.get_y_vector());
 
-        if(self.get_frame_count() >= square_size)
+        if(self.get_frame_count() > square_size)
         {
-          self.change_action_index(ActionIndex::null);
-
           self.set_x_vector(fixed_t());
           self.set_y_vector(fixed_t());
+
+          pickup_item_if_is(self);
         }
+    }
+      break;
+  case(ActionIndex::message):
+    {
+      close_message_window();
+
+      self.change_action_index(ActionIndex::null);
+
+      is_busy = false;
     }
       break;
     }
@@ -278,6 +295,13 @@ move_hero_piece_to_backward()
     {
       prepare_to_move(*hero_piece,*dst);
     }
+}
+
+
+bool
+is_hero_busy() noexcept
+{
+  return is_busy;
 }
 
 

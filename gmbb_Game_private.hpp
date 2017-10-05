@@ -70,6 +70,10 @@ void  turn_hero_piece_to_left();
 void  turn_hero_piece_to_right();
 void  move_hero_piece_to_backward();
 
+bool  is_hero_busy() noexcept;
+
+
+
 
 Point  get_board_view_offset() noexcept;
 

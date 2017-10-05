@@ -59,6 +59,8 @@ EffectObject: public Gadget
   FixedPointNumber  x_position;
   FixedPointNumber  y_position;
 
+  bool  frozen_flag=false;
+
   int  visible_interval=1;
   int  visible_count=0;
 
@@ -125,8 +127,20 @@ public:
   }
 
 
+  void    freeze() noexcept{frozen_flag =  true;}
+  void  unfreeze() noexcept{frozen_flag = false;}
+
+  bool  is_frozen() const noexcept{return frozen_flag;}
+
+
   void  set_x_position(fixed_t  f) noexcept{x_position = f;}
   void  set_y_position(fixed_t  f) noexcept{y_position = f;}
+
+  void  move_position(fixed_t  x, fixed_t  y) noexcept
+  {
+    x_position += x;
+    y_position += y;
+  }
 
   fixed_t  get_x_position() const noexcept{return x_position;}
   fixed_t  get_y_position() const noexcept{return y_position;}

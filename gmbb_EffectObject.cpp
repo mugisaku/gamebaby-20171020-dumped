@@ -62,7 +62,11 @@ void
 EffectObject::
 update() noexcept
 {
-  ++frame_count;
+    if(!frozen_flag)
+    {
+      ++frame_count;
+    }
+
 
     if(callback)
     {

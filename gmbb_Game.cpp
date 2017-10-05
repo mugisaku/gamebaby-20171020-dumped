@@ -65,12 +65,14 @@ waiting(Controller const&  ctrl) noexcept
 {
   using namespace gmbb::flags_of_input;
 
-    if(ctrl.test(p_button))
+  auto  ok = !is_hero_busy();
+
+    if(ok && ctrl.test(p_button))
     {
     }
 
   else
-    if(ctrl.test(n_button))
+    if(ok && ctrl.test(n_button))
     {
       open_main_menu_window();
 
@@ -81,7 +83,7 @@ waiting(Controller const&  ctrl) noexcept
 
   else
     {
-        if(interval_timer.check(280,ctrl.get_time()))
+        if(ok && interval_timer.check(280,ctrl.get_time()))
         {
                if(ctrl.test(up_button   )){move_hero_piece_to_forward();  interval_timer.enable();}
           else if(ctrl.test(left_button )){turn_hero_piece_to_left( );  interval_timer.enable();}
