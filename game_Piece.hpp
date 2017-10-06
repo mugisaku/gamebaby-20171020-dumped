@@ -93,6 +93,11 @@ public:
   covered_ptr<SackItem>  get_shield_item() const noexcept{return shield_item;}
   covered_ptr<SackItem>  get_belt_item()   const noexcept{return   belt_item;}
 
+  void  set_controll_callback(ControllCallback<Piece>  cb) noexcept
+  {controll_callback = reinterpret_cast<ControllCallback<EffectObject>>(cb);}
+
+  void  set_render_callback(RenderCallback<Piece>  cb) noexcept
+  {render_callback = reinterpret_cast<RenderCallback<EffectObject>>(cb);}
 
 
   Board&  get_board() const noexcept{return *board;}

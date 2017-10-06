@@ -42,7 +42,7 @@ protected:
   void  draw_frame(Image&  dst, Point  dst_point) const noexcept;
 
 public:
-  Window() noexcept{}
+  Window(              ) noexcept{}
   Window(int  w, int  h) noexcept{resize(w,h);}
 
   void  resize(int  w, int  h) noexcept;

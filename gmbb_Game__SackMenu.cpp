@@ -46,31 +46,6 @@ callback(Image&  dst, Point  point, int  i)
 
 
 void
-cb(EffectObject&  fo, int  count) noexcept
-{
-  fo.move_relative_point(1,1);
-
-    if(!count)
-    {
-      delete_effect_object(&fo);
-    }
-}
-
-
-void
-throw_item() noexcept
-{
-  *item_ptr = SackItem();
-
-  auto  p = new_effect_object();
-
-  p->set_relative_point(hero_piece->get_relative_point());
-
-//  p->push_action(cb,256);
-}
-
-
-void
 return_(int  retval) noexcept
 {
   constexpr int  top    = 0;
@@ -89,7 +64,7 @@ return_(int  retval) noexcept
       case(throw_):
           hero_p.unhold_item(item_ptr);
 
-          throw_item();
+          throw_item(*item_ptr,*hero_p.get_square(),hero_p.get_face_direction());
 
           pop_routine(-1);
           break;

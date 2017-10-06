@@ -115,13 +115,19 @@ update_effect()
 void
 render_effect()
 {
-  auto  next = first.get_const_raw_pointer();
+  auto  next = first;
 
     while(next)
     {
-      next->render(screen_image,next->get_relative_point()-get_board_view_offset());
+      next->cancel_needing_to_redraw();
 
-      next = static_cast<EffectObject const*>(next->get_next().get_const_raw_pointer());
+        if(next->check_visible_count())
+        {
+          next->render(screen_image,next->get_relative_point()-get_board_view_offset());
+        }
+
+
+      next = next->get_next();
     }
 }
 

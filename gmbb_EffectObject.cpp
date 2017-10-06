@@ -68,9 +68,9 @@ update() noexcept
     }
 
 
-    if(callback)
+    if(controll_callback)
     {
-      callback(*this);
+      controll_callback(*this);
     }
 
 
@@ -79,25 +79,6 @@ update() noexcept
 
   set_relative_point(Point(*x_position,*y_position));
 }
-
-
-void
-EffectObject::
-render(Image&  dst, Point  dst_point) const noexcept
-{
-    for(int  i = 0;  i < number_of_rendering_orders;  ++i)
-    {
-      auto&  o = *rendering_order_array[i];
-
-      dst_point += o.dst_offset;
-
-      revise_point(dst_point,o.src_rectangle);
-
-      dst.transfer(*get_source_image(),o.src_rectangle,dst_point,get_relative_point().y+79);
-    }
-}
-
-
 
 
 covered_ptr<Image>

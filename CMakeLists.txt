@@ -75,7 +75,8 @@ set(SOURCES
   gmbb_Game__StatusReportor.cpp
   gmbb_Game__BoardView.cpp
   gmbb_Game__EffectObject.cpp
-  gmbb_Game__move_hero_piece.cpp
+  gmbb_Game__controll_hero_piece.cpp
+  gmbb_Game__throw_item.cpp
   gmbb_Game__append_enemy.cpp
   gmbb_SquareBase.cpp
   gmbb_PieceBase.cpp

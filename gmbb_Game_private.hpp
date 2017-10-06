@@ -64,6 +64,9 @@ root_widget;
 
 
 void  controll_hero_piece(Piece&  self) noexcept;
+void    render_hero_piece(Piece const&  self, Image&  dst, Point  dst_point) noexcept;
+
+void  throw_item(SackItem const&  item, Square const&  start, Direction  d) noexcept;
 
 void  move_hero_piece_to_forward();
 void  turn_hero_piece_to_left();

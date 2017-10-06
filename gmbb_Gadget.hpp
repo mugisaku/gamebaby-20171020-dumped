@@ -59,9 +59,9 @@ public:
 
   Point  get_relative_point() const noexcept{return relative_point;}
 
-  virtual void  update() noexcept{}
-
   virtual void  render(Image&  dst, Point  dst_point) const noexcept{}
+
+  virtual void  update() noexcept{}
 
   virtual void  print() const noexcept{printf("%s(%p)",name.data(),this);}
 

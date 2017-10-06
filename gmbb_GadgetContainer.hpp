@@ -30,6 +30,20 @@ public:
 
   void  render(Image&  dst, Point  dst_point) const noexcept override;
 
+  template<typename  T>
+  void
+  for_each(T&  t) const noexcept
+  {
+    auto  next = first;
+
+      while(next)
+      {
+        t(*next);
+
+        next = next->get_next();
+      }
+  }
+
   void  print() const noexcept override;
 
 };

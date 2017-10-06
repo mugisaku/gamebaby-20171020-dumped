@@ -92,8 +92,6 @@ render(Image&  dst, Point  dst_point) const noexcept
 
     while(next)
     {
-      next->cancel_needing_to_redraw();
-
       next->render(dst,dst_point+next->get_relative_point());
 
       next = next->get_next();

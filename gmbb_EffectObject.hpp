@@ -11,20 +11,6 @@
 namespace gmbb{
 
 
-struct
-RenderingOrder
-{
-  Rectangle  src_rectangle;
-
-  Point  dst_offset;
-
-  constexpr RenderingOrder(int  x, int  y, int  w, int  h, Point  dst):
-  src_rectangle(x,y,w,h),
-  dst_offset(dst){}
-
-};
-
-
 namespace bitop{
 template<typename  T>  void    set_flag(T&  target, T  flag) noexcept{target |=  flag;}
 template<typename  T>  void  unset_flag(T&  target, T  flag) noexcept{target &= ~flag;}
@@ -38,16 +24,8 @@ enum class  ActionIndex: int;
 class
 EffectObject: public Gadget
 {
-  template<typename  T>using Callback = void  (*)(T&  self) noexcept;
-
-  Callback<EffectObject>  callback=nullptr;
-
   Direction  moving_direction=Direction::front;
   Direction    face_direction=Direction::front;
-
-  RenderingOrder const*  rendering_order_array[8];
-
-  int  number_of_rendering_orders=0;
 
   ActionIndex  action_index=static_cast<ActionIndex>(0);
   int  pattern_index=0;
@@ -72,12 +50,12 @@ EffectObject: public Gadget
 
   static covered_ptr<Image>  source_image;
 
-  template<typename  T>
-  Callback<EffectObject>
-  convert(Callback<T>  cb) noexcept
-  {
-    return reinterpret_cast<Callback<EffectObject>>(cb);
-  }
+protected:
+  template<typename  T>using   RenderCallback = void  (*)(T const&  self, Image&  dst, Point  dst_point) noexcept;
+  template<typename  T>using ControllCallback = void  (*)(T&  self) noexcept;
+
+  ControllCallback<EffectObject>  controll_callback=nullptr;
+  RenderCallback<EffectObject>      render_callback=nullptr;
 
 public:
   EffectObject(){}
@@ -114,18 +92,6 @@ public:
   int   get_pattern_index(      ) const noexcept{return pattern_index    ;}
   void  set_pattern_index(int  i)       noexcept{       pattern_index = i;}
 
-  void  set_rendering_order(RenderingOrder const*  orders, int  n=1) noexcept
-  {
-    number_of_rendering_orders = n;
-
-    RenderingOrder const**  dst = rendering_order_array;
-
-      while(n--)
-      {
-        *dst++ = orders++;
-      }
-  }
-
 
   void    freeze() noexcept{frozen_flag =  true;}
   void  unfreeze() noexcept{frozen_flag = false;}
@@ -156,16 +122,20 @@ public:
   void  set_invisible_interval(int  v) noexcept{invisible_interval = v;}
 
 
-  void  set_callback(Callback<EffectObject>  cb) noexcept{callback = cb;}
-
-  template<typename  T> void  set_callback(Callback<T>  cb) noexcept{callback = convert(cb);}
+  void  set_controll_callback(ControllCallback<EffectObject>  cb) noexcept{controll_callback = cb;}
+  void  set_render_callback(RenderCallback<EffectObject>  cb) noexcept{render_callback = cb;}
 
   bool  check_visible_count() noexcept;
 
   void  update() noexcept override;
 
-  void  render(Image&  dst, Point  dst_point) const noexcept;
-
+  void  render(Image&  dst, Point  dst_point) const noexcept override
+  {
+      if(render_callback)
+      {
+        render_callback(*this,dst,dst_point);
+      }
+  }
 
   static void  revise_point(Point&  point, Rectangle const&   rect) noexcept;
 
