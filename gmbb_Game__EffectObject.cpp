@@ -70,24 +70,27 @@ new_effect_object()
 void
 delete_effect_object(covered_ptr<EffectObject>  fo)
 {
-  auto  previous = fo->get_previous();
-  auto      next = fo->get_next();
-
-  fo->disconnect();
-
-    if(fo == first)
+    if(fo)
     {
-      first = next;
+      auto  previous = fo->get_previous();
+      auto      next = fo->get_next();
+
+      fo->disconnect();
+
+        if(fo == first)
+        {
+          first = next;
+        }
+
+
+        if(fo == last)
+        {
+          last = previous;
+        }
+
+
+      stock[--index] = fo;
     }
-
-
-    if(fo == last)
-    {
-      last = previous;
-    }
-
-
-  stock[--index] = fo;
 }
 
 

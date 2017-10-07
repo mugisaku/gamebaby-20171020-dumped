@@ -20,6 +20,8 @@ Direction
         right,
   front_right,
 
+  last = front_right,
+
   unknown,
   error,
 };

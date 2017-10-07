@@ -24,8 +24,64 @@ bool
 is_busy;
 
 
+constexpr int  count_per_step = 12;
+
+
+SackItem
+thrown_item;
+
+
+covered_ptr<EffectObject>
+object;
+
+
+covered_ptr<Square>
+current_square;
+
+
+Direction
+moving_direction;
+
+
+bool
+check() noexcept
+{
+  auto  next = (*current_square)[moving_direction];
+
+    if(next)
+    {
+        if(*next == SquareKind::wall)
+        {
+          board.clear_all_distance();
+
+          current_square->put_item(thrown_item,3);
+
+          delete_effect_object(object);
+
+          return true;
+        }
+
+      else
+        if(next->get_piece())
+        {
+          auto  p = next->get_piece();
+
+          
+        }
+
+      else
+        {
+          current_square = next;
+        }
+    }
+
+
+  return false;
+}
+
+
 void
-controll_thrown_item(Piece&  self) noexcept
+controll(EffectObject&  self) noexcept
 {
     switch(self.get_action_index())
     {
@@ -33,6 +89,15 @@ controll_thrown_item(Piece&  self) noexcept
       break;
   case(ActionIndex::moving):
     {
+        if(self.get_frame_count() >= (square_size/count_per_step))
+        {
+          self.reset_frame_count();
+
+            if(check())
+            {
+              is_busy = false;
+            }
+        }
     }
       break;
   case(ActionIndex::message):
@@ -51,12 +116,37 @@ controll_thrown_item(Piece&  self) noexcept
 }
 
 
+void
+render(EffectObject const&  self, Image&  dst, Point  dst_point) noexcept
+{
+  auto  rect = get_rectangle_for_item(thrown_item);
+
+  Piece::revise_point(dst_point,rect);
+
+  dst.transfer(*EffectObject::get_source_image(),rect,dst_point,self.get_relative_point().y);
+
+  update_board_view();
+}
+
+
 }
 
 
 void
-throw_item(SackItem const&  item, Square const&  start, Direction  d) noexcept
+throw_item(SackItem const&  item, covered_ptr<Square>  start, Direction  d) noexcept
 {
+  thrown_item = item;
+
+  current_square = start;
+
+  moving_direction = d;
+
+    if(check())
+    {
+      return;
+    }
+
+
   Point  pt;
 
     switch(d)
@@ -72,12 +162,17 @@ throw_item(SackItem const&  item, Square const&  start, Direction  d) noexcept
     }
 
 
-  auto  p = new_effect_object();
+  object = new_effect_object();
 
-  p->change_action_index(ActionIndex::moving);
+  object->change_action_index(ActionIndex::moving);
+  object->set_controll_callback(controll);
+  object->set_render_callback(render);
 
-  p->set_x_vector(fixed_t(pt.x));
-  p->set_y_vector(fixed_t(pt.y));
+  object->set_x_position(fixed_t(square_size*start->get_x()));
+  object->set_y_position(fixed_t(square_size*start->get_y()));
+
+  object->set_x_vector(fixed_t(pt.x*count_per_step));
+  object->set_y_vector(fixed_t(pt.y*count_per_step));
 
   is_busy = true;
 }

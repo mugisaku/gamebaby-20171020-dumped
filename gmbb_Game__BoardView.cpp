@@ -82,34 +82,7 @@ render_square(Square const&  sq, Image&  dst, Point  dst_point) noexcept
 
     if(item)
     {
-      int  x =     0;
-      int  y = 24*10;
-
-        switch(item->get_kind())
-        {
-      case(GameItemKind::sword):
-          break;
-      case(GameItemKind::shield):
-          y += 24;
-          break;
-      case(GameItemKind::belt):
-          x += 24;
-          break;
-      case(GameItemKind::wand):
-          x += 24;
-          y += 24;
-          break;
-      case(GameItemKind::card):
-          x += 24*2;
-          break;
-      case(GameItemKind::water):
-          x += 24*2;
-          y += 24;
-          break;
-        }
-
-
-      dst.transfer(character_image,Rectangle(x,y,24,24),dst_point,0);
+      dst.transfer(character_image,get_rectangle_for_item(item),dst_point,0);
     }
 }
 
@@ -238,6 +211,44 @@ update_board_view() noexcept
 
   view->notify_needing_to_redraw();
 }
+
+
+
+
+Rectangle
+get_rectangle_for_item(SackItem const&  itm) noexcept
+{
+  int  x =     0;
+  int  y = 24*10;
+
+    switch(itm->get_kind())
+    {
+  case(GameItemKind::sword):
+      break;
+  case(GameItemKind::shield):
+      y += 24;
+      break;
+  case(GameItemKind::belt):
+      x += 24;
+      break;
+  case(GameItemKind::wand):
+      x += 24;
+      y += 24;
+      break;
+  case(GameItemKind::card):
+      x += 24*2;
+      break;
+  case(GameItemKind::water):
+      x += 24*2;
+      y += 24;
+      break;
+    }
+
+
+  return Rectangle(x,y,square_size,square_size);
+}
+
+
 
 
 }

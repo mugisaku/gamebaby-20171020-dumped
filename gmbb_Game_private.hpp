@@ -66,7 +66,7 @@ root_widget;
 void  controll_hero_piece(Piece&  self) noexcept;
 void    render_hero_piece(Piece const&  self, Image&  dst, Point  dst_point) noexcept;
 
-void  throw_item(SackItem const&  item, Square const&  start, Direction  d) noexcept;
+void  throw_item(SackItem const&  item, covered_ptr<Square>  start, Direction  d) noexcept;
 
 void  move_hero_piece_to_forward();
 void  turn_hero_piece_to_left();
@@ -85,6 +85,11 @@ void  move_board_view(int  x, int  y) noexcept;
 void  show_board_view() noexcept;
 void  hide_board_view() noexcept;
 void  update_board_view() noexcept;
+
+Rectangle  get_rectangle_for_item(SackItem const&  itm) noexcept;
+
+
+
 
 void  show_status_monitor() noexcept;
 void  hide_status_monitor() noexcept;

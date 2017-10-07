@@ -120,6 +120,25 @@ public:
   SQUARE&        get_square(      int  x, int  y)       noexcept{return square_table[y][x];}
   SQUARE const&  get_square_const(int  x, int  y) const noexcept{return square_table[y][x];}
 
+  void  clear_all_distance() noexcept
+  {
+      for(auto&  row: square_table)
+      {
+          for(auto&  sq: row)
+          {
+            sq.set_distance(0);
+          }
+      }
+  }
+
+  void  fill_mpp_value(int  v=0) noexcept
+  {
+      for(auto&  sq: square_table)
+      {
+        sq.set_mpp_value(v);
+      }
+  }
+
   void                set_hero_piece(covered_ptr<PIECE>  p)       noexcept{       hero_piece = p;}
   covered_ptr<PIECE>  get_hero_piece(                     ) const noexcept{return hero_piece    ;}
 

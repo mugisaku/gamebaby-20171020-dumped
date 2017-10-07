@@ -64,7 +64,9 @@ return_(int  retval) noexcept
       case(throw_):
           hero_p.unhold_item(item_ptr);
 
-          throw_item(*item_ptr,*hero_p.get_square(),hero_p.get_face_direction());
+          throw_item(*item_ptr,hero_p.get_square(),hero_p.get_face_direction());
+
+          *item_ptr = SackItem();
 
           pop_routine(-1);
           break;

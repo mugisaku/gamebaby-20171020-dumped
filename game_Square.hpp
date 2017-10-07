@@ -38,12 +38,13 @@ public:
   void        set_kind(SquareKind  k)       noexcept{       kind = k;}
 
 
-  void  set_item(SackItem const&  i) noexcept{item = i;}
+  void                 set_item(SackItem const&  i               ) noexcept{item = i;}
+  covered_ptr<Square>  put_item(SackItem const&  i, distance_t  d) noexcept;
 
   SackItem&        get_item()       noexcept{return item;}
   SackItem const&  get_item() const noexcept{return item;}
 
-  bool  can_put_item() const noexcept{return !item && !trap;}
+  bool  can_put_item() const noexcept{return (kind == SquareKind::room) && !item && !trap;}
 
   void         set_trap(Trap const&  tr)       noexcept{       trap = tr;}
   Trap const&  get_trap(               ) const noexcept{return trap     ;}
