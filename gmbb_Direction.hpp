@@ -2,9 +2,6 @@
 #define gmbb_Direction_HPP
 
 
-#include<algorithm>
-
-
 namespace gmbb{
 
 
@@ -76,9 +73,16 @@ get_right(Direction  d) noexcept
 
 
 constexpr int
+abs(int  n) noexcept
+{
+  return (n < 0)? -n:n;
+}
+
+
+constexpr int
 get_distance(Direction  a, Direction  b) noexcept
 {
-  auto  diff = std::abs(static_cast<int>(a)-static_cast<int>(b));
+  auto  diff = abs(static_cast<int>(a)-static_cast<int>(b));
 
   return (diff <= 4)? diff:8-diff;
 }

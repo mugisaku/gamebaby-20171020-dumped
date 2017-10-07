@@ -4,6 +4,10 @@
 #include<cstdlib>
 
 
+#ifdef EMSCRIPTEN
+#include<emscripten.h>
+#endif
+
 
 
 using namespace gmbb;
@@ -253,12 +257,16 @@ main(int  argc, char**  argv)
 
 
 
+#ifdef EMSCRIPTEN
+  emscripten_set_main_loop(main_loop,40,true);
+#else
     for(;;)
     {
       main_loop();
 
       SDL_Delay(20);
     }
+#endif
 
 
   return 0;

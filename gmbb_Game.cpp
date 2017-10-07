@@ -127,10 +127,18 @@ is_screen_needing_to_redraw() noexcept
 void
 initialize() noexcept
 {
+#ifdef EMSCRIPTEN
+        glset.load_from_file("small_font.bin");
+  large_glset.load_from_file("large_font.bin");
+
+  File  f("",File::get_content_from_file("image.png"));
+#else
         glset.load_from_file("/usr/local/share/gmbb/small_font.bin");
   large_glset.load_from_file("/usr/local/share/gmbb/large_font.bin");
 
   File  f("",File::get_content_from_file("../bin/image.png"));
+#endif
+
 
   auto  r = f.make_reader();
 

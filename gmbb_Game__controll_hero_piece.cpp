@@ -68,8 +68,8 @@ pickup_item_if_is(Piece&  actor) noexcept
 }
 
 
-bool
-prepare_to_move(Piece&  p, Square&  sq)
+void
+prepare_to_move(Piece&  p, Square&  sq) noexcept
 {
     if(!sq.get_piece() && (sq != SquareKind::wall))
     {

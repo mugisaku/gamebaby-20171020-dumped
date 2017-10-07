@@ -51,8 +51,8 @@ EffectObject: public Gadget
   static covered_ptr<Image>  source_image;
 
 protected:
-  template<typename  T>using   RenderCallback = void  (*)(T const&  self, Image&  dst, Point  dst_point) noexcept;
-  template<typename  T>using ControllCallback = void  (*)(T&  self) noexcept;
+  template<typename  T>using   RenderCallback = void  (*)(T const&  self, Image&  dst, Point  dst_point);
+  template<typename  T>using ControllCallback = void  (*)(T&  self);
 
   ControllCallback<EffectObject>  controll_callback=nullptr;
   RenderCallback<EffectObject>      render_callback=nullptr;
@@ -76,11 +76,11 @@ public:
 
   void    set_x_flag(uint32_t  flag) noexcept{bitop::set_flag(  x_state,flag);}
   void  unset_x_flag(uint32_t  flag) noexcept{bitop::unset_flag(x_state,flag);}
-  bool  test_x_flag(uint32_t  flag) const noexcept{bitop::test_flag(x_state,flag);}
+  bool  test_x_flag(uint32_t  flag) const noexcept{return bitop::test_flag(x_state,flag);}
 
   void    set_i_flag(uint32_t  flag) noexcept{bitop::set_flag(  i_state,flag);}
   void  unset_i_flag(uint32_t  flag) noexcept{bitop::unset_flag(i_state,flag);}
-  bool  test_i_flag(uint32_t  flag) const noexcept{bitop::test_flag(i_state,flag);}
+  bool  test_i_flag(uint32_t  flag) const noexcept{return bitop::test_flag(i_state,flag);}
 
   ActionIndex  get_action_index() const noexcept{return action_index;}
 

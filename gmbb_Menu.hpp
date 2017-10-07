@@ -14,7 +14,7 @@ namespace gmbb{
 
 class Image;
 
-using MenuItemRenderer = void  (*)(Image&  dst, Point  point, int  index) noexcept;
+using MenuItemRenderer = void  (*)(Image&  dst, Point  point, int  index);
 
 
 class

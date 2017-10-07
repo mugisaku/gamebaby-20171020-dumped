@@ -11,8 +11,8 @@ namespace gmbb{
 struct
 Routine
 {
-  using OnStepCallback   = void  (*)(Controller const&  ctrl) noexcept;
-  using OnReturnCallback = void  (*)(int  value) noexcept;
+  using OnStepCallback   = void  (*)(Controller const&  ctrl);
+  using OnReturnCallback = void  (*)(int  value);
 
   OnStepCallback      on_step;
   OnReturnCallback  on_return;
