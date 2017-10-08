@@ -118,12 +118,28 @@ controll_hero_piece(Piece&  self) noexcept
       move_board_view(*self.get_x_vector(),
                       *self.get_y_vector());
 
-        if(self.get_frame_count() > square_size)
+        if(self.get_frame_count() >= 6)
         {
-          self.set_x_vector(fixed_t());
-          self.set_y_vector(fixed_t());
+          self.add_motion_count(1);
 
-          pickup_item_if_is(self);
+            if(self.get_motion_count() >= 4)
+            {
+              self.set_x_vector(fixed_t());
+              self.set_y_vector(fixed_t());
+
+              pickup_item_if_is(self);
+            }
+
+          else
+            {
+              self.reset_frame_count();
+              self.seek_pattern_index(1);
+
+                if(self.get_pattern_index() >= 4)
+                {
+                  self.set_pattern_index(0);
+                }
+            }
         }
     }
       break;
@@ -252,7 +268,7 @@ render_hero_piece(Piece const&  p, Image&  dst, Point  dst_point) noexcept
 
   static int const  table[] = {0,1,0,2};
 
-  x = u*table[p.get_frame_count()%square_size/6];
+  x = u*table[p.get_pattern_index()];
 
   dst_point.y -= u;
 

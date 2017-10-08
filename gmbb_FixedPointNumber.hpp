@@ -16,9 +16,12 @@ public:
 
   struct RawValue{int32_t  data;  constexpr explicit RawValue(int32_t  dat=0) noexcept: data(dat){}};
 
-private:
   static constexpr int  shift_amount = 16;
 
+  static constexpr int  unit = 1<<shift_amount;
+  static constexpr int  half = unit/2;
+
+private:
   int32_t  value;
 
   static constexpr int32_t  add_char(char  c, int32_t  n) noexcept
@@ -73,6 +76,8 @@ public:
   constexpr Type  operator*(int  n) const noexcept{return Type(RawValue(value*n));}
   constexpr Type  operator/(int  n) const noexcept{return Type(RawValue(value/n));}
   constexpr Type  operator%(int  n) const noexcept{return Type(RawValue(value%n));}
+
+  constexpr Type  round() const noexcept{return Type(RawValue((value+half)&0xFFFF0000));}
 
   Type&  operator+=(Type const&  rhs) noexcept{value += rhs.value;  return *this;}
   Type&  operator-=(Type const&  rhs) noexcept{value -= rhs.value;  return *this;}

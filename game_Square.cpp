@@ -34,7 +34,7 @@ put_item(SackItem const&  i, distance_t  d) noexcept
     {
       item = i;
 
-      return make_covered(this);
+      return this;
     }
 
 

@@ -41,7 +41,7 @@ operate_message(Controller const&  ctrl) noexcept
 
   auto  now = ctrl.get_time();
 
-  constexpr uint32_t  interval_time_base = 200;
+  constexpr uint32_t  interval_time_base = 40;
 
   auto  interval_time = interval_time_base;
 

@@ -76,22 +76,6 @@ public:
 };
 
 
-template<typename  T>
-covered_ptr<T>
-make_covered(T*  p)
-{
-  return covered_ptr<T>(p);
-}
-
-
-template<typename  T, typename  U>
-covered_ptr<T>
-make_covered(U*  p)
-{
-  return covered_ptr<T>(p);
-}
-
-
 
 
 #endif

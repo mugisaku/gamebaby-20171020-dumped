@@ -29,7 +29,8 @@ EffectObject: public Gadget
 
   ActionIndex  action_index=static_cast<ActionIndex>(0);
   int  pattern_index=0;
-  uint32_t  frame_count=0;
+  uint32_t   frame_count=0;
+  uint32_t  motion_count=0;
 
   FixedPointNumber  x_vector;
   FixedPointNumber  y_vector;
@@ -89,8 +90,13 @@ public:
   uint32_t     get_frame_count(             ) const noexcept{return frame_count    ;}
   void       reset_frame_count(uint32_t  v=0)       noexcept{       frame_count = v;}
 
-  int   get_pattern_index(      ) const noexcept{return pattern_index    ;}
-  void  set_pattern_index(int  i)       noexcept{       pattern_index = i;}
+  uint32_t     get_motion_count(             ) const noexcept{return motion_count     ;}
+  void       reset_motion_count(uint32_t  v=0)       noexcept{       motion_count  = v;}
+  void         add_motion_count(int         v)       noexcept{       motion_count += v;}
+
+  int    get_pattern_index(      ) const noexcept{return pattern_index    ;}
+  void   set_pattern_index(int  i)       noexcept{       pattern_index = i;}
+  void  seek_pattern_index(int  n) noexcept{pattern_index += n;}
 
 
   void    freeze() noexcept{frozen_flag =  true;}

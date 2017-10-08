@@ -18,6 +18,7 @@ change_action_index(ActionIndex  i) noexcept
   pattern_index = 0;
 
   reset_frame_count();
+  reset_motion_count();
 }
 
 
@@ -68,16 +69,17 @@ update() noexcept
     }
 
 
+  x_position += x_vector;
+  y_position += y_vector;
+
+  set_relative_point(Point(*(fixed_t("0.5")+x_position),
+                           *(fixed_t("0.5")+y_position)));
+
+
     if(controll_callback)
     {
       controll_callback(*this);
     }
-
-
-  x_position += x_vector;
-  y_position += y_vector;
-
-  set_relative_point(Point(*x_position,*y_position));
 }
 
 
