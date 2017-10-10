@@ -8,7 +8,7 @@ namespace{
 
 
 class
-BoardView: public Gadget
+BoardView: public Actor
 {
 public:
   Point  point;
@@ -193,14 +193,14 @@ show_board_view() noexcept
     }
 
 
-  view->enter_into_container(root_widget,Point());
+  view->enter_into_group(root_widget,Point());
 }
 
 
 void
 hide_board_view() noexcept
 {
-  view->exit_from_container();
+  view->exit_from_group();
 }
 
 

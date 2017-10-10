@@ -1,4 +1,4 @@
-#include"gmbb_GadgetContainer.hpp"
+#include"gmbb_Director.hpp"
 #include<cstdio>
 
 
@@ -10,8 +10,8 @@ namespace gmbb{
 
 
 void
-GadgetContainer::
-insert_to_first(Gadget&  target) noexcept
+Director::
+insert_to_first(Actor&  target) noexcept
 {
     if(first)
     {
@@ -29,8 +29,8 @@ insert_to_first(Gadget&  target) noexcept
 
 
 void
-GadgetContainer::
-insert_to_last(Gadget&  target) noexcept
+Director::
+insert_to_last(Actor&  target) noexcept
 {
     if(last)
     {
@@ -48,8 +48,8 @@ insert_to_last(Gadget&  target) noexcept
 
 
 void
-GadgetContainer::
-remove(Gadget&  target) noexcept
+Director::
+remove(Actor&  target) noexcept
 {
     if(this->first == &target)
     {
@@ -68,10 +68,10 @@ remove(Gadget&  target) noexcept
 
 
 void
-GadgetContainer::
+Director::
 update() noexcept
 {
-  Gadget::update();
+  Actor::update();
 
   auto  next = first;
 
@@ -85,7 +85,7 @@ update() noexcept
 
 
 void
-GadgetContainer::
+Director::
 render(Image&  dst, Point  dst_point) const noexcept
 {
   auto  next = first;
@@ -100,7 +100,7 @@ render(Image&  dst, Point  dst_point) const noexcept
 
 
 void
-GadgetContainer::
+Director::
 print() const noexcept
 {
   auto  next = first.get_const_raw_pointer();

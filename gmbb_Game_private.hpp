@@ -57,7 +57,7 @@ large_glset;
 
 
 extern
-GadgetContainer
+Director
 root_widget;
 
 

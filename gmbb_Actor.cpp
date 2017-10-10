@@ -1,5 +1,5 @@
-#include"gmbb_Gadget.hpp"
-#include"gmbb_GadgetContainer.hpp"
+#include"gmbb_Actor.hpp"
+#include"gmbb_Director.hpp"
 #include<cstdlib>
 
 
@@ -11,33 +11,33 @@ namespace gmbb{
 
 
 void
-Gadget::
-enter_into_container(GadgetContainer&  container_, Point  point) noexcept
+Actor::
+enter_into_group(Director&  director_, Point  point) noexcept
 {
-    if(!container)
+    if(!director)
     {
-      container = &container_;
+      director = &director_;
 
       relative_point = point;
 
       notify_needing_to_redraw();
 
-      container->insert_to_last(*this);
+      director->insert_to_last(*this);
     }
 }
 
 
 void
-Gadget::
-exit_from_container() noexcept
+Actor::
+exit_from_group() noexcept
 {
-    if(container)
+    if(director)
     {
       notify_needing_to_redraw();
 
-      container->remove(*this);
+      director->remove(*this);
 
-      container = nullptr;
+      director = nullptr;
     }
 }
 
@@ -45,8 +45,8 @@ exit_from_container() noexcept
 
 
 void
-Gadget::
-connect_to_previous(Gadget&  target) noexcept
+Actor::
+connect_to_previous(Actor&  target) noexcept
 {
   target.previous = this;
 
@@ -55,8 +55,8 @@ connect_to_previous(Gadget&  target) noexcept
 
 
 void
-Gadget::
-connect_to_next(Gadget&  target) noexcept
+Actor::
+connect_to_next(Actor&  target) noexcept
 {
   target.next = this;
 
@@ -65,7 +65,7 @@ connect_to_next(Gadget&  target) noexcept
 	
 
 void
-Gadget::
+Actor::
 disconnect() noexcept
 {
     if(previous)
@@ -80,29 +80,29 @@ disconnect() noexcept
     }
 
 
-   previous = nullptr;
-       next = nullptr;
-  container = nullptr;
+  previous = nullptr;
+      next = nullptr;
+  director = nullptr;
 }
 
 
 
 
 void
-Gadget::
+Actor::
 notify_needing_to_redraw() noexcept
 {
   needing_to_redraw = true;
 
-    if(container && !container->is_needing_to_redraw())
+    if(director && !director->is_needing_to_redraw())
     {
-      container->notify_needing_to_redraw();
+      director->notify_needing_to_redraw();
     }
 }
 
 
 void
-Gadget::
+Actor::
 move_relative_point(int  x, int  y) noexcept
 {
   relative_point.x += x;

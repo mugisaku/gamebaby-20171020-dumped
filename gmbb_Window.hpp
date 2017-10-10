@@ -2,7 +2,7 @@
 #define GMBB_WINDOW_HPP
 
 
-#include"gmbb_Gadget.hpp"
+#include"gmbb_Actor.hpp"
 
 
 namespace gmbb{
@@ -24,7 +24,7 @@ WindowState
 
 
 class
-Window: public Gadget
+Window: public Actor
 {
 protected:
   WindowState  state=WindowState::hidden;

@@ -60,8 +60,8 @@ set(SOURCES
   gmbb_ColumnStyleMenuWindow.cpp
   gmbb_RandomNumber.cpp
   gmbb_LineMaker.cpp
-  gmbb_Gadget.cpp
-  gmbb_GadgetContainer.cpp
+  gmbb_Actor.cpp
+  gmbb_Director.cpp
   gmbb_EffectObject.cpp
   gmbb_Window.cpp
   gmbb_Window__draw_frame.cpp

@@ -95,8 +95,8 @@ prepare_to_move(Piece&  p, Square&  sq) noexcept
 
       p.change_action_index(ActionIndex::moving);
 
-      p.set_x_vector(fixed_t(pt.x));
-      p.set_y_vector(fixed_t(pt.y));
+      p.set_x_vector(fixed_t(pt.x)*2);
+      p.set_y_vector(fixed_t(pt.y)*2);
 
       is_busy = true;
     }
@@ -118,7 +118,7 @@ controll_hero_piece(Piece&  self) noexcept
       move_board_view(*self.get_x_vector(),
                       *self.get_y_vector());
 
-        if(self.get_frame_count() >= 6)
+        if(self.get_frame_count() >= 3)
         {
           self.add_motion_count(1);
 

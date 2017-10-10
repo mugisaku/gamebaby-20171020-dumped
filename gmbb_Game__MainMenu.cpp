@@ -190,7 +190,7 @@ open_main_menu_window() noexcept
     }
 
 
-  menu_window->enter_into_container(root_widget,Point(8,24));
+  menu_window->enter_into_group(root_widget,Point(8,24));
 
   menu_window->set_state(WindowState::full_opened);
 }
@@ -201,7 +201,7 @@ close_main_menu_window() noexcept
 {
   menu_window->reset_cursor();
 
-  menu_window->exit_from_container();
+  menu_window->exit_from_group();
 }
 
 

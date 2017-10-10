@@ -107,7 +107,7 @@ open_choosing_window() noexcept
 {
   create_window();
 
-  menu_window->enter_into_container(root_widget,window_point);
+  menu_window->enter_into_group(root_widget,window_point);
 
   menu_window->set_state(WindowState::full_opened);
 }
@@ -118,7 +118,7 @@ close_choosing_window() noexcept
 {
     if(menu_window)
     {
-      menu_window->exit_from_container();
+      menu_window->exit_from_group();
 
       menu_window->reset_cursor();
     }

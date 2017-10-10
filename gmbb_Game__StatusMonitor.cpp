@@ -8,7 +8,7 @@ namespace{
 
 
 class
-StatusMonitor: public Gadget
+StatusMonitor: public Actor
 {
 public:
   void  render(Image&  dst, Point  dst_point) const noexcept;
@@ -44,14 +44,14 @@ show_status_monitor() noexcept
     }
 
 
-  mon->enter_into_container(root_widget,Point(120,0));
+  mon->enter_into_group(root_widget,Point(120,0));
 }
 
 
 void
 hide_status_monitor() noexcept
 {
-  mon->exit_from_container();
+  mon->exit_from_group();
 }
 
 

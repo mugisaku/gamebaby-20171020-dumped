@@ -38,7 +38,7 @@ GlyphSet
 large_glset;
 
 
-GadgetContainer
+Director
 root_widget;
 
 

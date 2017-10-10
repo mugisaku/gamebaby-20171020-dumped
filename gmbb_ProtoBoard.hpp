@@ -2,7 +2,7 @@
 #define gmbb_ProtoBoard_HPP
 
 
-#include"gmbb_GadgetContainer.hpp"
+#include"gmbb_Director.hpp"
 #include"gmbb_SquareBase.hpp"
 #include"gmbb_PieceBase.hpp"
 #include"covered_ptr"
@@ -22,7 +22,7 @@ constexpr int  board_image_height = square_size*board_height;
 
 template<typename  SQUARE, typename  PIECE>
 class
-ProtoBoard: public GadgetContainer
+ProtoBoard: public Director
 {
   std::vector<PIECE*>  pointer_hunger;
 

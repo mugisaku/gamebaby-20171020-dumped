@@ -88,7 +88,7 @@ show_status_reportor() noexcept
     }
 
 
-  rep->enter_into_container(root_widget,Point(8,160));
+  rep->enter_into_group(root_widget,Point(8,160));
 
   rep->set_state(WindowState::full_opened);
 }
@@ -97,7 +97,7 @@ show_status_reportor() noexcept
 void
 hide_status_reportor() noexcept
 {
-  rep->exit_from_container();
+  rep->exit_from_group();
 }
 
 

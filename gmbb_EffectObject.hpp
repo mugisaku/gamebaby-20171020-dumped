@@ -2,7 +2,7 @@
 #define gmbb_EffectObject_HPP
 
 
-#include"gmbb_Gadget.hpp"
+#include"gmbb_Actor.hpp"
 #include"gmbb_Direction.hpp"
 #include"gmbb_FixedPointNumber.hpp"
 #include<cstdint>
@@ -22,7 +22,7 @@ enum class  ActionIndex: int;
 
 
 class
-EffectObject: public Gadget
+EffectObject: public Actor
 {
   Direction  moving_direction=Direction::front;
   Direction    face_direction=Direction::front;
