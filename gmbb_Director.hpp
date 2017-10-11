@@ -14,7 +14,18 @@ Director: public Actor
   covered_ptr<Actor>  first;
   covered_ptr<Actor>   last;
 
+  char const*  pointer=nullptr;
+  char const*      end=nullptr;
+
+  int  line_number=1;
+
+  void  skip_spaces() noexcept;
+
 public:
+  void  set_script(std::string const&  s) noexcept;
+
+  void  process_script() noexcept;
+
   void  insert_to_first(Actor&  target) noexcept;
   void  insert_to_last( Actor&  target) noexcept;
 
@@ -43,6 +54,10 @@ public:
         next = next->get_next();
       }
   }
+
+  bool  is_director() const noexcept override{return true;}
+
+  covered_ptr<Actor>  find_by_name(std::string const&  name_) const noexcept;
 
   void  print() const noexcept override;
 

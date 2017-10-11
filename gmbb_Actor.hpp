@@ -14,18 +14,18 @@ namespace gmbb{
 
 
 class Director;
+class Actor;
 
 
-struct
-Address
+class
+ExecutionContext
 {
-  uint8_t  a=0;
-  uint8_t  b=0;
-  uint8_t  c=0;
-  uint8_t  d=0;
+public:
+  void  decode(std::string const&  s) noexcept{}
 
-  constexpr Address(uint8_t  a_=0, uint8_t  b_=0, uint8_t  c_=0, uint8_t  d_=0):
-  a(a_), b(b_), c (c_), d(d_){}
+  void  step(Actor&  actor) noexcept{}
+
+  bool  is_finished() const noexcept{return true;}
 
 };
 
@@ -33,6 +33,9 @@ Address
 class
 Actor
 {
+  static constexpr int  buffer_size = 8;
+
+
   std::string  name;
 
   Point  relative_point;
@@ -44,8 +47,22 @@ Actor
   covered_ptr<Actor>  previous;
   covered_ptr<Actor>      next;
 
+  std::string  action_buffer[buffer_size];
+
+  int   writing_index=0;
+  int   reading_index=0;
+
+  int  number_of_actions=0;
+
+  ExecutionContext  exectx;
+
 public:
-  void  set_name(char const*  name_) noexcept{name = name_;}
+  Actor() noexcept{}
+
+  void                set_name(char const*  name_)       noexcept{       name = name_;}
+  std::string const&  get_name(                  ) const noexcept{return name        ;}
+
+  virtual bool  is_director() const noexcept{return false;}
 
   void  enter_into_group(Director&  director_, Point  point) noexcept;
   void   exit_from_group(                                  ) noexcept;
@@ -75,7 +92,7 @@ public:
 
   virtual void  render(Image&  dst, Point  dst_point) const noexcept{}
 
-  virtual void  update() noexcept{}
+  virtual void  update() noexcept;
 
   virtual void  print() const noexcept{printf("%s(%p)",name.data(),this);}
 

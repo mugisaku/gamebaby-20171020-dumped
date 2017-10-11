@@ -54,7 +54,8 @@ public:
 
   SquareLinkSet&  get_linkset() noexcept{return linkset;}
 
-  covered_ptr<Square>  operator[](Direction  d) const noexcept{return linkset.get(d);}
+  covered_ptr<Square>         operator[](Direction  d) const noexcept{return linkset.get(d);}
+  covered_ptr<Square>  get_linked_square(Direction  d) const noexcept{return linkset.get(d);}
 
 
   void  remove_piece() noexcept;

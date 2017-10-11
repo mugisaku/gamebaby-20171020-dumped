@@ -245,6 +245,10 @@ main(int  argc, char**  argv)
 
   surface = SDL_GetWindowSurface(window);
 
+  script::TokenString  toks("../script.sc");
+
+   toks.print();
+
     for(int  r = 0;  r < 8;  ++r){
     for(int  g = 0;  g < 8;  ++g){
     for(int  b = 0;  b < 8;  ++b){

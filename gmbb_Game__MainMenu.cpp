@@ -77,6 +77,17 @@ return_(int  retval) noexcept
 }
 
 
+covered_ptr<Piece>
+get_talk_target() noexcept
+{
+  auto  sq = hero_piece->get_square();
+
+  auto  target_sq = sq->get_linked_square(hero_piece->get_face_direction());
+
+  return target_sq? target_sq->get_piece():nullptr;
+}
+
+
 void
 process(Controller const&  ctrl) noexcept
 {
@@ -87,7 +98,19 @@ process(Controller const&  ctrl) noexcept
         switch(menu_window->get_item_index())
         {
       case(talk):
-          start_message(u"その　ほうこうには　だれもいない");
+        {
+          auto  target = get_talk_target();
+
+            if(target)
+            {
+              
+            }
+
+          else
+            {
+              start_message(u"その　ほうこうには　だれもいない");
+            }
+        }
           break;
       case(belongings):
           start_sack_menu();

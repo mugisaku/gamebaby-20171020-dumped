@@ -110,6 +110,35 @@ move_relative_point(int  x, int  y) noexcept
 }
 
 
+void
+Actor::
+update() noexcept
+{
+    if(exectx.is_finished())
+    {
+       if(number_of_actions)
+       {
+         exectx.decode(action_buffer[reading_index++]);
+
+           if(reading_index >= buffer_size)
+           {
+             reading_index = 0;
+           }
+
+
+         --number_of_actions;
+       }
+    }
+
+  else
+    {
+      exectx.step(*this);
+    }
+}
+
+
+
+
 }
 
 

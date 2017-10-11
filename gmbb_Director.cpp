@@ -11,6 +11,19 @@ namespace gmbb{
 
 void
 Director::
+set_script(std::string const&  s) noexcept
+{
+  pointer = s.data()         ;
+      end = s.data()+s.size();
+
+  line_number = 1;
+}
+
+
+
+
+void
+Director::
 insert_to_first(Actor&  target) noexcept
 {
     if(first)
@@ -96,6 +109,41 @@ render(Image&  dst, Point  dst_point) const noexcept
 
       next = next->get_next();
     }
+}
+
+
+covered_ptr<Actor>
+Director::
+find_by_name(std::string const&  name_) const noexcept
+{
+  auto  next = first;
+
+    while(next)
+    {
+        if(next->is_director())
+        {
+          covered_ptr<Director>  subdir(next);
+
+          auto  res = subdir->find_by_name(name_);
+
+            if(res)
+            {
+              return res;
+            }
+        }
+
+      else
+        if(next->get_name() == name_)
+        {
+          return next;
+        }
+
+
+      next = next->get_next();
+    }
+
+
+  return nullptr;
 }
 
 

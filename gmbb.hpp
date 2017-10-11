@@ -21,6 +21,7 @@
 #include"gmbb_SquareBase.hpp"
 #include"gmbb_PieceBase.hpp"
 #include"gmbb_IntervalTimer.hpp"
+#include"gmbb_Script.hpp"
 
 
 
