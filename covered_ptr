@@ -52,6 +52,26 @@ public:
 
   constexpr operator bool() const noexcept{return raw_pointer;}
 
+
+  covered_ptr&  operator+=(int  i) noexcept
+  {
+    raw_pointer += i;
+
+    return *this;
+  }
+
+
+  covered_ptr&  operator-=(int  i) noexcept
+  {
+    raw_pointer -= i;
+
+    return *this;
+  }
+
+
+  covered_ptr  operator+(int  i) const noexcept{return covered_ptr(raw_pointer+i);}
+  covered_ptr  operator-(int  i) const noexcept{return covered_ptr(raw_pointer-i);}
+
   constexpr bool  operator==(covered_ptr const&  rhs) const noexcept{return raw_pointer == rhs.raw_pointer;}
   constexpr bool  operator!=(covered_ptr const&  rhs) const noexcept{return raw_pointer != rhs.raw_pointer;}
   constexpr bool  operator< (covered_ptr const&  rhs) const noexcept{return raw_pointer <  rhs.raw_pointer;}

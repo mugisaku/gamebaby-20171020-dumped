@@ -105,6 +105,7 @@ print() const noexcept
     switch(kind)
     {
   case(TokenKind::null):
+      printf("(null token)");
       break;
   case(TokenKind::identifier):
       printf("%s",data.string.data());

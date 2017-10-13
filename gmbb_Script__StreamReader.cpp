@@ -28,7 +28,7 @@ skip_spaces() noexcept
         {
           ++pointer;
 
-          ++line_number;
+          newline();
         }
 
       else
@@ -139,7 +139,7 @@ read_integer_that_begins_by_zero() noexcept
 
 TokenString
 StreamReader::
-read_token_string(char  opening, char  closing) noexcept
+read_token_string(char  opening, char  closing)
 {
   ++pointer;
 
@@ -149,7 +149,7 @@ read_token_string(char  opening, char  closing) noexcept
 
 Token
 StreamReader::
-operator()() noexcept
+operator()()
 {
   auto  first_c = *pointer;
 
@@ -191,6 +191,11 @@ operator()() noexcept
         {
           return Token(read_decimal_integer());
         }
+
+      else
+        {
+          throw StreamError(*this,"%cは処理できない ",first_c);
+        }
     }
 
 
@@ -198,6 +203,39 @@ operator()() noexcept
 }
 
 
+
+
+std::string
+make_string_from_file(const char*  filepath)
+{
+  FileStream  fs(filepath);
+
+    if(fs)
+    {
+      std::string  s;
+
+        for(;;)
+        {
+          auto  c = fs.getc();
+
+            if(fs.eof() || fs.error())
+            {
+              break;
+            }
+
+
+          s += c;
+        }
+
+
+      return std::move(s);
+    }
+
+  else
+    {
+      throw StreamError(StreamContext(),"%sがみつからない",filepath);
+    }
+}
 
 
 }}

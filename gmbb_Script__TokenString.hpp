@@ -20,10 +20,11 @@ TokenString: public std::vector<Token>
   char  closing=0;
 
 public:
-  TokenString(StreamReader&  reader, char  op=0, char  cl=0) noexcept{assign(reader,op,cl);}
-  TokenString(char const*  filepath) noexcept;
+  TokenString() noexcept{}
+  TokenString(StreamReader&  reader, char  op=0, char  cl=0){assign(reader,op,cl);}
+  TokenString(char const*  filepath);
 
-  void  assign(StreamReader&  reader, char  op=0, char  cl=0) noexcept;
+  void  assign(StreamReader&  reader, char  op=0, char  cl=0);
 
   char  get_opening() const noexcept{return opening;}
   char  get_closing() const noexcept{return closing;}

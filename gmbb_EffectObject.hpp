@@ -49,10 +49,8 @@ EffectObject: public Actor
   uint32_t  i_state=0;
   uint32_t  x_state=0;
 
-  static covered_ptr<Image>  source_image;
-
 protected:
-  template<typename  T>using   RenderCallback = void  (*)(T const&  self, Image&  dst, Point  dst_point);
+  template<typename  T>using   RenderCallback = void  (*)(T const&  self, Image&  dst, Point  offset);
   template<typename  T>using ControllCallback = void  (*)(T&  self);
 
   ControllCallback<EffectObject>  controll_callback=nullptr;
@@ -135,18 +133,13 @@ public:
 
   void  update() noexcept override;
 
-  void  render(Image&  dst, Point  dst_point) const noexcept override
+  void  render(Image&  dst, Point  offset) const noexcept override
   {
       if(render_callback)
       {
-        render_callback(*this,dst,dst_point);
+        render_callback(*this,dst,offset);
       }
   }
-
-  static void  revise_point(Point&  point, Rectangle const&   rect) noexcept;
-
-  static void  set_source_image(Image&  src) noexcept;
-  static covered_ptr<Image>  get_source_image() noexcept;
 
 };
 

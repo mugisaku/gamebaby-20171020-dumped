@@ -11,22 +11,20 @@ class
 StatusMonitor: public Actor
 {
 public:
-  void  render(Image&  dst, Point  dst_point) const noexcept;
+  void  render(Image&  dst, Point  offset) const noexcept;
 
 } *mon;
 
 
 void
 StatusMonitor::
-render(gmbb::Image&  dst, Point  dst_point) const noexcept
+render(gmbb::Image&  dst, Point  offset) const noexcept
 {
   char  buf[256];
 
-  auto  hero_p = board.get_hero_piece();
+  snprintf(buf,sizeof(buf),"HP%3d/%3d",hero_piece->get_hp(),hero_piece->get_hp_max());
 
-  snprintf(buf,sizeof(buf),"HP%3d/%3d",hero_p->get_hp(),hero_p->get_hp_max());
-
-  dst.print(buf,dst_point,glset);
+  dst.print(buf,get_relative_point()+offset,glset);
 }
 
 

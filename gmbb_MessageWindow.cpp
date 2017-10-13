@@ -188,13 +188,13 @@ scroll()
 
 void
 MessageWindow::
-render(Image&  dst, Point  dst_point) const noexcept
+render(Image&  dst, Point  offset) const noexcept
 {
-  Window::render(dst,dst_point);
+  Window::render(dst,offset);
 
     if(Window::get_state() == WindowState::full_opened)
     {
-      text.render(dst,dst_point+8,*glyphset,coloring);
+      text.render(dst,get_relative_point()+offset+8,*glyphset,coloring);
     }
 }
 

@@ -11,22 +11,20 @@ class
 StatusReportor: public Window
 {
 public:
-  void  render(Image&  dst, Point  dst_point) const noexcept override;
+  void  render(Image&  dst, Point  offset) const noexcept override;
 
 } *rep;
 
 
 void
 StatusReportor::
-render(gmbb::Image&  dst, Point  dst_point) const noexcept
+render(gmbb::Image&  dst, Point  offset) const noexcept
 {
-  Window::render(dst,dst_point);
+  Window::render(dst,offset);
 
   char  buf[256];
 
-  auto&  hero_p = *board.get_hero_piece();
-
-  Point  pt = dst_point;
+  Point  pt = get_relative_point()+offset;
 
   auto  w = glset.get_width();
   auto  h = glset.get_height();
@@ -34,9 +32,9 @@ render(gmbb::Image&  dst, Point  dst_point) const noexcept
   pt.x += 8;
   pt.y += 8;
 
-  auto   sword = hero_p.get_sword_item();
-  auto  shield = hero_p.get_shield_item();
-  auto    belt = hero_p.get_belt_item();
+  auto   sword = hero_piece->get_sword_item();
+  auto  shield = hero_piece->get_shield_item();
+  auto    belt = hero_piece->get_belt_item();
 
   dst.print(u"けん",pt,glset);
 

@@ -1,10 +1,23 @@
 #include"game_Square.hpp"
 #include"game_Piece.hpp"
+#include"game_Board.hpp"
 
 
 
 
 namespace gmbb{
+
+
+
+
+void
+Square::
+reset(int  x, int  y, SquareLinkSet&  lnset) noexcept
+{
+  SquareBase::reset(x,y);
+
+  linkset = lnset;
+}
 
 
 

@@ -60,13 +60,8 @@ set(SOURCES
   gmbb_ColumnStyleMenuWindow.cpp
   gmbb_RandomNumber.cpp
   gmbb_LineMaker.cpp
-  gmbb_Script.cpp
-  gmbb_Script__Token.cpp
-  gmbb_Script__TokenString.cpp
-  gmbb_Script__StreamReader.cpp
   gmbb_Actor.cpp
   gmbb_Director.cpp
-  gmbb_Director__process_script.cpp
   gmbb_EffectObject.cpp
   gmbb_Window.cpp
   gmbb_Window__draw_frame.cpp
@@ -78,11 +73,13 @@ set(SOURCES
   gmbb_Game__Choosing.cpp
   gmbb_Game__StatusMonitor.cpp
   gmbb_Game__StatusReportor.cpp
+  gmbb_Game__Debugger.cpp
   gmbb_Game__BoardView.cpp
   gmbb_Game__EffectObject.cpp
   gmbb_Game__controll_hero_piece.cpp
   gmbb_Game__throw_item.cpp
   gmbb_Game__append_enemy.cpp
+  gmbb_Game__process_script.cpp
   gmbb_SquareBase.cpp
   gmbb_PieceBase.cpp
   game_GameItem.cpp
@@ -91,6 +88,16 @@ set(SOURCES
   game_Hero.cpp
   game_Piece.cpp
   game_Square.cpp
+  game_Board.cpp
+)
+
+
+set(SCRIPT_SOURCES
+  gmbb_Script.cpp
+  gmbb_Script__Token.cpp
+  gmbb_Script__TokenString.cpp
+  gmbb_Script__StreamReader.cpp
+  gmbb_Script__Element.cpp
 )
 
 
@@ -98,7 +105,8 @@ set(SOURCES
 
 include_directories(./)
 include_directories(/usr/include/SDL2)
-add_executable("testMain${EXECUTABLE_EXTENSION}" testMain.cpp ${SOURCES})
+add_executable("testMain${EXECUTABLE_EXTENSION}" testMain.cpp  ${SCRIPT_SOURCES} ${SOURCES})
+add_executable("testScriptElement${EXECUTABLE_EXTENSION}" testScriptElement.cpp ${SCRIPT_SOURCES})
 
 
 if(EMSC)

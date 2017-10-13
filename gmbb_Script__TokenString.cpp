@@ -9,38 +9,12 @@ namespace gmbb{
 namespace script{
 
 
-
-
 TokenString::
-TokenString(char const*  filepath) noexcept
+TokenString(char const*  filepath)
 {
-  auto  f = fopen(filepath,"rb");
+  StreamReader  sr(make_string_from_file(filepath).data());
 
-    if(f)
-    {
-      std::string  s;
-
-        for(;;)
-        {
-          auto  c = fgetc(f);
-
-            if(feof(f) || ferror(f))
-            {
-              break;
-            }
-
-
-          s += c;
-        }
-
-
-      fclose(f);
-
-
-      StreamReader  sr(s.data());
-
-      assign(sr);
-    }
+  assign(sr);
 }
 
 
@@ -48,24 +22,40 @@ TokenString(char const*  filepath) noexcept
 
 void
 TokenString::
-assign(StreamReader&  reader, char  op, char  cl) noexcept
+assign(StreamReader&  reader, char  op, char  cl)
 {
   clear();
 
   opening = op;
   closing = cl;
 
+  StreamContext  ctx;
+
     for(;;)
     {
       reader.skip_spaces();
 
-        if(reader.get_char() == cl)
+      auto  c = reader.get_char();
+
+        if(c == cl)
         {
           reader.advance(1);
 
           break;
         }
 
+      else
+        if((c == ')') ||
+           (c == '}') ||
+           (c == ']') ||
+           (c == ',') ||
+           (c == ';'))
+        {
+          throw StreamError(reader,"%cで閉じられている",c);
+        }
+
+
+      ctx = reader;
 
       auto  tok = reader();
 

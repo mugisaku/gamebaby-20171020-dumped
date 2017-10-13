@@ -6,6 +6,7 @@
 #include"game_Sack.hpp"
 #include"game_Square.hpp"
 #include"game_Piece.hpp"
+#include"game_Board.hpp"
 
 
 

@@ -1,5 +1,6 @@
 #include"game_Piece.hpp"
 #include"game_Square.hpp"
+#include"game_Board.hpp"
 
 
 
@@ -13,7 +14,7 @@ void
 Piece::
 reset(Hero&  hero) noexcept
 {
-  name = hero.get_name();
+  set_name(hero.get_name());
 
   hp     = 20;
   hp_max = 20;

@@ -40,7 +40,7 @@ Attribute
 };
 
 
-using Board = ProtoBoard<Square,Piece>;
+class Board;
 
 
 class
@@ -49,8 +49,6 @@ Piece: public PieceBase
   covered_ptr<Board>  board;
 
   PieceKind  kind=PieceKind::null;
-
-  char const*  name;
 
   int  hp    ;
   int  hp_max;

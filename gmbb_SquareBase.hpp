@@ -13,21 +13,6 @@ class Square;
 class Piece;
 
 
-class
-SquareLinkSet
-{
-  covered_ptr<Square>  table[8];
-
-public:
-  void                 set(Direction  d, covered_ptr<Square>  sq)       noexcept{       table[static_cast<int>(d)] = sq;}
-  covered_ptr<Square>  get(Direction  d                         ) const noexcept{return table[static_cast<int>(d)]     ;}
-
-};
-
-
-constexpr int  square_size = 24;
-
-
 using distance_t = uint32_t;
 
 
@@ -38,8 +23,6 @@ SquareBase
   int  y;
 
 protected:
-  SquareLinkSet  linkset;
-
   covered_ptr<Piece>  piece_ptr;
 
   distance_t  distance=0;
@@ -47,15 +30,10 @@ protected:
   int  mpp_value;//mpp is MultiPurPose
 
 public:
-  void  reset(int  x_, int  y_, SquareLinkSet const&  linkset_) noexcept;
+  void  reset(int  x_, int  y_) noexcept;
 
   int  get_x() const noexcept{return x;}
   int  get_y() const noexcept{return y;}
-
-  SquareLinkSet&  get_linkset() noexcept{return linkset;}
-
-  covered_ptr<Square>         operator[](Direction  d) const noexcept{return linkset.get(d);}
-  covered_ptr<Square>  get_linked_square(Direction  d) const noexcept{return linkset.get(d);}
 
 
   void  remove_piece() noexcept;

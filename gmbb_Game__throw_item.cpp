@@ -117,13 +117,15 @@ controll(EffectObject&  self) noexcept
 
 
 void
-render(EffectObject const&  self, Image&  dst, Point  dst_point) noexcept
+render(EffectObject const&  self, Image&  dst, Point  offset) noexcept
 {
   auto  rect = get_rectangle_for_item(thrown_item);
 
-  Piece::revise_point(dst_point,rect);
+  offset += -get_board_view_offset();
 
-  dst.transfer(*EffectObject::get_source_image(),rect,dst_point,self.get_relative_point().y);
+  offset.transform(square_size,square_size,board_image_width,board_image_height);
+
+  dst.transfer(character_image,rect,offset,self.get_relative_point().y);
 
   update_board_view();
 }

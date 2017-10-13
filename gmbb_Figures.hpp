@@ -95,6 +95,60 @@ Point
     printf("[print point %s] %4d %4d\n",prefix,x,y);
   }
 
+
+  void  transform(int  w, int  h) noexcept
+  {
+      if(x < 0)
+      {
+          while(x < 0)
+          {
+            x += w;
+          }
+      }
+
+    else
+      if(x >= w)
+      {
+          while(x >= w)
+          {
+            x -= w;
+          }
+      }
+
+
+      if(y < 0)
+      {
+          while(y < 0)
+          {
+            y += h;
+          }
+      }
+
+    else
+      if(y >= h)
+      {
+          while(y >= h)
+          {
+            y -= h;
+          }
+      }
+  }
+
+
+  void  transform(int  w, int  h, int  field_w, int  field_h) noexcept
+  {
+      while((x+w) >= field_w)
+      {
+        x -= field_w;
+      }
+
+
+      while((y+h) >= field_h)
+      {
+        y -= field_h;
+      }
+  }
+
 };
 
 

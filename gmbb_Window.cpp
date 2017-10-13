@@ -166,11 +166,11 @@ animate() noexcept
 
 void
 Window::
-render(Image&  dst, Point  dst_point) const noexcept
+render(Image&  dst, Point  offset) const noexcept
 {
     if(state != WindowState::hidden)
     {
-      draw_frame(dst,dst_point);
+      draw_frame(dst,get_relative_point()+offset);
     }
 }
 

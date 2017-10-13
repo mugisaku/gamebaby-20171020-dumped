@@ -93,7 +93,7 @@ waiting(Controller const&  ctrl) noexcept
         }
 
 
-      board.step();
+      board.update();
 
       update_board_view();
     }
@@ -144,20 +144,17 @@ initialize() noexcept
 
   character_image.load_png(r);
 
-  Piece::set_source_image(character_image);
-
   hero_piece = board.new_piece(1,1);
   hero_piece->set_position_by_current_square();
 
   hero_piece->set_controll_callback(controll_hero_piece);
   hero_piece->set_render_callback(render_hero_piece);
 
-  board.set_hero_piece(hero_piece);
-
   push_routine(waiting,return_);
 
   show_board_view();
   show_status_monitor();
+  show_debugger();
 
     for(int  x = 0;  x < board_width;  ++x)
     {
@@ -180,6 +177,9 @@ initialize() noexcept
 
 
   append_enemy();
+
+
+  root_widget.set_script(script::make_string_from_file("../script.sc").data());
 }
 
 

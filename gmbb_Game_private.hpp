@@ -63,6 +63,9 @@ root_widget;
 
 
 
+void  process_script(Director&  di, script::Element const&  e);
+
+
 void  controll_hero_piece(Piece&  self) noexcept;
 void    render_hero_piece(Piece const&  self, Image&  dst, Point  dst_point) noexcept;
 
@@ -98,6 +101,10 @@ void  update_status_monitor() noexcept;
 void  show_status_reportor() noexcept;
 void  hide_status_reportor() noexcept;
 void  update_status_reportor() noexcept;
+
+void  show_debugger() noexcept;
+void  hide_debugger() noexcept;
+void  update_debugger() noexcept;
 
 
 bool  is_status_monitor_window_opened() noexcept;

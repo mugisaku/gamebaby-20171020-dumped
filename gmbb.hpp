@@ -17,7 +17,6 @@
 #include"gmbb_ColumnStyleMenuWindow.hpp"
 #include"gmbb_Routine.hpp"
 #include"gmbb_unicode.hpp"
-#include"gmbb_ProtoBoard.hpp"
 #include"gmbb_SquareBase.hpp"
 #include"gmbb_PieceBase.hpp"
 #include"gmbb_IntervalTimer.hpp"

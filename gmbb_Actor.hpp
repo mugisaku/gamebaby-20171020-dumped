@@ -90,7 +90,7 @@ public:
 
   Point  get_relative_point() const noexcept{return relative_point;}
 
-  virtual void  render(Image&  dst, Point  dst_point) const noexcept{}
+  virtual void  render(Image&  dst, Point  offset) const noexcept{}
 
   virtual void  update() noexcept;
 

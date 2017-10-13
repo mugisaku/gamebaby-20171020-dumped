@@ -10,14 +10,11 @@ namespace gmbb{
 
 void
 SquareBase::
-reset(int  x_, int  y_, SquareLinkSet const&  linkset_) noexcept
+reset(int  x_, int  y_) noexcept
 {
   x = x_;
   y = y_;
-
-  linkset = linkset_;
 }
-
 
 
 }

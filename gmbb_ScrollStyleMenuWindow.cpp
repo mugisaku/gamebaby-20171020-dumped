@@ -26,7 +26,7 @@ reset_cursor() noexcept
 {
   y_base = 0;
 
-  offset = Point();
+  cursor = Point();
 }
 
 
@@ -36,9 +36,9 @@ void
 ScrollStyleMenuWindow::
 move_cursor_to_left()  noexcept
 {
-    if(offset.x)
+    if(cursor.x)
     {
-      offset.x -= 1;
+      cursor.x -= 1;
 
       notify_needing_to_redraw();
     }
@@ -49,9 +49,9 @@ void
 ScrollStyleMenuWindow::
 move_cursor_to_right() noexcept
 {
-   if(offset.x < (column_number-1))
+   if(cursor.x < (column_number-1))
    {
-     offset.x += 1;
+     cursor.x += 1;
 
      notify_needing_to_redraw();
    }
@@ -62,7 +62,7 @@ void
 ScrollStyleMenuWindow::
 move_cursor_to_up()    noexcept
 {
-       if(offset.y){offset.y -= 1;}
+       if(cursor.y){cursor.y -= 1;}
   else if(  y_base){y_base   -= 1;}
 
   notify_needing_to_redraw();
@@ -73,7 +73,7 @@ void
 ScrollStyleMenuWindow::
 move_cursor_to_down()  noexcept
 {
-       if(                      offset.y < (menu.get_row_number()-1)){offset.y += 1;}
+       if(                      cursor.y < (menu.get_row_number()-1)){cursor.y += 1;}
   else if((y_base+menu.get_row_number()) < (         row_number  -1)){y_base   += 1;}
 
   notify_needing_to_redraw();
@@ -84,13 +84,13 @@ move_cursor_to_down()  noexcept
 
 void
 ScrollStyleMenuWindow::
-render(Image&  dst, Point  dst_point) const noexcept
+render(Image&  dst, Point  offset) const noexcept
 {
-  Window::render(dst,dst_point);
+  Window::render(dst,offset);
 
     if(Window::get_state() == WindowState::full_opened)
     {
-      Point  const base_offset(dst_point+8);
+      Point  const base_offset(get_relative_point()+offset+8);
 
       int  w = menu.get_item_width();
       int  h = menu.get_item_height();
@@ -98,8 +98,8 @@ render(Image&  dst, Point  dst_point) const noexcept
       menu.render(dst,base_offset,(column_number*y_base),column_number);
 
 
-      Rectangle  rect(base_offset.x+(w*offset.x),
-                      base_offset.y+(h*offset.y),w,h);
+      Rectangle  rect(base_offset.x+(w*cursor.x),
+                      base_offset.y+(h*cursor.y),w,h);
 
       dst.draw_rectangle(rect,Pixel(yellow,30000));
     }

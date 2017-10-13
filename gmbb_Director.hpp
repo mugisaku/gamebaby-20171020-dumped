@@ -3,28 +3,42 @@
 
 
 #include"gmbb_Actor.hpp"
+#include"gmbb_Script__Element.hpp"
 
 
 namespace gmbb{
 
 
+class Board;
+
+
 class
 Director: public Actor
 {
+  using ScriptProcessor = void(*)(Director&  di, script::Element const&  e);
+
+  covered_ptr<Board>  board;
+
   covered_ptr<Actor>  first;
   covered_ptr<Actor>   last;
 
-  char const*  pointer=nullptr;
-  char const*      end=nullptr;
+  script::Element  script_root;
 
-  int  line_number=1;
+  script::Element const*  script_current=nullptr;
+  script::Element const*  script_end    =nullptr;
 
-  void  skip_spaces() noexcept;
+  ScriptProcessor  script_processor=nullptr;
+
+  void  process_new(      script::ElementList const&  ls) noexcept;
+  void  process_new_piece(script::ElementList const&  ls) noexcept;
 
 public:
-  void  set_script(std::string const&  s) noexcept;
+  Director() noexcept{}
+  Director(Board&  brd) noexcept: board(&brd){}
 
-  void  process_script() noexcept;
+  void  set_script(char const*  s);
+
+  void  set_script_processor(ScriptProcessor  scproc) noexcept{script_processor = scproc;}
 
   void  insert_to_first(Actor&  target) noexcept;
   void  insert_to_last( Actor&  target) noexcept;
@@ -39,7 +53,7 @@ public:
 
   void  update() noexcept override;
 
-  void  render(Image&  dst, Point  dst_point) const noexcept override;
+  void  render(Image&  dst, Point  offset) const noexcept override;
 
   template<typename  T>
   void

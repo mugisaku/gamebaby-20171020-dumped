@@ -24,12 +24,12 @@ ScrollStyleMenuWindow: public Window
 
   int  y_base=0;
 
-  Point  offset;
+  Point  cursor;
 
 public:
   ScrollStyleMenuWindow(Menu const&  menu_, int  col_n, int  row_n) noexcept;
 
-  int  get_item_index() const noexcept{return (column_number*(y_base+offset.y))+offset.x;}
+  int  get_item_index() const noexcept{return (column_number*(y_base+cursor.y))+cursor.x;}
 
   void  move_cursor_to_left()  noexcept;
   void  move_cursor_to_right() noexcept;

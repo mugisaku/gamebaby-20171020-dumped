@@ -54,28 +54,26 @@ return_(int  retval) noexcept
 
     if(retval >= 0)
     {
-      auto&  hero_p = *board.get_hero_piece();
-
         switch(retval)
         {
       case(top):
-          hero_p.hold_item(item_ptr);
+          hero_piece->hold_item(item_ptr);
           break;
       case(throw_):
-          hero_p.unhold_item(item_ptr);
+          hero_piece->unhold_item(item_ptr);
 
-          throw_item(*item_ptr,hero_p.get_square(),hero_p.get_face_direction());
+          throw_item(*item_ptr,hero_piece->get_square(),hero_piece->get_face_direction());
 
           *item_ptr = SackItem();
 
           pop_routine(-1);
           break;
       case(put):
-          auto&  sq = *hero_p.get_square();
+          auto&  sq = *hero_piece->get_square();
 
             if(sq.can_put_item())
             {
-              hero_p.unhold_item(item_ptr);
+              hero_piece->unhold_item(item_ptr);
 
               sq.set_item(*item_ptr);
 

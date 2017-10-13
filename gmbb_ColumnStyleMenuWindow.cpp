@@ -105,13 +105,13 @@ change_row_number(int  n) noexcept
 
 void
 ColumnStyleMenuWindow::
-render(Image&  dst, Point  dst_point) const noexcept
+render(Image&  dst, Point  offset) const noexcept
 {
-  Window::render(dst,dst_point);
+  Window::render(dst,offset);
 
     if(Window::get_state() == WindowState::full_opened)
     {
-      Point  const base_offset(dst_point+8);
+      Point  const base_offset(get_relative_point()+offset+8);
 
       int  h = menu.get_item_height();
 

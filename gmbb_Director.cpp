@@ -11,12 +11,48 @@ namespace gmbb{
 
 void
 Director::
-set_script(std::string const&  s) noexcept
+set_script(char const*  s)
 {
-  pointer = s.data()         ;
-      end = s.data()+s.size();
+  using namespace gmbb::script;
 
-  line_number = 1;
+  Element  el;
+
+  StreamReader  r(s);
+
+  TokenString  toks(r);
+
+  ElementList  els;
+
+    try
+    {
+      els = script::read_element_list(toks);
+    }
+
+
+    catch(StreamError const&  err)
+    {
+      err.print();
+
+      return;
+    }
+
+
+  script_current = nullptr;
+  script_end     = nullptr;
+
+    for(auto&  e: els)
+    {
+        if(e.name == "script")
+        {
+          script_root = std::move(e);
+
+          script_current = script_root.elements.data();
+
+          script_end = script_current+script_root.elements.size();
+
+          break;
+        }
+    }
 }
 
 
@@ -86,6 +122,15 @@ update() noexcept
 {
   Actor::update();
 
+    if(script_current && script_processor)
+    {
+        while(script_current != script_end)
+        {
+          script_processor(*this,*script_current++);
+        }
+    }
+
+
   auto  next = first;
 
     while(next)
@@ -99,13 +144,15 @@ update() noexcept
 
 void
 Director::
-render(Image&  dst, Point  dst_point) const noexcept
+render(Image&  dst, Point  offset) const noexcept
 {
   auto  next = first;
 
+  offset += get_relative_point();
+
     while(next)
     {
-      next->render(dst,dst_point+next->get_relative_point());
+      next->render(dst,offset);
 
       next = next->get_next();
     }

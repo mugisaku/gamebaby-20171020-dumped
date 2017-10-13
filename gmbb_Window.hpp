@@ -59,7 +59,7 @@ public:
 
   void  animate() noexcept;
 
-  void  render(Image&  dst, Point  dst_point) const noexcept override;
+  void  render(Image&  dst, Point  offset) const noexcept override;
 
 };
 

@@ -225,7 +225,7 @@ is_hero_busy() noexcept
 
 
 void
-render_hero_piece(Piece const&  p, Image&  dst, Point  dst_point) noexcept
+render_hero_piece(Piece const&  p, Image&  dst, Point  offset) noexcept
 {
   constexpr int  u = square_size;
 
@@ -270,13 +270,18 @@ render_hero_piece(Piece const&  p, Image&  dst, Point  dst_point) noexcept
 
   x = u*table[p.get_pattern_index()];
 
-  dst_point.y -= u;
+
+  auto  pt = p.get_relative_point()+offset;
+
+
+  pt.y -= u;
+
+  pt.transform(    board_image_width,board_image_height);
+  pt.transform(w,h,board_image_width,board_image_height);
 
   Rectangle  rect(x,y,w,h);
 
-  p.revise_point(dst_point,rect);
-
-  dst.transfer(*Piece::get_source_image(),rect,dst_point,p.get_relative_point().y+80);
+  dst.transfer(character_image,rect,pt,p.get_relative_point().y+80);
 }
 
 

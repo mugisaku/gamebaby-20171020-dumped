@@ -17,7 +17,7 @@ public:
 
   void  revise_point() noexcept;
 
-  void  render(Image&  dst, Point  dst_point) const noexcept override;
+  void  render(Image&  dst, Point  offset) const noexcept override;
 
 } *view;
 
@@ -27,46 +27,13 @@ void
 BoardView::
 revise_point() noexcept
 {
-    if(point.x < 0)
-    {
-        while(point.x < 0)
-        {
-          point.x += board_image_w;
-        }
-    }
-
-  else
-    if(point.x >= board_image_w)
-    {
-        while(point.x >= board_image_w)
-        {
-          point.x -= board_image_w;
-        }
-    }
-
-
-    if(point.y < 0)
-    {
-        while(point.y < 0)
-        {
-          point.y += board_image_h;
-        }
-    }
-
-  else
-    if(point.y >= board_image_h)
-    {
-        while(point.y >= board_image_h)
-        {
-          point.y -= board_image_h;
-        }
-    }
+  point.transform(board_image_width,board_image_height);
 }
 
 
 namespace{
 void
-render_square(Square const&  sq, Image&  dst, Point  dst_point) noexcept
+render_square(Square const&  sq, Image&  dst, Point  offset) noexcept
 {
   Rectangle  rect(24*4,24*10,24,24);
 
@@ -76,13 +43,13 @@ render_square(Square const&  sq, Image&  dst, Point  dst_point) noexcept
     }
 
 
-  dst.transfer(character_image,rect,dst_point,0);
+  dst.transfer(character_image,rect,offset,0);
 
   auto&  item = sq.get_item();
 
     if(item)
     {
-      dst.transfer(character_image,get_rectangle_for_item(item),dst_point,0);
+      dst.transfer(character_image,get_rectangle_for_item(item),offset,0);
     }
 }
 
@@ -90,9 +57,9 @@ render_square(Square const&  sq, Image&  dst, Point  dst_point) noexcept
 void
 render_row(Square const*  begin,
            Square const*  current,
-           Square const*  end, Image&  dst, Point  dst_point) noexcept
+           Square const*  end, Image&  dst, Point  offset) noexcept
 {
-    while(dst_point.x < screen_width)
+    while(offset.x < screen_width)
     {
         if(current >= end)
         {
@@ -100,9 +67,9 @@ render_row(Square const*  begin,
         }
 
 
-      render_square(*current++,dst,dst_point);
+      render_square(*current++,dst,offset);
 
-      dst_point.x += square_size;
+      offset.x += square_size;
     }
 }
 }
@@ -110,7 +77,7 @@ render_row(Square const*  begin,
 
 void
 BoardView::
-render(Image&  dst, Point  dst_point) const noexcept
+render(Image&  dst, Point  offset) const noexcept
 {
   constexpr int  w = (screen_width /square_size);
   constexpr int  h = (screen_height/square_size);
@@ -148,7 +115,7 @@ render(Image&  dst, Point  dst_point) const noexcept
 
         if(next->check_visible_count())
         {
-          next->render(dst,next->get_relative_point()-view->point);
+          next->render(dst,-view->point);
         }
 
 
