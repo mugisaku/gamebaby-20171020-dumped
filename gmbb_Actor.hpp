@@ -69,8 +69,6 @@ public:
 
   Director const*  get_director() const noexcept{return director.get_const_raw_pointer();}
 
-  void  connect_to_previous(Actor&  target) noexcept;
-  void  connect_to_next(    Actor&  target) noexcept;
   void  disconnect() noexcept;
 
   covered_ptr<Actor>  get_previous() const noexcept{return previous;}
@@ -95,6 +93,8 @@ public:
   virtual void  update() noexcept;
 
   virtual void  print() const noexcept{printf("%s(%p)",name.data(),this);}
+
+  static void  connect(Actor&  a, Actor&  b) noexcept;
 
 };
 

@@ -53,7 +53,7 @@ clear_all_distance() noexcept
 
 covered_ptr<Piece>
 Board::
-new_piece(int  x, int  y) noexcept
+new_piece(std::string const&  name_, int  x, int  y) noexcept
 {
   auto&  sq = get_square(x,y);
 
@@ -73,21 +73,22 @@ new_piece(int  x, int  y) noexcept
 
   else
     {
-      auto  raw_p = new Piece(*this);
-
-      hunger.emplace_back(raw_p);
-
-      p = raw_p;
+      p = new Piece(*this);
     }
 
 
   insert_to_last(*p);
 
+
   sq.set_piece(p);
+
+  p->set_name(name_);
 
   p->set_square(&sq);
 
   p->set_direction(Direction::front);
+
+  p->set_position_by_current_square();
 
   p->update();
 

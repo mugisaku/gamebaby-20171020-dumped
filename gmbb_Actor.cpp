@@ -46,21 +46,10 @@ exit_from_group() noexcept
 
 void
 Actor::
-connect_to_previous(Actor&  target) noexcept
+connect(Actor&  a, Actor&  b) noexcept
 {
-  target.previous = this;
-
-  next = &target;
-}
-
-
-void
-Actor::
-connect_to_next(Actor&  target) noexcept
-{
-  target.next = this;
-
-  previous = &target;
+  a.next     = &b;
+  b.previous = &a;
 }
 	
 

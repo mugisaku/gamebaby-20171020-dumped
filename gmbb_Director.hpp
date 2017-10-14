@@ -22,6 +22,8 @@ Director: public Actor
   covered_ptr<Actor>  first;
   covered_ptr<Actor>   last;
 
+  uint32_t  number_of_actors=0;
+
   script::Element  script_root;
 
   script::Element const*  script_current=nullptr;
@@ -44,6 +46,8 @@ public:
   void  insert_to_last( Actor&  target) noexcept;
 
   void  remove(Actor&  target) noexcept;
+
+  uint32_t  get_number_of_actors() const noexcept{return number_of_actors;}
 
   covered_ptr<Actor>  get_first() const noexcept{return first;}
   covered_ptr<Actor>  get_last()  const noexcept{return  last;}

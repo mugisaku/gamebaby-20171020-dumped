@@ -52,8 +52,9 @@ new_effect_object()
 
     if(last)
     {
-      p->connect_to_next(*last)   ;
-                          last = p;
+      Actor::connect(*last,*p);
+
+      last = p;
     }
 
   else
@@ -126,7 +127,7 @@ render_effect()
 
         if(next->check_visible_count())
         {
-          next->render(screen_image,next->get_relative_point()-get_board_view_offset());
+          next->render(screen_image,-get_board_view_offset());
         }
 
 

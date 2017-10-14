@@ -121,8 +121,9 @@ render(EffectObject const&  self, Image&  dst, Point  offset) noexcept
 {
   auto  rect = get_rectangle_for_item(thrown_item);
 
-  offset += -get_board_view_offset();
+  offset += self.get_relative_point();
 
+  offset.transform(                        board_image_width,board_image_height);
   offset.transform(square_size,square_size,board_image_width,board_image_height);
 
   dst.transfer(character_image,rect,offset,self.get_relative_point().y);

@@ -37,7 +37,15 @@ process_new_piece(Director&  di, script::ElementList const&  ls) noexcept
     }
 
 
-//  auto  p = board.new_piece(x,y);
+    if(name)
+    {
+      auto  p = board.new_piece(*name,x,y);
+
+        if(p)
+        {
+          p->set_render_callback(render_hero_piece);
+        }
+    }
 }
 
 

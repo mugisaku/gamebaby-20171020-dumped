@@ -45,6 +45,12 @@ render(gmbb::Image&  dst, Point  offset) const noexcept
   dst.print(buf,offset,glset);
 
   offset.y += 14;
+
+  snprintf(buf,sizeof(buf),"pieces %3d",board.get_number_of_actors());
+
+  dst.print(buf,offset,glset);
+
+  offset.y += 14;
 }
 
 

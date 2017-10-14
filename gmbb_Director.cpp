@@ -64,7 +64,7 @@ insert_to_first(Actor&  target) noexcept
 {
     if(first)
     {
-      target.connect_to_previous(*first);
+      Actor::connect(target,*first);
 
       first = &target;
     }
@@ -74,6 +74,9 @@ insert_to_first(Actor&  target) noexcept
       first = &target;
        last = &target;
     }
+
+
+  ++number_of_actors;
 }
 
 
@@ -83,7 +86,7 @@ insert_to_last(Actor&  target) noexcept
 {
     if(last)
     {
-      target.connect_to_next(*last);
+      Actor::connect(*last,target);
 
       last = &target;
     }
@@ -93,6 +96,9 @@ insert_to_last(Actor&  target) noexcept
       first = &target;
        last = &target;
     }
+
+
+  ++number_of_actors;
 }
 
 
@@ -113,6 +119,9 @@ remove(Actor&  target) noexcept
 
 
   target.disconnect();
+
+
+  --number_of_actors;
 }
 
 
